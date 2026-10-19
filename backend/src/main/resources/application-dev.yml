@@ -1,0 +1,29 @@
+spring:
+  # =====================================================================
+  # Database Configuration (Local PostgreSQL or Supabase)
+  # To connect to Supabase:
+  # 1. url: jdbc:postgresql://db.<your-project-ref>.supabase.co:5432/postgres?sslmode=require
+  # 2. username: postgres
+  # 3. password: <your-database-password>
+  # =====================================================================
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/cms_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  flyway:
+    enabled: ${FLYWAY_ENABLED:true}
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+jwt:
+  secret: ${JWT_SECRET:cms-development-secret-key-spring-boot-2026-minimum-256-bits-super-secure}
+  expiration-ms: 604800000

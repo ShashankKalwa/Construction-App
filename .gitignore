@@ -1,0 +1,64 @@
+# =====================================================================
+# Git Ignore for Construction Management System (Android + Spring Boot)
+# =====================================================================
+
+# Built application files
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java / Kotlin class files
+*.class
+
+# Generated build output
+bin/
+gen/
+out/
+build/
+**/build/
+buildOutput/
+
+# Gradle caches & daemon
+.gradle/
+
+# Local configuration files (SDK path, local credentials)
+local.properties
+.env
+.env.local
+.env.*.local
+
+# Log files
+*.log
+
+# Android Studio / IntelliJ IDEA
+*.iml
+.idea/
+# Preserve shared run configurations
+!.run/
+!.run/**
+
+# Android Studio captures & profiler data
+captures/
+.navigation/
+.externalNativeBuild/
+.cxx/
+
+# Keystores & release signing keys
+*.jks
+*.keystore
+
+# Google Services / secrets
+google-services.json
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
