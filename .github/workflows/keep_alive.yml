@@ -1,0 +1,20 @@
+name: Keep Alive Cron (Render & Supabase)
+
+on:
+  schedule:
+    # Runs every 14 minutes to prevent Render free-tier instance from sleeping (15-min timeout)
+    # and keeps Supabase PostgreSQL active via the /api/v1/health database check.
+    - cron: '*/14 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  ping-services:
+    name: Ping Render & Supabase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Health Endpoint
+        run: |
+          echo "Pinging CMS live backend..."
+          RESPONSE=$(curl -fsS --retry 3 --connect-timeout 15 "https://construction-app-eepz.onrender.com/api/v1/health")
+          echo "Response: $RESPONSE"
+          echo "Ping successful at $(date -u)"

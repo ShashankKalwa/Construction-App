@@ -13,13 +13,21 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/health")
-class HealthController {
+class HealthController(
+    private val jdbcTemplate: org.springframework.jdbc.core.JdbcTemplate? = null
+) {
 
     @GetMapping
     fun health(): ResponseEntity<HealthResponse> {
+        val dbAlive = try {
+            jdbcTemplate?.queryForObject("SELECT 1", Integer::class.java) != null
+        } catch (e: Exception) {
+            false
+        }
+
         return ResponseEntity.ok(
             HealthResponse(
-                status = "UP",
+                status = if (dbAlive || jdbcTemplate == null) "UP" else "DEGRADED",
                 service = "Construction Management System (CMS) Backend",
                 version = "1.0.0"
             )
