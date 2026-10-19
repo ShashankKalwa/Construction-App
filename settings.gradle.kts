@@ -23,4 +23,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "contruction-management-app"
-include(":app", ":backend")
+if (System.getenv("BUILD_BACKEND_ONLY") != "true") {
+    include(":app")
+}
+include(":backend")
