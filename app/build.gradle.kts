@@ -17,7 +17,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BACKEND_BASE_URL", "\"http://10.0.2.2:8000/api/v1/\"")
+        // Live Cloud Backend on Render (connected to Supabase PostgreSQL)
+        buildConfigField("String", "BACKEND_BASE_URL", "\"https://construction-app-eepz.onrender.com/api/v1/\"")
     }
 
     buildTypes {
