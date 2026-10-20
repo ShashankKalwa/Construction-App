@@ -43,4 +43,19 @@ interface ProjectRepository : JpaRepository<Project, String> {
 interface ProjectMemberRepository : JpaRepository<ProjectMember, String> {
     fun existsByProjectIdAndUserId(projectId: String, userId: String): Boolean
     fun findByProjectIdAndUserId(projectId: String, userId: String): Optional<ProjectMember>
+    fun findByProjectId(projectId: String): List<ProjectMember>
+}
+
+@Repository
+interface PhaseRepository : JpaRepository<Phase, String> {
+    fun findByProjectIdOrderByOrderIndexAsc(projectId: String): List<Phase>
+}
+
+@Repository
+interface TaskRepository : JpaRepository<Task, String> {
+    fun findByProjectId(projectId: String): List<Task>
+    fun findByPhaseId(phaseId: String): List<Task>
+    fun findByAssigneeId(assigneeId: String): List<Task>
+    fun countByProjectId(projectId: String): Long
+    fun countByProjectIdAndStatus(projectId: String, status: String): Long
 }

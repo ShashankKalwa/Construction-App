@@ -151,3 +151,83 @@ class ProjectMember(
     @Column(name = "joined_at")
     var joinedAt: Instant = Instant.now()
 )
+
+@Entity
+@Table(name = "phases")
+class Phase(
+    @Id
+    @Column(length = 50)
+    var id: String = "phs_${UUID.randomUUID().toString().replace("-", "").take(12)}",
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
+    var project: Project,
+
+    @Column(nullable = false)
+    var name: String,
+
+    @Column(name = "order_index", nullable = false)
+    var orderIndex: Int = 0,
+
+    @Column(name = "start_date")
+    var startDate: java.time.LocalDate? = null,
+
+    @Column(name = "end_date")
+    var endDate: java.time.LocalDate? = null,
+
+    @Column(length = 50)
+    var status: String = "Active",
+
+    @Column(name = "progress_pct")
+    var progressPct: Double = 0.0,
+
+    @Column(name = "created_at")
+    var createdAt: Instant = Instant.now(),
+
+    @OneToMany(mappedBy = "phase", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var tasks: MutableList<Task> = mutableListOf()
+)
+
+@Entity
+@Table(name = "tasks")
+class Task(
+    @Id
+    @Column(length = 50)
+    var id: String = "tsk_${UUID.randomUUID().toString().replace("-", "").take(12)}",
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phase_id", nullable = false)
+    var phase: Phase,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
+    var project: Project,
+
+    @Column(nullable = false)
+    var title: String,
+
+    @Column(columnDefinition = "TEXT")
+    var description: String? = null,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assignee_id")
+    var assignee: User? = null,
+
+    @Column(length = 20)
+    var priority: String = "MEDIUM",
+
+    @Column(length = 50)
+    var status: String = "PENDING",
+
+    @Column(name = "start_date")
+    var startDate: java.time.LocalDate? = null,
+
+    @Column(name = "due_date")
+    var dueDate: java.time.LocalDate? = null,
+
+    @Column(name = "progress_pct")
+    var progressPct: Double = 0.0,
+
+    @Column(name = "created_at")
+    var createdAt: Instant = Instant.now()
+)

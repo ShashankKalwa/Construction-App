@@ -2,8 +2,7 @@ package com.example.contruction_management_app.backend.api.v1
 
 import com.example.contruction_management_app.backend.dto.*
 import com.example.contruction_management_app.backend.security.UserPrincipal
-import com.example.contruction_management_app.backend.service.AuthService
-import com.example.contruction_management_app.backend.service.ProjectService
+import com.example.contruction_management_app.backend.service.*
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -83,5 +82,79 @@ class ProjectController(
     ): ResponseEntity<ProjectResponseDto> {
         val project = projectService.getProject(id, principal)
         return ResponseEntity.ok(project)
+    }
+
+    @GetMapping("/{id}/detail")
+    fun getProjectDetail(
+        @PathVariable id: String,
+        @AuthenticationPrincipal principal: UserPrincipal
+    ): ResponseEntity<ProjectDetailDto> {
+        val detail = projectService.getProjectDetail(id, principal)
+        return ResponseEntity.ok(detail)
+    }
+
+    @PostMapping("/{id}/members")
+    @PreAuthorize("hasAuthority('projects:edit') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN')")
+    fun assignMember(
+        @PathVariable id: String,
+        @Valid @RequestBody dto: ProjectMemberAssignDto,
+        @AuthenticationPrincipal principal: UserPrincipal
+    ): ResponseEntity<ProjectMemberDto> {
+        val member = projectService.assignMember(id, dto, principal)
+        return ResponseEntity.status(HttpStatus.CREATED).body(member)
+    }
+}
+
+@RestController
+@RequestMapping("/api/v1")
+class TaskController(
+    private val taskService: TaskService
+) {
+
+    @GetMapping("/projects/{projectId}/phases")
+    fun getPhasesWithTasks(
+        @PathVariable projectId: String,
+        @AuthenticationPrincipal principal: UserPrincipal
+    ): ResponseEntity<List<PhaseDto>> {
+        val phases = taskService.getPhasesWithTasks(projectId, principal)
+        return ResponseEntity.ok(phases)
+    }
+
+    @PostMapping("/projects/{projectId}/tasks")
+    @PreAuthorize("hasAuthority('tasks:manage') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN')")
+    fun createTask(
+        @PathVariable projectId: String,
+        @Valid @RequestBody dto: TaskCreateDto,
+        @AuthenticationPrincipal principal: UserPrincipal
+    ): ResponseEntity<TaskDto> {
+        val task = taskService.createTask(projectId, dto, principal)
+        return ResponseEntity.status(HttpStatus.CREATED).body(task)
+    }
+
+    @PatchMapping("/tasks/{taskId}/progress")
+    @PreAuthorize("hasAuthority('tasks:update') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN')")
+    fun updateTaskProgress(
+        @PathVariable taskId: String,
+        @Valid @RequestBody dto: TaskProgressUpdateDto,
+        @AuthenticationPrincipal principal: UserPrincipal
+    ): ResponseEntity<TaskDto> {
+        val task = taskService.updateTaskProgress(taskId, dto, principal)
+        return ResponseEntity.ok(task)
+    }
+}
+
+@RestController
+@RequestMapping("/api/v1/dashboard")
+class DashboardController(
+    private val dashboardService: DashboardService
+) {
+
+    @GetMapping("/summary")
+    fun getSummary(
+        @RequestParam(required = false) projectId: String?,
+        @AuthenticationPrincipal principal: UserPrincipal
+    ): ResponseEntity<DashboardSummaryDto> {
+        val summary = dashboardService.getSummary(projectId, principal)
+        return ResponseEntity.ok(summary)
     }
 }

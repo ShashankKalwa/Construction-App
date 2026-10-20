@@ -60,6 +60,16 @@ class SessionDataStore(private val context: Context) {
         }
     }
 
+    val activeProjectIdFlow: Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[KEY_ACTIVE_PROJECT_ID]
+    }
+
+    suspend fun setActiveProjectId(projectId: String) {
+        context.dataStore.edit { preferences ->
+            preferences[KEY_ACTIVE_PROJECT_ID] = projectId
+        }
+    }
+
     suspend fun clearSession() {
         context.dataStore.edit { preferences ->
             preferences.clear()
