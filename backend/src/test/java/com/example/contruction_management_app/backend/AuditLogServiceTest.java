@@ -1,7 +1,6 @@
 package com.example.contruction_management_app.backend;
 
 import com.example.contruction_management_app.backend.domain.*;
-import com.example.contruction_management_app.backend.dto.AuditLogDto;
 import com.example.contruction_management_app.backend.dto.AuditSummaryDto;
 import com.example.contruction_management_app.backend.repository.*;
 import com.example.contruction_management_app.backend.security.UserPrincipal;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class AuditLogServiceTest {

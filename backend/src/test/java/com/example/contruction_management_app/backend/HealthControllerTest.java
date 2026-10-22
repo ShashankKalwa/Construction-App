@@ -18,9 +18,10 @@ class HealthControllerTest {
         ResponseEntity<HealthResponse> response = controller.health();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("UP", response.getBody().status());
-        assertEquals("Construction Management System (CMS) Backend", response.getBody().service());
-        assertEquals("1.0.0", response.getBody().version());
+        HealthResponse body = response.getBody();
+        assertNotNull(body);
+        assertEquals("UP", body.status());
+        assertEquals("Construction Management System (CMS) Backend", body.service());
+        assertEquals("1.0.0", body.version());
     }
 }

@@ -19,20 +19,17 @@ import java.util.UUID;
 public class SiteOperationsService {
 
     private final DailySiteReportRepository reportRepository;
-    private final LaborAttendanceRepository laborRepository;
     private final SiteIssueRepository issueRepository;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
 
     public SiteOperationsService(
         DailySiteReportRepository reportRepository,
-        LaborAttendanceRepository laborRepository,
         SiteIssueRepository issueRepository,
         ProjectRepository projectRepository,
         ProjectMemberRepository projectMemberRepository
     ) {
         this.reportRepository = reportRepository;
-        this.laborRepository = laborRepository;
         this.issueRepository = issueRepository;
         this.projectRepository = projectRepository;
         this.projectMemberRepository = projectMemberRepository;
