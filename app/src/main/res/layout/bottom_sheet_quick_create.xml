@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_navigation"
+    android:orientation="vertical"
+    android:padding="@dimen/cms_spacing_xl">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/cms_spacing_lg"
+        android:background="@drawable/bg_status_badge" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="QUICK FIELD ACTIONS"
+        android:textAppearance="@style/TextAppearance.CMS.Caption"
+        android:textColor="@color/cms_accent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Action"
+        android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+    <!-- Action 1: New Project -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/actionQuickNewProject"
+        style="@style/Widget.CMS.Card.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_lg"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/cms_spacing_card">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="New Project"
+                android:src="@drawable/ic_plus"
+                app:tint="@color/cms_accent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_md"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create New Project"
+                    android:textAppearance="@style/TextAppearance.CMS.Body"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Initialize code, site location, and budget"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="Arrow"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/cms_text_secondary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Action 2: Update Tasks -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/actionQuickTasks"
+        style="@style/Widget.CMS.Card.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/cms_spacing_card">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Tasks"
+                android:src="@drawable/ic_tasks"
+                app:tint="@color/cms_warning" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_md"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Record Daily Task Progress"
+                    android:textAppearance="@style/TextAppearance.CMS.Body"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update phase milestones and field status"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="Arrow"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/cms_text_secondary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Action 3: Civil Tools -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/actionQuickTools"
+        style="@style/Widget.CMS.Card.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/cms_spacing_card">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Tools"
+                android:src="@drawable/ic_tools"
+                app:tint="@color/cms_info" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_md"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Site Calculators"
+                    android:textAppearance="@style/TextAppearance.CMS.Body"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Concrete volume, cement bags, steel rebar weights"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="Arrow"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/cms_text_secondary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

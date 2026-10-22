@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cms_background">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cms_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/cms_text_primary"
+            app:title="Finance &amp; Expenses"
+            app:titleTextAppearance="@style/TextAppearance.CMS.Title"
+            app:titleTextColor="@color/cms_text_primary" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutFinance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/cms_surface"
+            app:tabIndicatorColor="@color/cms_accent"
+            app:tabSelectedTextColor="@color/cms_accent"
+            app:tabTextColor="@color/cms_text_secondary">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Site Expenses" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contractor Bills (RA)" />
+        </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Expenses List View -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvExpenses"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/cms_spacing_md"
+            android:paddingBottom="88dp"
+            android:visibility="visible"
+            tools:listitem="@layout/item_expense" />
+
+        <!-- Contractor Bills List View -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvContractorBills"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/cms_spacing_md"
+            android:paddingBottom="88dp"
+            android:visibility="gone"
+            tools:listitem="@layout/item_contractor_bill" />
+
+        <include
+            android:id="@+id/emptyState"
+            layout="@layout/view_state_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/loadingState"
+            layout="@layout/view_state_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <!-- FAB: Add Expense / Create Bill -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabAddFinanceItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/cms_spacing_lg"
+        android:backgroundTint="@color/cms_accent"
+        android:text="Add Expense"
+        android:textColor="@color/cms_accent_on"
+        app:icon="@drawable/ic_plus"
+        app:iconTint="@color/cms_accent_on" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

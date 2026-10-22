@@ -1,64 +1,117 @@
 # =====================================================================
-# Git Ignore for Construction Management System (Android + Spring Boot)
+# Git Ignore for Construction Management System (CMS)
+# Multi-Module: Native Android (Kotlin/XML) + Spring Boot (Java 17)
 # =====================================================================
 
-# Built application files
+# ---------------------------------------------------------------------
+# 1. Built Application & Binary Files
+# ---------------------------------------------------------------------
 *.apk
 *.aar
 *.ap_
 *.aab
-
-# Files for the ART/Dalvik VM
 *.dex
-
-# Java / Kotlin class files
 *.class
 
-# Generated build output
+# ---------------------------------------------------------------------
+# 2. Build Output & Intermediate Artifacts
+# ---------------------------------------------------------------------
 bin/
 gen/
 out/
 build/
 **/build/
 buildOutput/
+target/
 
-# Gradle caches & daemon
+# ---------------------------------------------------------------------
+# 3. Gradle System & Daemon
+# ---------------------------------------------------------------------
 .gradle/
+# Ensure Gradle wrapper binary is preserved
+!gradle/wrapper/gradle-wrapper.jar
 
-# Local configuration files (SDK path, local credentials)
+# ---------------------------------------------------------------------
+# 4. Security & Local Configurations (NEVER COMMIT CREDENTIALS)
+# ---------------------------------------------------------------------
 local.properties
+secrets.properties
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
-# Log files
-*.log
+# Local Spring Boot configuration overrides
+backend/src/main/resources/application-local.yml
+backend/src/main/resources/application-local.properties
+backend/src/main/resources/application-dev.local.yml
+backend/src/main/resources/application-prod.yml
+backend/src/main/resources/application-secrets.yml
+backend/src/main/resources/application-secret.yml
 
+# Keystores, signing keys & certificates
+*.jks
+*.keystore
+*.pem
+*.key
+*.p12
+*.crt
+
+# Google Services secrets
+google-services.json
+
+# ---------------------------------------------------------------------
+# 5. IDEs & Editors
+# ---------------------------------------------------------------------
 # Android Studio / IntelliJ IDEA
 *.iml
 .idea/
-# Preserve shared run configurations
 !.run/
 !.run/**
 
-# Android Studio captures & profiler data
+# VS Code / Cursor
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# ---------------------------------------------------------------------
+# 6. Android Studio Profiler, Captures & Native Build
+# ---------------------------------------------------------------------
 captures/
 .navigation/
 .externalNativeBuild/
 .cxx/
 
-# Keystores & release signing keys
-*.jks
-*.keystore
+# ---------------------------------------------------------------------
+# 7. SQLite / Room Local Database Files
+# ---------------------------------------------------------------------
+*.db-journal
+*.db-shm
+*.db-wal
 
-# Google Services / secrets
-google-services.json
+# ---------------------------------------------------------------------
+# 8. Temporary & Log Files
+# ---------------------------------------------------------------------
+*.log
+*.tmp
+*.bak
+*.swp
+*~
 
-# OS specific files
+# ---------------------------------------------------------------------
+# 9. Operating System Files
+# ---------------------------------------------------------------------
+# macOS
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
+
+# Windows
 Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/

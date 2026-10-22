@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_surface"
+    android:orientation="vertical"
+    android:padding="@dimen/cms_spacing_lg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Contractor RA Bill"
+        android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Running Account (RA) bill with 5% Retention &amp; 2% TDS deductions"
+        android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+
+    <!-- Contractor Name -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilContractorName"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Contractor / Agency Name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etContractorName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Bill Number -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilBillNumber"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:hint="Bill / Invoice Number (e.g. RA-05)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etBillNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Gross Amount -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilGrossAmount"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:hint="Certified Gross Amount (₹)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etGrossAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Work Description -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilWorkDescription"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:hint="Work Executed Description">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etWorkDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Live Calculation Preview Card -->
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.CMS.Card.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/cms_spacing_sm">
+
+            <TextView
+                android:id="@+id/tvPreviewRetention"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retention (5%): ₹0.00"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_warning" />
+
+            <TextView
+                android:id="@+id/tvPreviewTds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="TDS (2%): ₹0.00"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_error" />
+
+            <TextView
+                android:id="@+id/tvPreviewNetPayable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Net Payable: ₹0.00"
+                android:textAppearance="@style/TextAppearance.CMS.Body"
+                android:textColor="@color/cms_accent"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_lg"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            style="@style/Widget.CMS.Button.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/cms_spacing_sm"
+            android:text="Cancel" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmitBill"
+            style="@style/Widget.CMS.Button.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Certify &amp; Save" />
+    </LinearLayout>
+
+</LinearLayout>

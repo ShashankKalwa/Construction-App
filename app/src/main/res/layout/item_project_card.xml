@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardProject"
+    style="@style/Widget.CMS.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/cms_spacing_md"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/cms_spacing_card">
+
+        <!-- Header: Code + Status Badge -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvProjectCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_chip_selected"
+                android:paddingHorizontal="@dimen/cms_spacing_sm"
+                android:paddingVertical="@dimen/cms_spacing_xs"
+                android:textAppearance="@style/TextAppearance.CMS.Mono"
+                tools:text="APX-2024-01" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvProjectStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_badge"
+                android:paddingHorizontal="@dimen/cms_spacing_md"
+                android:paddingVertical="@dimen/cms_spacing_xs"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textStyle="bold"
+                tools:text="IN_PROGRESS" />
+        </LinearLayout>
+
+        <!-- Project Name -->
+        <TextView
+            android:id="@+id/tvProjectName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_sm"
+            android:textAppearance="@style/TextAppearance.CMS.Title"
+            tools:text="Skyline Commercial Tower B" />
+
+        <!-- Location -->
+        <TextView
+            android:id="@+id/tvProjectLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xs"
+            android:textAppearance="@style/TextAppearance.CMS.BodySecondary"
+            tools:text="Whitefield, Bengaluru" />
+
+        <!-- Budget & Timeline Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvProjectBudget"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_text_secondary"
+                tools:text="Budget: ₹45.5 Cr" />
+
+            <TextView
+                android:id="@+id/tvProjectProgressPct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_accent"
+                android:textStyle="bold"
+                tools:text="68%" />
+        </LinearLayout>
+
+        <!-- Progress Bar -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressProject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xs"
+            app:indicatorColor="@color/cms_accent"
+            app:trackColor="@color/cms_card_elevated"
+            app:trackCornerRadius="@dimen/cms_radius_pill"
+            app:trackThickness="@dimen/cms_stroke_progress"
+            tools:progress="68" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

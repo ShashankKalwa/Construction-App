@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="@color/cms_card"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/cms_border"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvVersionTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_chip_selected"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:textColor="@color/cms_accent"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="v2.1 (Current)" />
+
+            <TextView
+                android:id="@+id/tvVersionFileName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="@color/cms_text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="commercial_tower_b_arch_v2.1.pdf" />
+
+            <TextView
+                android:id="@+id/tvVersionSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/cms_text_secondary"
+                android:textSize="12sp"
+                tools:text="17.3 MB" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvVersionNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/cms_text_secondary"
+            android:textSize="12sp"
+            tools:text="Minor alignment with facade curtain-wall mullion spacing." />
+
+        <TextView
+            android:id="@+id/tvVersionMeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/cms_text_tertiary"
+            android:textSize="11sp"
+            tools:text="Uploaded by Priya Sharma • 2 days ago" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

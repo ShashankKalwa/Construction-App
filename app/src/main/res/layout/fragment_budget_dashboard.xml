@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cms_background">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cms_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/cms_text_primary"
+            app:title="Budget &amp; Cost"
+            app:titleTextAppearance="@style/TextAppearance.CMS.Title"
+            app:titleTextColor="@color/cms_text_primary" />
+
+        <!-- Period Selector Filter Tabs -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/cms_spacing_md"
+            android:paddingBottom="@dimen/cms_spacing_sm"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupPeriod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipWeek"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Week"
+                    android:textColor="@color/cms_text_primary"
+                    app:chipBackgroundColor="@color/cms_card"
+                    app:chipStrokeColor="@color/cms_border" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipMonth"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Month"
+                    android:textColor="@color/cms_text_primary"
+                    app:chipBackgroundColor="@color/cms_card"
+                    app:chipStrokeColor="@color/cms_border" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipQuarter"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quarter"
+                    android:textColor="@color/cms_text_primary"
+                    app:chipBackgroundColor="@color/cms_card"
+                    app:chipStrokeColor="@color/cms_border" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTotal"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Total"
+                    android:textColor="@color/cms_text_primary"
+                    app:chipBackgroundColor="@color/cms_card"
+                    app:chipStrokeColor="@color/cms_border" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/cms_spacing_md">
+
+            <!-- Primary Stat Cards: Actual Cost & Budget Used -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <!-- Card 1: Actual Cost Spent -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardActualCost"
+                    style="@style/Widget.CMS.Card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/cms_spacing_sm"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/cms_spacing_card">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Actual Cost"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_text_secondary" />
+
+                        <TextView
+                            android:id="@+id/tvActualCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cms_spacing_xs"
+                            android:textAppearance="@style/TextAppearance.CMS.Headline"
+                            android:textColor="@color/cms_text_primary"
+                            tools:text="₹5.42 Cr" />
+
+                        <TextView
+                            android:id="@+id/tvCommittedCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cms_spacing_xs"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_text_tertiary"
+                            tools:text="Committed: ₹1.82 Cr" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card 2: Budget Used % -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardBudgetUsed"
+                    style="@style/Widget.CMS.Card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/cms_spacing_sm"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/cms_spacing_card">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Budget Used"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_text_secondary" />
+
+                        <TextView
+                            android:id="@+id/tvBudgetUsedPct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cms_spacing_xs"
+                            android:textAppearance="@style/TextAppearance.CMS.Headline"
+                            android:textColor="@color/cms_accent"
+                            tools:text="63.8%" />
+
+                        <TextView
+                            android:id="@+id/tvTotalBudget"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cms_spacing_xs"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_text_tertiary"
+                            tools:text="of ₹8.50 Cr Budget" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Overall Budget Progress Indicator -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.CMS.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cms_spacing_md">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/cms_spacing_card">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Remaining Balance"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textColor="@color/cms_text_secondary" />
+
+                        <TextView
+                            android:id="@+id/tvRemainingBudget"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textColor="@color/cms_success"
+                            android:textStyle="bold"
+                            tools:text="₹3.08 Cr" />
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressBudget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/cms_spacing_sm"
+                        app:indicatorColor="@color/cms_accent"
+                        app:trackColor="@color/cms_card_elevated"
+                        app:trackCornerRadius="@dimen/cms_radius_pill"
+                        app:trackThickness="8dp"
+                        tools:progress="64" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Cost Breakdown Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cms_spacing_lg"
+                android:layout_marginBottom="@dimen/cms_spacing_sm"
+                android:text="Cost Breakdown by Category"
+                android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.CMS.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/layoutCategoryBreakdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/cms_spacing_card">
+
+                    <!-- Materials Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Materials"
+                            android:textAppearance="@style/TextAppearance.CMS.Body" />
+
+                        <TextView
+                            android:id="@+id/tvMaterialsCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textColor="@color/cms_text_primary"
+                            android:textStyle="bold"
+                            tools:text="₹2.68 Cr (49.4%)" />
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressMaterials"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="@dimen/cms_spacing_md"
+                        app:indicatorColor="@color/cms_accent"
+                        app:trackColor="@color/cms_card_elevated"
+                        app:trackCornerRadius="@dimen/cms_radius_pill"
+                        app:trackThickness="6dp"
+                        tools:progress="49" />
+
+                    <!-- Labor Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Labor &amp; Gang Overtime"
+                            android:textAppearance="@style/TextAppearance.CMS.Body" />
+
+                        <TextView
+                            android:id="@+id/tvLaborCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textColor="@color/cms_text_primary"
+                            android:textStyle="bold"
+                            tools:text="₹1.21 Cr (22.3%)" />
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressLabor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="@dimen/cms_spacing_md"
+                        app:indicatorColor="@color/cms_info"
+                        app:trackColor="@color/cms_card_elevated"
+                        app:trackCornerRadius="@dimen/cms_radius_pill"
+                        app:trackThickness="6dp"
+                        tools:progress="22" />
+
+                    <!-- Subcontractor Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Subcontractors (RA Bills)"
+                            android:textAppearance="@style/TextAppearance.CMS.Body" />
+
+                        <TextView
+                            android:id="@+id/tvSubcontractorCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textColor="@color/cms_text_primary"
+                            android:textStyle="bold"
+                            tools:text="₹94.0 L (17.3%)" />
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressSubcontractor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="@dimen/cms_spacing_md"
+                        app:indicatorColor="@color/cms_warning"
+                        app:trackColor="@color/cms_card_elevated"
+                        app:trackCornerRadius="@dimen/cms_radius_pill"
+                        app:trackThickness="6dp"
+                        tools:progress="17" />
+
+                    <!-- Equipment Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Equipment &amp; Machinery"
+                            android:textAppearance="@style/TextAppearance.CMS.Body" />
+
+                        <TextView
+                            android:id="@+id/tvEquipmentCost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textColor="@color/cms_text_primary"
+                            android:textStyle="bold"
+                            tools:text="₹41.0 L (7.6%)" />
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressEquipment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        app:indicatorColor="@color/cms_success"
+                        app:trackColor="@color/cms_card_elevated"
+                        app:trackCornerRadius="@dimen/cms_radius_pill"
+                        app:trackThickness="6dp"
+                        tools:progress="8" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Top Material Consumption Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cms_spacing_lg"
+                android:layout_marginBottom="@dimen/cms_spacing_sm"
+                android:text="Top Material Consumption"
+                android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMaterialConsumption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_material_consumption" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

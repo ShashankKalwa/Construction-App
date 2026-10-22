@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_surface"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Offline Sync Engine"
+            android:textColor="@color/cms_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSyncNow"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="12dp"
+            android:backgroundTint="@color/cms_accent"
+            android:text="Sync All"
+            android:textColor="@color/cms_accent_on"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_sync"
+            app:iconSize="14dp"
+            app:iconTint="@color/cms_accent_on" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvSyncSummary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Local drafts saved on device pending cloud reconciliation"
+        android:textColor="@color/cms_text_secondary"
+        android:textSize="13sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSyncQueue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:maxHeight="360dp"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_sync_queue" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClearConfirmed"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Clear Confirmed"
+            android:textColor="@color/cms_text_secondary"
+            app:strokeColor="@color/cms_border" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCloseSync"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="Close"
+            android:textColor="@color/cms_text_primary" />
+    </LinearLayout>
+
+</LinearLayout>

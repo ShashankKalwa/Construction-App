@@ -1,10 +1,10 @@
 spring:
   # =====================================================================
-  # Database Configuration (Local PostgreSQL or Supabase)
-  # To connect to Supabase:
-  # 1. url: jdbc:postgresql://db.<your-project-ref>.supabase.co:5432/postgres?sslmode=require
-  # 2. username: postgres
-  # 3. password: <your-database-password>
+  # Database Configuration
+  # Production/Cloud environments (Render) supply credentials securely
+  # via environment variables: DB_URL, DB_USERNAME, DB_PASSWORD.
+  # Local development falls back to safe localhost:5432 defaults.
+  # Never commit real passwords or cloud connection strings to source control.
   # =====================================================================
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/cms_db}

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_navigation"
+    android:orientation="vertical"
+    android:padding="@dimen/cms_spacing_xl">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/cms_spacing_lg"
+        android:background="@drawable/bg_status_badge" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CREATE NEW PROJECT"
+        android:textAppearance="@style/TextAppearance.CMS.Caption"
+        android:textColor="@color/cms_accent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Project Setup"
+        android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+    <!-- Name -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilProjectName"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_lg"
+        android:hint="Project Name *">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etProjectName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Code -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilProjectCode"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Project Code (e.g. APX-2024-04) *">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etProjectCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapCharacters"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Location -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilProjectLocation"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Location / Site Address *">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etProjectLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Budget -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilProjectBudget"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Estimated Budget (INR ₹) *">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etProjectBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Create Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSubmitProject"
+        style="@style/Widget.CMS.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_xl"
+        android:text="CREATE PROJECT" />
+
+    <ProgressBar
+        android:id="@+id/progressCreateProject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:indeterminateTint="@color/cms_accent"
+        android:visibility="gone" />
+
+</LinearLayout>

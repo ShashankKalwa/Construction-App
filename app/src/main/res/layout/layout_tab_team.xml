@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cms_background"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/cms_spacing_lg"
+    android:paddingTop="@dimen/cms_spacing_lg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ASSIGNED PROJECT TEAM"
+        android:textAppearance="@style/TextAppearance.CMS.Caption"
+        android:textColor="@color/cms_text_tertiary" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTeamMembers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/cms_spacing_xs"
+        android:clipToPadding="false"
+        android:paddingBottom="64dp" />
+</LinearLayout>

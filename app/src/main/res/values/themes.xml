@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base Dark Industrial Console Theme -->
+    <style name="Theme.CMS" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Brand Colors -->
+        <item name="colorPrimary">@color/cms_accent</item>
+        <item name="colorPrimaryVariant">@color/cms_accent_pressed</item>
+        <item name="colorOnPrimary">@color/cms_accent_on</item>
+        <item name="colorSecondary">@color/cms_accent</item>
+        <item name="colorOnSecondary">@color/cms_accent_on</item>
+        
+        <!-- Surface & Background -->
+        <item name="android:windowBackground">@color/cms_background</item>
+        <item name="colorSurface">@color/cms_surface</item>
+        <item name="colorOnSurface">@color/cms_text_primary</item>
+        <item name="android:colorBackground">@color/cms_background</item>
+        <item name="android:textColorPrimary">@color/cms_text_primary</item>
+        <item name="android:textColorSecondary">@color/cms_text_secondary</item>
 
-    <style name="Theme.Contructionmanagementapp" parent="android:Theme.Material.Light.NoActionBar" />
+        <!-- System Bars -->
+        <item name="android:statusBarColor">@color/cms_background</item>
+        <item name="android:navigationBarColor">@color/cms_surface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <!-- Bottom Sheet Theme -->
+        <item name="bottomSheetDialogTheme">@style/Theme.CMS.BottomSheetDialog</item>
+    </style>
+
+    <!-- Project alias matching manifest default -->
+    <style name="Theme.Contructionmanagementapp" parent="Theme.CMS" />
+
+    <style name="Theme.CMS.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.CMS.BottomSheet.Modal</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@color/cms_transparent</item>
+        <item name="android:navigationBarColor">@color/cms_surface</item>
+    </style>
 </resources>

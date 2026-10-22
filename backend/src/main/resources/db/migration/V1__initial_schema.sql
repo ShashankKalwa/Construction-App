@@ -213,12 +213,12 @@ INSERT INTO organizations (id, name, slug) VALUES
 ON CONFLICT (id) DO NOTHING;
 
 -- Seed Default Demo Users (Password: password123, BCrypt hashed)
--- BCrypt: $2a$10$wE99Q4jK37zUj1V6H/3Zse87ZtI2l7WqZ4G4qF0jT.a9i7V6Y0z7i
+-- BCrypt: $2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea
 INSERT INTO users (id, email, full_name, hashed_password, organization_id, role_id) VALUES
-('usr_admin', 'admin@greenvalley.com', 'Rajesh Sharma', '$2a$10$wE99Q4jK37zUj1V6H/3Zse87ZtI2l7WqZ4G4qF0jT.a9i7V6Y0z7i', 'org_green_valley', 'company_admin'),
-('usr_pm', 'pm@greenvalley.com', 'Vikram Patel', '$2a$10$wE99Q4jK37zUj1V6H/3Zse87ZtI2l7WqZ4G4qF0jT.a9i7V6Y0z7i', 'org_green_valley', 'project_manager'),
-('usr_engineer', 'engineer@greenvalley.com', 'Ananya Roy', '$2a$10$wE99Q4jK37zUj1V6H/3Zse87ZtI2l7WqZ4G4qF0jT.a9i7V6Y0z7i', 'org_green_valley', 'civil_engineer'),
-('usr_supervisor', 'supervisor@greenvalley.com', 'Suresh Kumar', '$2a$10$wE99Q4jK37zUj1V6H/3Zse87ZtI2l7WqZ4G4qF0jT.a9i7V6Y0z7i', 'org_green_valley', 'site_supervisor')
+('usr_admin', 'admin@greenvalley.com', 'Rajesh Sharma', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_green_valley', 'company_admin'),
+('usr_pm', 'pm@greenvalley.com', 'Vikram Patel', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_green_valley', 'project_manager'),
+('usr_engineer', 'engineer@greenvalley.com', 'Ananya Roy', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_green_valley', 'civil_engineer'),
+('usr_supervisor', 'supervisor@greenvalley.com', 'Suresh Kumar', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_green_valley', 'site_supervisor')
 ON CONFLICT (id) DO NOTHING;
 
 -- Seed Sample Project: Green Valley Residency

@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Canvas & Surfaces -->
+    <color name="cms_background">#0F0F10</color>
+    <color name="cms_surface">#171718</color>
+    <color name="cms_card">#1F1F20</color>
+    <color name="cms_card_elevated">#262627</color>
+    <color name="cms_surface_bright">#262627</color>
+    <color name="cms_border">#2E2E30</color>
+    <color name="cms_divider">#2A2A2C</color>
+
+    <!-- Typography -->
+    <color name="cms_text_primary">#FFFFFF</color>
+    <color name="cms_text_secondary">#A0A0A6</color>
+    <color name="cms_text_tertiary">#6E6E74</color>
+
+    <!-- Signature Industrial Orange Accent -->
+    <color name="cms_accent">#F26B1D</color>
+    <color name="cms_accent_pressed">#D95A10</color>
+    <color name="cms_accent_tint">#26F26B1D</color>
+    <color name="cms_accent_tint_30">#4DF26B1D</color>
+    <color name="cms_accent_on">#FFFFFF</color>
+    <color name="cms_accent_gradient_start">#F57A2E</color>
+    <color name="cms_accent_gradient_end">#E85F12</color>
+
+    <!-- Semantic Status -->
+    <color name="cms_success">#3DDC84</color>
+    <color name="cms_success_tint">#263DDC84</color>
+    <color name="cms_warning">#F5B031</color>
+    <color name="cms_warning_tint">#26F5B031</color>
+    <color name="cms_error">#FF5A4F</color>
+    <color name="cms_error_tint">#26FF5A4F</color>
+    <color name="cms_info">#4DA3FF</color>
+    <color name="cms_info_tint">#264DA3FF</color>
+
+    <!-- Charts & Controls -->
+    <color name="cms_chart_muted">#4A4A4D</color>
+    <color name="cms_toggle_off">#3A3A3C</color>
+    <color name="cms_transparent">#00000000</color>
 </resources>

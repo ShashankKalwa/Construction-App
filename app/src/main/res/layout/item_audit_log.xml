@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="@color/cms_card"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/cms_border"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <FrameLayout
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_card_elevated">
+
+                <TextView
+                    android:id="@+id/tvUserInitials"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/cms_accent"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="RV" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvAuditUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/cms_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="Rahul Verma" />
+
+                <TextView
+                    android:id="@+id/tvAuditTimestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/cms_text_tertiary"
+                    android:textSize="11sp"
+                    tools:text="2 hours ago • IP: 192.168.1.42" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvAuditActionBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_chip_selected"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:textColor="@color/cms_accent"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:text="ISSUE STOCK" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvAuditDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/cms_text_secondary"
+            android:textSize="13sp"
+            tools:text="Issued 65.00 Bags of OPC 53 Cement to Task 4th Floor Slab Casting. Balance reduced to 85.00 Bags." />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

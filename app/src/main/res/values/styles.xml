@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text Appearances -->
+    <style name="TextAppearance.CMS.Display" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="android:textSize">@dimen/cms_text_size_display</item>
+        <item name="android:textColor">@color/cms_text_primary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.CMS.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">@dimen/cms_text_size_headline</item>
+        <item name="android:textColor">@color/cms_text_primary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.CMS.Title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">@dimen/cms_text_size_title</item>
+        <item name="android:textColor">@color/cms_text_primary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.CMS.Subheading" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textSize">@dimen/cms_text_size_subheading</item>
+        <item name="android:textColor">@color/cms_text_secondary</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.CMS.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">@dimen/cms_text_size_body</item>
+        <item name="android:textColor">@color/cms_text_primary</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.CMS.BodySecondary" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">@dimen/cms_text_size_body_sm</item>
+        <item name="android:textColor">@color/cms_text_secondary</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.CMS.Caption" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">@dimen/cms_text_size_caption</item>
+        <item name="android:textColor">@color/cms_text_tertiary</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.CMS.Mono" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">@dimen/cms_text_size_body_sm</item>
+        <item name="android:textColor">@color/cms_accent</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <!-- Card Styles -->
+    <style name="Widget.CMS.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/cms_card</item>
+        <item name="cardCornerRadius">@dimen/cms_radius_card</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/cms_border</item>
+        <item name="strokeWidth">@dimen/cms_stroke_card</item>
+    </style>
+
+    <style name="Widget.CMS.Card.Elevated" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/cms_card_elevated</item>
+        <item name="cardCornerRadius">@dimen/cms_radius_tile</item>
+        <item name="cardElevation">2dp</item>
+        <item name="strokeColor">@color/cms_border</item>
+        <item name="strokeWidth">@dimen/cms_stroke_card</item>
+    </style>
+
+    <!-- Button Styles -->
+    <style name="Widget.CMS.Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:backgroundTint">@color/cms_accent</item>
+        <item name="android:textColor">@color/cms_accent_on</item>
+        <item name="cornerRadius">@dimen/cms_radius_chip</item>
+        <item name="android:minHeight">@dimen/cms_touch_target_min</item>
+        <item name="android:textStyle">bold</item>
+        <item name="rippleColor">@color/cms_accent_pressed</item>
+    </style>
+
+    <style name="Widget.CMS.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textColor">@color/cms_accent</item>
+        <item name="strokeColor">@color/cms_accent</item>
+        <item name="strokeWidth">@dimen/cms_stroke_card</item>
+        <item name="cornerRadius">@dimen/cms_radius_chip</item>
+        <item name="android:minHeight">@dimen/cms_touch_target_min</item>
+        <item name="rippleColor">@color/cms_accent_tint</item>
+    </style>
+
+    <style name="Widget.CMS.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/cms_accent</item>
+        <item name="rippleColor">@color/cms_accent_tint</item>
+    </style>
+
+    <!-- TextInputLayout Styles -->
+    <style name="Widget.CMS.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/cms_card_elevated</item>
+        <item name="boxStrokeColor">@color/cms_border</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/cms_radius_tile</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/cms_radius_tile</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/cms_radius_tile</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/cms_radius_tile</item>
+        <item name="hintTextColor">@color/cms_text_secondary</item>
+        <item name="android:textColorHint">@color/cms_text_tertiary</item>
+    </style>
+
+    <!-- Bottom Sheet Modal Style -->
+    <style name="Widget.CMS.BottomSheet.Modal" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/cms_surface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.CMS.BottomSheet</item>
+    </style>
+
+    <style name="ShapeAppearance.CMS.BottomSheet" parent="ShapeAppearance.Material3.Corner.None">
+        <item name="cornerSizeTopLeft">@dimen/cms_radius_card</item>
+        <item name="cornerSizeTopRight">@dimen/cms_radius_card</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+</resources>

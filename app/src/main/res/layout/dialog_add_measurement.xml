@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_surface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Record Measurement Entry"
+            android:textColor="@color/cms_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="IS:1200 / CPWD Standard (Nos × L × B × D - Ded)"
+            android:textColor="@color/cms_text_secondary"
+            android:textSize="12sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMbDescription"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Item / Work Description"
+            app:boxStrokeColor="@color/cms_accent"
+            app:hintTextColor="@color/cms_accent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMbDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:text="Footing F1 to F4 Excavation"
+                android:textColor="@color/cms_text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Nos & Dimensions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMbNos"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:hint="Nos"
+                app:boxStrokeColor="@color/cms_accent"
+                app:hintTextColor="@color/cms_accent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMbNos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="4.00"
+                    android:textColor="@color/cms_text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMbLength"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:hint="Length (m)"
+                app:boxStrokeColor="@color/cms_accent"
+                app:hintTextColor="@color/cms_accent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMbLength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="3.00"
+                    android:textColor="@color/cms_text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMbWidth"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Width (m)"
+                app:boxStrokeColor="@color/cms_accent"
+                app:hintTextColor="@color/cms_accent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMbWidth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="3.00"
+                    android:textColor="@color/cms_text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMbDepth"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:hint="Depth (m)"
+                app:boxStrokeColor="@color/cms_accent"
+                app:hintTextColor="@color/cms_accent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMbDepth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="2.00"
+                    android:textColor="@color/cms_text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMbDeduction"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:hint="Deduction"
+                app:boxStrokeColor="@color/cms_accent"
+                app:hintTextColor="@color/cms_accent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMbDeduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="0.00"
+                    android:textColor="@color/cms_text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMbUnit"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:hint="Unit"
+                app:boxStrokeColor="@color/cms_accent"
+                app:hintTextColor="@color/cms_accent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMbUnit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapCharacters"
+                    android:text="M3"
+                    android:textColor="@color/cms_text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMbLocation"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Location Details / Chainage"
+            app:boxStrokeColor="@color/cms_accent"
+            app:hintTextColor="@color/cms_accent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMbLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Grid line B2 to B5 South Wing"
+                android:textColor="@color/cms_text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Live Net Quantity Calculation Preview -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_card"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Net Measured Quantity:"
+                android:textColor="@color/cms_text_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tvLiveNetQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="72.00 M3"
+                android:textColor="@color/cms_accent"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelMb"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:textColor="@color/cms_text_secondary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveMb"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/cms_accent"
+                android:text="Record Entry"
+                android:textColor="@color/cms_background"
+                android:textStyle="bold"
+                app:cornerRadius="8dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

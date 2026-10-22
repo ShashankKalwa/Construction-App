@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cms_background">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cms_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/cms_text_primary"
+            app:title="Civil Calculator"
+            app:titleTextAppearance="@style/TextAppearance.CMS.Title"
+            app:titleTextColor="@color/cms_text_primary" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutCalc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/cms_surface"
+            app:tabIndicatorColor="@color/cms_accent"
+            app:tabIndicatorFullWidth="false"
+            app:tabSelectedTextColor="@color/cms_accent"
+            app:tabTextColor="@color/cms_text_secondary">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calculator" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saved Runs" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IS Standards" />
+        </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/cms_spacing_lg"
+            android:paddingTop="@dimen/cms_spacing_lg"
+            android:paddingBottom="60dp">
+
+            <!-- Tab 1: Calculator Panel -->
+            <LinearLayout
+                android:id="@+id/layoutTabCalculator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <!-- Header Info Chip & Title -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvStandardBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_status_badge"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp"
+                        android:text="IS 456:2000"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tvUnitBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_text_tertiary"
+                        tools:text="Default Unit: m³" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvCalcTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:textAppearance="@style/TextAppearance.CMS.Headline"
+                    android:textColor="@color/cms_text_primary"
+                    tools:text="Concrete Batching &amp; Volume" />
+
+                <TextView
+                    android:id="@+id/tvCalcSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.CMS.BodySecondary"
+                    tools:text="Calculates wet volume, dry volume factor (1.54), cement bags, coarse aggregate, and sand." />
+
+                <!-- Element Type Chips -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_lg"
+                    android:text="STRUCTURAL ELEMENT"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_text_tertiary" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xs"
+                    android:scrollbars="none">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupElements"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleLine="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipElementSlab"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="SLAB"
+                            android:textColor="@color/cms_text_primary" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipElementBeam"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="BEAM"
+                            android:textColor="@color/cms_text_primary" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipElementColumn"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="COLUMN"
+                            android:textColor="@color/cms_text_primary" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipElementFooting"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="FOOTING"
+                            android:textColor="@color/cms_text_primary" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipElementWall"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="WALL"
+                            android:textColor="@color/cms_text_primary" />
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
+
+                <!-- Dimension Input Row 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_md"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilInput1"
+                        style="@style/Widget.CMS.TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/cms_spacing_xs"
+                        android:layout_weight="1"
+                        android:hint="Length (m)">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etInput1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:text="10.0"
+                            android:textColor="@color/cms_text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilInput2"
+                        style="@style/Widget.CMS.TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/cms_spacing_xs"
+                        android:layout_weight="1"
+                        android:hint="Width (m)">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etInput2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:text="5.0"
+                            android:textColor="@color/cms_text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Dimension Input Row 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilInput3"
+                        style="@style/Widget.CMS.TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/cms_spacing_xs"
+                        android:layout_weight="1"
+                        android:hint="Depth/Thickness (m)">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etInput3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:text="0.15"
+                            android:textColor="@color/cms_text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilInput4"
+                        style="@style/Widget.CMS.TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/cms_spacing_xs"
+                        android:layout_weight="1"
+                        android:hint="Deductions (sq.m)">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etInput4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:text="0.0"
+                            android:textColor="@color/cms_text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Mix Grade / Ratio Selector Chips -->
+                <TextView
+                    android:id="@+id/tvGradeSelectorLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_md"
+                    android:text="MIX GRADE / SPECIFICATION"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_text_tertiary" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupGrade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xs"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipGrade1"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="M15 (1:2:4)"
+                        android:textColor="@color/cms_text_primary" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipGrade2"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="M20 (1:1.5:3)"
+                        android:textColor="@color/cms_text_primary" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipGrade3"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="M25 (1:1:2)"
+                        android:textColor="@color/cms_text_primary" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <!-- Wastage Slider -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_md"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MATERIAL WASTAGE"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_text_tertiary" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tvWastageValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5%"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderWastage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1.0"
+                    android:value="5.0"
+                    android:valueFrom="0.0"
+                    android:valueTo="20.0"
+                    app:thumbColor="@color/cms_accent"
+                    app:trackColorActive="@color/cms_accent"
+                    app:trackColorInactive="@color/cms_border" />
+
+                <!-- Action Button Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_md"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnReset"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/cms_spacing_sm"
+                        android:text="RESET"
+                        android:textColor="@color/cms_text_secondary"
+                        app:strokeColor="@color/cms_border" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCalculate"
+                        style="@style/Widget.CMS.Button.Primary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="CALCULATE QUANTITIES" />
+                </LinearLayout>
+
+                <!-- Result Card (Hero Output) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardResult"
+                    style="@style/Widget.CMS.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xl">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/cms_spacing_card">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PRIMARY QUANTITY TAKEOFF"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_accent" />
+
+                        <TextView
+                            android:id="@+id/tvPrimaryResult"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cms_spacing_xs"
+                            android:textAppearance="@style/TextAppearance.CMS.Display"
+                            android:textColor="@color/cms_accent"
+                            android:textStyle="bold"
+                            tools:text="7.50 m³" />
+
+                        <TextView
+                            android:id="@+id/tvDryVolumeResult"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textAppearance="@style/TextAppearance.CMS.BodySecondary"
+                            tools:text="Dry Volume (x1.54 + 5% wastage): 12.13 m³" />
+
+                        <!-- Detailed Breakdown Container -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="@dimen/cms_spacing_md"
+                            android:background="@color/cms_divider" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="MATERIAL BREAKDOWN (IS COMPLIANT)"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_text_tertiary" />
+
+                        <TextView
+                            android:id="@+id/tvMaterialBreakdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cms_spacing_xs"
+                            android:lineSpacingExtra="4dp"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textColor="@color/cms_text_primary"
+                            tools:text="• Cement: 63.5 Bags (3,175 kg)\n• Coarse Sand: 5.29 Tonnes (116.5 CFT)\n• Aggregate (20mm): 9.92 Tonnes (233.0 CFT)\n• Water Required: ~1,588 Liters" />
+
+                        <!-- Save to Project Section -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="@dimen/cms_spacing_md"
+                            android:background="@color/cms_divider" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.CMS.TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Calculation Title for Project Log">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etSaveTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Tower A Ground Floor Slab M20"
+                                android:textColor="@color/cms_text_primary" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSaveCalculation"
+                            style="@style/Widget.CMS.Button.Primary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cms_spacing_sm"
+                            android:text="SAVE TO PROJECT RECORD" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Tab 2: Saved History Panel -->
+            <LinearLayout
+                android:id="@+id/layoutTabHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AUDITED RUNS"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_accent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Project Calculation History"
+                    android:textAppearance="@style/TextAppearance.CMS.Headline" />
+
+                <TextView
+                    android:id="@+id/tvHistoryEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xl"
+                    android:gravity="center"
+                    android:text="No calculations saved for this project yet.\nRun an estimation above and click 'Save to Project Record'."
+                    android:textAppearance="@style/TextAppearance.CMS.BodySecondary"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCalculationHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_md"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
+
+            <!-- Tab 3: IS Standards Reference Panel -->
+            <LinearLayout
+                android:id="@+id/layoutTabStandards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ENGINEERING SPECIFICATION"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_accent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Assumptions &amp; Formula Standards"
+                    android:textAppearance="@style/TextAppearance.CMS.Headline" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.CMS.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_md">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/cms_spacing_card">
+
+                        <TextView
+                            android:id="@+id/tvStandardCodeTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="IS 456:2000 Code Provisions"
+                            android:textAppearance="@style/TextAppearance.CMS.Title"
+                            android:textColor="@color/cms_accent" />
+
+                        <TextView
+                            android:id="@+id/tvStandardFormulaDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/cms_spacing_sm"
+                            android:lineSpacingExtra="4dp"
+                            android:textAppearance="@style/TextAppearance.CMS.BodySecondary"
+                            tools:text="1. Dry Volume Coefficient: 1.54 accounts for internal voids in aggregates, cement consolidation, and dry-to-wet shrinkage.\n2. Cement Bulk Density: 1,440 kg/m³. One standard commercial bag weighs exactly 50 kg.\n3. Coarse Sand Density: 1,600 kg/m³ (1.60 t/m³).\n4. Coarse Aggregate (20mm/10mm) Density: 1,500 kg/m³ (1.50 t/m³).\n5. Water-Cement Ratio: Standard 0.50 (approx 25 to 28 liters per bag)." />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

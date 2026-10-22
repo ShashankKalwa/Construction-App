@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cms_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/cms_spacing_lg"
+        android:paddingTop="@dimen/cms_spacing_lg"
+        android:paddingBottom="80dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SITE UTILITIES &amp; TAKEOFF"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_accent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Civil Engineering Calculators"
+            android:textAppearance="@style/TextAppearance.CMS.Headline" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Certified Indian Standards (IS 456, IS 1786, IS 1200, CPWD) takeoff engines with instant offline estimation and project audit logging."
+            android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+
+        <!-- 1. Concrete Batching Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardToolConcrete"
+            style="@style/Widget.CMS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_lg"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/cms_spacing_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_status_badge"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:text="IS 456:2000"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OPEN →"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:text="Concrete Batching &amp; Volume"
+                    android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Slabs, beams, columns, footings. Wet &amp; dry volume (1.54), cement bags (50kg), coarse sand, 20mm aggregate, water-cement ratio."
+                    android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 2. Steel Rebar Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardToolSteel"
+            style="@style/Widget.CMS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/cms_spacing_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_status_badge"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:text="IS 1786 / SP 34"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OPEN →"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:text="Steel Rebar Weight &amp; Bundles"
+                    android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Standard D²/162 rebar schedule (8mm to 32mm), cutting lengths, wastage allowance, and commercial 12m bundle counts."
+                    android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 3. Brickwork Masonry Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardToolBrickwork"
+            style="@style/Widget.CMS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/cms_spacing_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_status_badge"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:text="IS 2212 / CPWD"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OPEN →"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:text="Brickwork Masonry &amp; Mortar"
+                    android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="9-inch and 4.5-inch walls, door/window deductions, modular bricks (500/m³), 1:4 and 1:6 mortar mix, cement bags &amp; sand."
+                    android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 4. Excavation & Earthwork Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardToolExcavation"
+            style="@style/Widget.CMS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/cms_spacing_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_status_badge"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:text="IS 1200 Part 1"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OPEN →"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:text="Excavation &amp; Earthwork"
+                    android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Foundation pits, trenches, soil bulking/swell factor (1.25), compaction factor (0.85), and tipper truck trips required."
+                    android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 5. Plastering Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardToolPlaster"
+            style="@style/Widget.CMS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/cms_spacing_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_status_badge"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:text="IS 1661 / CPWD"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OPEN →"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:text="Plastering (Internal &amp; External)"
+                    android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="12mm, 15mm, and 20mm mortar finishes. Dry factor 1.30, cement bags, and coarse sand in tonnes &amp; CFT."
+                    android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 6. Paint & Primer Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardToolPaint"
+            style="@style/Widget.CMS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/cms_spacing_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_status_badge"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:text="CPWD DSR 2023"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OPEN →"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:text="Painting &amp; Primer Estimator"
+                    android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Wall and ceiling surface coverage, primer coat + multiple finish coats, and packaging breakdown (20L drums, 4L tins, 1L cans)."
+                    android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 7. Universal Construction Unit Converter Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnQuickUnitConverter"
+            style="@style/Widget.CMS.Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xl"
+            android:text="OPEN QUICK UNIT CONVERTER" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Corner Radii -->
+    <dimen name="cms_radius_card">20dp</dimen>
+    <dimen name="cms_radius_tile">16dp</dimen>
+    <dimen name="cms_radius_chip">14dp</dimen>
+    <dimen name="cms_radius_icon_tile">12dp</dimen>
+    <dimen name="cms_radius_pill">999dp</dimen>
+
+    <!-- Strokes -->
+    <dimen name="cms_stroke_card">1dp</dimen>
+    <dimen name="cms_stroke_chip">1dp</dimen>
+    <dimen name="cms_stroke_tab">2dp</dimen>
+    <dimen name="cms_stroke_progress">4dp</dimen>
+
+    <!-- Spacing -->
+    <dimen name="cms_spacing_xs">4dp</dimen>
+    <dimen name="cms_spacing_sm">8dp</dimen>
+    <dimen name="cms_spacing_md">12dp</dimen>
+    <dimen name="cms_spacing_card">14dp</dimen>
+    <dimen name="cms_spacing_lg">16dp</dimen>
+    <dimen name="cms_spacing_xl">20dp</dimen>
+    <dimen name="cms_spacing_section">24dp</dimen>
+    <dimen name="cms_spacing_xxl">32dp</dimen>
+    <dimen name="cms_touch_target_min">48dp</dimen>
+
+    <!-- Typography Text Sizes -->
+    <dimen name="cms_text_size_caption">11sp</dimen>
+    <dimen name="cms_text_size_body_sm">12sp</dimen>
+    <dimen name="cms_text_size_body">14sp</dimen>
+    <dimen name="cms_text_size_subheading">16sp</dimen>
+    <dimen name="cms_text_size_title">18sp</dimen>
+    <dimen name="cms_text_size_headline">22sp</dimen>
+    <dimen name="cms_text_size_display">28sp</dimen>
+</resources>

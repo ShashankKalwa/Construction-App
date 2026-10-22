@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cms_background"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/cms_spacing_lg"
+    android:paddingTop="@dimen/cms_spacing_lg">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EXECUTION SCHEDULE"
+        android:textAppearance="@style/TextAppearance.CMS.Caption"
+        android:textColor="@color/cms_accent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phases &amp; Tasks"
+        android:textAppearance="@style/TextAppearance.CMS.Headline" />
+
+    <!-- Status Filter Chips -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupTaskStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTaskAll"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="All"
+                app:chipBackgroundColor="@color/cms_card_elevated" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTaskInProgress"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="In Progress"
+                app:chipBackgroundColor="@color/cms_card_elevated" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTaskBlocked"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Blocked"
+                app:chipBackgroundColor="@color/cms_card_elevated" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTaskCompleted"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completed"
+                app:chipBackgroundColor="@color/cms_card_elevated" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Main Content Area -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/cms_spacing_sm">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshTasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPhasesAndTasks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="80dp" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/viewLoading"
+            layout="@layout/view_state_loading" />
+
+        <include
+            android:id="@+id/viewError"
+            layout="@layout/view_state_error" />
+
+        <include
+            android:id="@+id/viewEmpty"
+            layout="@layout/view_state_empty" />
+    </FrameLayout>
+
+</LinearLayout>

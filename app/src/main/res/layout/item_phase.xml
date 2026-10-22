@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutPhaseHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/cms_spacing_lg"
+    android:layout_marginBottom="@dimen/cms_spacing_xs"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvPhaseOrder"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/bg_chip_selected"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.CMS.Mono"
+            android:textColor="@color/cms_accent"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/tvPhaseName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/cms_spacing_sm"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.CMS.Title"
+            tools:text="Phase 1: Substructure" />
+
+        <TextView
+            android:id="@+id/tvPhaseProgressPct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_accent"
+            android:textStyle="bold"
+            tools:text="85%" />
+    </LinearLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressPhase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_xs"
+        app:indicatorColor="@color/cms_accent"
+        app:trackColor="@color/cms_card_elevated"
+        app:trackCornerRadius="@dimen/cms_radius_pill"
+        app:trackThickness="@dimen/cms_stroke_progress"
+        tools:progress="85" />
+
+</LinearLayout>

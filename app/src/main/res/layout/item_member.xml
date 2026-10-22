@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.CMS.Card.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/cms_spacing_xs">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/cms_spacing_card">
+
+        <TextView
+            android:id="@+id/tvMemberAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_chip_selected"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.CMS.Title"
+            android:textColor="@color/cms_accent"
+            tools:text="P" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/cms_spacing_md"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvMemberName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.CMS.Body"
+                android:textStyle="bold"
+                tools:text="Priya Nair" />
+
+            <TextView
+                android:id="@+id/tvMemberEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                tools:text="priya@apexinfra.com" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvMemberRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_status_badge"
+            android:paddingHorizontal="@dimen/cms_spacing_sm"
+            android:paddingVertical="2dp"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            tools:text="PROJECT_MANAGER" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

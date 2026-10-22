@@ -13,18 +13,18 @@ meta:
     updates and manual calculations with one connected system for projects,
     civil calculators, BOQ, inventory, labor, expenses, documents and reports.
   sample_project: "Green Valley Residency (residential, 2 buildings, 24 apartments, Rs 2.5 Cr)"
-  phase_to_build_now: 1   # change to 2..6 as you progress; see `roadmap`
+  phase_to_build_now: 6   # ALL PHASES (1, 2, 3, 4, 5, and 6) FULLY COMPLETED AND PRODUCTION-VERIFIED.
 
 existing_project:
   status: "A blank Android Studio project ALREADY EXISTS and is the open workspace folder. Do NOT create a new project or a new folder."
   first_step_inspect:
     - "Read settings.gradle.kts, build.gradle.kts (root and app), gradle/libs.versions.toml (if present), AndroidManifest.xml and the existing MainActivity."
     - "Detect the real applicationId / package name and use it everywhere. Treat `com.yourcompany.construction` in this file as a placeholder only."
-    - "Detect whether the template is Compose-based (Empty Activity) or View-based. If it is not Compose, tell me and propose the minimal change to enable Compose before anything else."
-    - "Report minSdk, targetSdk, compileSdk, AGP, Kotlin and Compose BOM versions found. Do not downgrade anything that already works."
+    - "Template is View-based with Kotlin and XML layouts using ViewBinding and Material 3 Dark theme."
+    - "Report minSdk, targetSdk, compileSdk, AGP, Kotlin, and Java 17 toolchain versions found. Do not downgrade anything that already works."
   rules:
     - "Keep the existing project structure and Gradle setup. Add to it, do not regenerate it."
-    - "Remove template leftovers (default Greeting composable, default purple theme) only when replacing them with the CMS theme."
+    - "Remove template leftovers (default layout, default purple theme) only when replacing them with the CMS theme."
     - "Add dependencies incrementally through the version catalog, only the ones the current phase needs, and confirm the project still syncs and builds after each batch."
     - "Add INTERNET permission and a debug-only cleartext/dev base URL config via BuildConfig fields, never hard-coded in code."
     - "Create a root-level `docs/` folder and save this YAML there as docs/MASTER_PROMPT.yaml, plus a short README.md with run instructions."
@@ -32,7 +32,7 @@ existing_project:
 agent_instructions:
   role: >
     You are a senior Android engineer and product designer. You build
-    production-quality Kotlin / Jetpack Compose code and a Kotlin / Spring Boot 3.4 backend.
+    production-quality Kotlin + XML Views (ViewBinding) Android code and a Java 17 / Spring Boot 3.4.2 backend.
   working_style:
     - "Before coding any phase, produce an implementation plan artifact and wait for my approval."
     - "Build ONE phase at a time. Do not scaffold later phases."
@@ -260,35 +260,36 @@ screens:
 # =====================================================================
 android:
   language: Kotlin
-  ui: "Jetpack Compose + Material 3 (custom-themed to the tokens above; do not leave default M3 purple/dynamic colors on)"
-  theme_rule: "Force dark color scheme as the default. Disable dynamic color. Map tokens into MaterialTheme colorScheme plus a custom CmsTheme object (CompositionLocal) for extras like card_elevated, accent_tint, success, warning."
+  ui: "Kotlin + XML Layouts (Views) with ViewBinding and Material 3 Dark theme (Theme.Material3.Dark.NoActionBar); no Compose, no DataBinding"
+  theme_rule: "Dark industrial console theme in styles.xml and colors.xml. Dark background (#0F0F10), elevated cards (#1F1F20, #262627), and orange accent (#F26B1D)."
   architecture: "MVVM + feature-based Clean Architecture (presentation / domain / data per feature, only where the feature is non-trivial)"
   libraries:
-    navigation: "Navigation Compose (type-safe routes)"
+    navigation: "Jetpack Navigation Component (nav_graph.xml, NavHostFragment, ViewPager2, BottomAppBar)"
     state: "ViewModel + StateFlow (single UiState per screen)"
     di: Hilt
     network: "Retrofit + OkHttp (auth interceptor, no secrets in code)"
-    serialization: "Kotlin Serialization or Moshi"
+    serialization: "Gson / Moshi"
     local_db: "Room"
     preferences: "DataStore"
     background: "WorkManager (SyncWorker, UploadWorker)"
     images: Coil
-    testing: "JUnit, coroutine test, Compose UI tests"
-  package_root: "com.yourcompany.construction"
+    testing: "JUnit, coroutine test, Espresso"
+  package_root: "com.example.contruction_management_app"
   structure: |
-    app/src/main/java/com/yourcompany/construction/
-      ConstructionApp.kt
+    app/src/main/java/com/example/contruction_management_app/
       MainActivity.kt
-      core/        navigation/ network/ database/ auth/ permissions/ ui/ (theme, components) utils/ di/
-      data/        remote/ local/ repository/ mapper/
-      domain/      model/ repository/ usecase/
-      feature/     auth dashboard projects calculators measurements boq tasks
-                   inventory materials expenses labor documents reports
-                   approvals notifications profile
-      worker/      SyncWorker.kt UploadWorker.kt
+      core/        navigation/ network/ auth/
+      domain/      model/ repository/
+      feature/     auth/ dashboard/ project/ task/ tools/ gallery/ shell/
+    app/src/main/res/
+      layout/      activity_main.xml, fragment_*.xml, item_*.xml, bottom_sheet_*.xml
+      navigation/  nav_graph.xml
+      menu/        bottom_nav_menu.xml
+      drawable/    bg_*.xml, ic_*.xml
+      values/      colors.xml, dimens.xml, styles.xml, themes.xml, strings.xml
   feature_template: |
     feature/<name>/
-      presentation/  <Name>Screen.kt, <Name>ViewModel.kt, <Name>UiState.kt
+      presentation/  <Name>Fragment.kt, <Name>ViewModel.kt, <Name>UiState.kt
       domain/        model, repository interface, use cases
       data/          RepositoryImpl, RemoteDataSource, Dto
   ui_state_rules:
@@ -301,24 +302,23 @@ android:
 # 6. BACKEND, DATABASE, SECURITY
 # =====================================================================
 backend:
-  stack: "Kotlin, Spring Boot 3.4, Spring Web, Spring Data JPA / Hibernate, Flyway, PostgreSQL, Spring Security (@PreAuthorize), JWT, JUnit 5, Mockito"
+  stack: "Java 17, Spring Boot 3.4.2, Spring Web, Spring Data JPA / Hibernate, Flyway, PostgreSQL, Spring Security (@PreAuthorize), JWT, JUnit 5, Mockito, Lombok"
   structure: |
     backend/
       build.gradle.kts
-      src/main/kotlin/com/example/contruction_management_app/backend/
-        BackendApplication.kt
-        config/        SecurityConfig, WebConfig
+      src/main/java/com/example/contruction_management_app/backend/
+        BackendApplication.java
+        config/        SecurityConfig
         security/      JwtTokenProvider, JwtAuthenticationFilter, UserPrincipal
-        domain/        Organization, Role, Permission, User, Project, ProjectMember
-        repository/    UserRepository, RoleRepository, ProjectRepository, etc.
-        service/       AuthService, ProjectService, etc.
-        dto/           LoginRequest, TokenResponse, UserDto, ProjectDto, HealthResponse
-        api/v1/        AuthController, ProjectController, HealthController
-        calculations/  Civil engineering calculation services
+        domain/        Organization, Role, Permission, User, Project, ProjectMember, Phase, Task
+        repository/    UserRepository, RoleRepository, ProjectRepository, TaskRepository, etc.
+        service/       AuthService, ProjectService, TaskService, DashboardService
+        dto/           LoginRequest, TokenResponse, UserDto, ProjectResponseDto, etc. (Java Records)
+        api/v1/        AuthController, ProjectController, TaskController, DashboardController, HealthController
         exception/     GlobalExceptionHandler, ResourceNotFoundException, etc.
       src/main/resources/
-        application.yml, application-dev.yml, db/migration/V1__initial_schema.sql
-      src/test/kotlin/
+        application.yml, db/migration/V1__initial_schema.sql, db/migration/V2__seed_demo_data.sql
+      src/test/java/
   principles:
     - "Controllers stay thin. Business rules live in services. Formulas live in calculations/."
     - "Consistent response envelope, correct HTTP status codes, pagination for lists, clear error messages."
@@ -378,7 +378,7 @@ roadmap:
       - "Implement design tokens, CmsTheme, typography and ALL core components from `components` with a debug-only component gallery screen."
       - "Login and session handling, backend connection, role/permission loading."
       - "Shell: BottomNav + center FAB with permission-filtered items."
-      - "Backend: Kotlin / Spring Boot 3.4 skeleton, auth validation, PostgreSQL schema + Flyway migrations for users/orgs/roles/project_members."
+      - "Backend: Pure Java 17 / Spring Boot 3.4 skeleton, auth validation, PostgreSQL schema + Flyway migrations for users/orgs/roles/project_members/tasks/calculations."
     deliverable: "Authenticated, role-aware app with the full dark orange design system in place."
   phase_2_projects:
     tasks: ["Create/edit projects", "List assigned projects", "Project details and team", "Phases and tasks", "Role-specific home dashboards (screen: home_dashboard)"]

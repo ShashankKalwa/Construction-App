@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cms_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Top App Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/cms_surface"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/cms_spacing_md">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/cms_text_primary" />
+
+            <TextView
+                android:id="@+id/tvProjectDetailTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_sm"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.CMS.Title"
+                tools:text="Skyline Commercial Tower B" />
+
+            <TextView
+                android:id="@+id/tvProjectDetailStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_badge"
+                android:paddingHorizontal="@dimen/cms_spacing_sm"
+                android:paddingVertical="2dp"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textStyle="bold"
+                tools:text="IN_PROGRESS" />
+        </LinearLayout>
+
+        <!-- Project Hero Card -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.CMS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/cms_spacing_lg"
+            android:layout_marginTop="@dimen/cms_spacing_md">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/cms_spacing_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvHeroCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.CMS.Mono"
+                        tools:text="APX-2024-01" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tvHeroLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        tools:text="Whitefield, Bengaluru" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvHeroBudget"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.CMS.Body"
+                        tools:text="Budget: ₹45,50,00,000" />
+
+                    <TextView
+                        android:id="@+id/tvHeroProgressPct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.CMS.Title"
+                        android:textColor="@color/cms_accent"
+                        tools:text="68%" />
+                </LinearLayout>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressHero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xs"
+                    app:indicatorColor="@color/cms_accent"
+                    app:trackColor="@color/cms_card_elevated"
+                    app:trackCornerRadius="@dimen/cms_radius_pill"
+                    app:trackThickness="@dimen/cms_stroke_progress"
+                    tools:progress="68" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- TabLayout -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutProject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_sm"
+            android:background="@color/cms_background"
+            app:tabIndicatorColor="@color/cms_accent"
+            app:tabIndicatorHeight="@dimen/cms_stroke_tab"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/cms_accent"
+            app:tabTextColor="@color/cms_text_secondary" />
+
+        <!-- Content Area -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPagerProjectDetail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:id="@+id/viewLoading"
+                layout="@layout/view_state_loading" />
+
+            <include
+                android:id="@+id/viewError"
+                layout="@layout/view_state_error" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

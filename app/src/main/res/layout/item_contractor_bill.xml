@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardContractorBill"
+    style="@style/Widget.CMS.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/cms_spacing_md">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/cms_spacing_card">
+
+        <!-- Header: Bill No + Status Badge -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvBillNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_chip_selected"
+                android:paddingHorizontal="@dimen/cms_spacing_sm"
+                android:paddingVertical="@dimen/cms_spacing_xs"
+                android:textAppearance="@style/TextAppearance.CMS.Mono"
+                tools:text="AFW-RA-01" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvBillStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_badge"
+                android:paddingHorizontal="@dimen/cms_spacing_sm"
+                android:paddingVertical="2dp"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textStyle="bold"
+                tools:text="APPROVED" />
+        </LinearLayout>
+
+        <!-- Contractor Name -->
+        <TextView
+            android:id="@+id/tvContractorName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_sm"
+            android:textAppearance="@style/TextAppearance.CMS.Title"
+            tools:text="Apex Formwork &amp; Shuttering Contractors" />
+
+        <!-- Work Description -->
+        <TextView
+            android:id="@+id/tvWorkDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.CMS.BodySecondary"
+            tools:text="Basement slab &amp; retaining wall shuttering staging" />
+
+        <!-- Financial Breakdown Row: Gross, Retention (5%), TDS (2%), Net -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:background="@color/cms_card_elevated"
+            android:orientation="vertical"
+            android:padding="@dimen/cms_spacing_sm">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Gross Amount:"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_text_secondary" />
+
+                <TextView
+                    android:id="@+id/tvGrossAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_text_primary"
+                    android:textStyle="bold"
+                    tools:text="₹3,50,000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvRetentionLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Less Retention (5%):"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_text_tertiary" />
+
+                <TextView
+                    android:id="@+id/tvRetentionAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_warning"
+                    tools:text="- ₹17,500" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvTdsLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Less TDS (2%):"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_text_tertiary" />
+
+                <TextView
+                    android:id="@+id/tvTdsAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_error"
+                    tools:text="- ₹7,000" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="4dp"
+                android:background="@color/cms_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Net Payable:"
+                    android:textAppearance="@style/TextAppearance.CMS.Body"
+                    android:textColor="@color/cms_text_primary"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNetPayable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.CMS.Headline"
+                    android:textColor="@color/cms_accent"
+                    tools:text="₹3,25,500" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Footer / Action Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvBillDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_text_tertiary"
+                tools:text="Certified by PM • 2026-03-15" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAdvanceBillStatus"
+                style="@style/Widget.CMS.Button.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="@dimen/cms_spacing_md"
+                android:text="Approve Bill"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

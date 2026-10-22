@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.contruction_management_app.feature.auth.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_mainShell"
+            app:destination="@id/mainShellFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_login_to_gallery"
+            app:destination="@id/componentGalleryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainShellFragment"
+        android:name="com.example.contruction_management_app.feature.shell.MainShellFragment"
+        android:label="Apex Infra Console"
+        tools:layout="@layout/fragment_main_shell">
+        <action
+            android:id="@+id/action_mainShell_to_projectDetail"
+            app:destination="@id/projectDetailFragment" />
+        <action
+            android:id="@+id/action_mainShell_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/mainShellFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainShell_to_calculatorDetail"
+            app:destination="@id/calculatorDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/projectDetailFragment"
+        android:name="com.example.contruction_management_app.feature.project.ProjectDetailFragment"
+        android:label="Project Detail"
+        tools:layout="@layout/fragment_project_detail">
+        <argument
+            android:name="projectId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_projectDetail_to_calculatorDetail"
+            app:destination="@id/calculatorDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/calculatorDetailFragment"
+        android:name="com.example.contruction_management_app.feature.tools.CalculatorDetailFragment"
+        android:label="Civil Calculator"
+        tools:layout="@layout/fragment_calculator_detail">
+        <argument
+            android:name="calculatorType"
+            app:argType="string"
+            android:defaultValue="CONCRETE" />
+        <argument
+            android:name="projectId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/componentGalleryFragment"
+        android:name="com.example.contruction_management_app.feature.gallery.ComponentGalleryFragment"
+        android:label="Component Gallery"
+        tools:layout="@layout/fragment_component_gallery" />
+
+    <fragment
+        android:id="@+id/boqDetailFragment"
+        android:name="com.example.contruction_management_app.feature.boq.BoqDetailFragment"
+        android:label="BOQ Detail"
+        tools:layout="@layout/fragment_boq_detail">
+        <argument
+            android:name="boqId"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

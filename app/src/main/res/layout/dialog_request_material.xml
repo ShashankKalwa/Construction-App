@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_surface"
+    android:orientation="vertical"
+    android:padding="@dimen/cms_spacing_lg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Material Request"
+        android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Submit indent to Store / Project Manager"
+        android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+
+    <!-- Material dropdown / input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMaterial"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Select Material">
+
+        <AutoCompleteTextView
+            android:id="@+id/actvMaterial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Quantity -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilQuantity"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:hint="Required Quantity">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Required by date -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRequiredDate"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:hint="Required By (e.g. 2026-03-25)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etRequiredDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Purpose / Task description -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPhaseTask"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:hint="Phase / Task Description">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPhaseTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_lg"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            style="@style/Widget.CMS.Button.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/cms_spacing_sm"
+            android:text="Cancel" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmitRequest"
+            style="@style/Widget.CMS.Button.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit Request" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cms_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/cms_spacing_lg"
+        android:paddingTop="@dimen/cms_spacing_lg"
+        android:paddingBottom="80dp">
+
+        <!-- Top Back Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnGalleryBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/cms_text_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_sm"
+                android:text="Design System Gallery"
+                android:textAppearance="@style/TextAppearance.CMS.Title" />
+        </LinearLayout>
+
+        <!-- Typography Showcase -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_lg"
+            android:text="TYPOGRAPHY TOKENS"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_accent" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.CMS.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xs">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/cms_spacing_card">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Display Medium (28sp Bold)"
+                    android:textAppearance="@style/TextAppearance.CMS.Display" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xs"
+                    android:text="Headline Medium (22sp Bold)"
+                    android:textAppearance="@style/TextAppearance.CMS.Headline" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xs"
+                    android:text="Title Medium (18sp Bold)"
+                    android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xs"
+                    android:text="Body Regular (14sp)"
+                    android:textAppearance="@style/TextAppearance.CMS.Body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xs"
+                    android:text="Body Secondary (12sp Muted)"
+                    android:textAppearance="@style/TextAppearance.CMS.BodySecondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_xs"
+                    android:text="CODE TOKEN: APX-CON-2024 (Mono 12sp)"
+                    android:textAppearance="@style/TextAppearance.CMS.Mono" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Status Badges Showcase -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_lg"
+            android:text="SEMANTIC BADGES"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_accent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xs"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_badge"
+                android:paddingHorizontal="@dimen/cms_spacing_md"
+                android:paddingVertical="@dimen/cms_spacing_xs"
+                android:text="COMPLETED"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_success"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_sm"
+                android:background="@drawable/bg_status_badge"
+                android:paddingHorizontal="@dimen/cms_spacing_md"
+                android:paddingVertical="@dimen/cms_spacing_xs"
+                android:text="IN_PROGRESS"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_accent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_sm"
+                android:background="@drawable/bg_status_badge"
+                android:paddingHorizontal="@dimen/cms_spacing_md"
+                android:paddingVertical="@dimen/cms_spacing_xs"
+                android:text="BLOCKED"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_error"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Buttons Showcase -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_lg"
+            android:text="BUTTONS &amp; CONTROLS"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_accent" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.CMS.Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xs"
+            android:text="PRIMARY ORANGE BUTTON" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.CMS.Button.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_sm"
+            android:text="OUTLINED ACCENT BUTTON" />
+
+        <!-- Slider Showcase -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_lg"
+            android:text="INTERACTIVE SLIDER"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_accent" />
+
+        <com.google.android.material.slider.Slider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xs"
+            android:value="65"
+            android:valueFrom="0"
+            android:valueTo="100"
+            app:thumbColor="@color/cms_accent"
+            app:trackColorActive="@color/cms_accent"
+            app:trackColorInactive="@color/cms_card_elevated" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

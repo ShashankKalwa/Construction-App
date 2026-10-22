@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_navigation"
+    android:orientation="vertical"
+    android:padding="@dimen/cms_spacing_xl">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/cms_spacing_lg"
+        android:background="@drawable/bg_status_badge" />
+
+    <TextView
+        android:id="@+id/tvSheetTaskCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.CMS.Mono"
+        tools:text="TSK-001" />
+
+    <TextView
+        android:id="@+id/tvSheetTaskTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textAppearance="@style/TextAppearance.CMS.Title"
+        tools:text="Excavation and Soil Stabilization" />
+
+    <!-- Progress Slider Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_lg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Completion Progress"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_text_tertiary" />
+
+        <TextView
+            android:id="@+id/tvSliderValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.CMS.Headline"
+            android:textColor="@color/cms_accent"
+            tools:text="75%" />
+    </LinearLayout>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sliderProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_xs"
+        android:stepSize="5"
+        android:value="0"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:thumbColor="@color/cms_accent"
+        app:trackColorActive="@color/cms_accent"
+        app:trackColorInactive="@color/cms_card_elevated" />
+
+    <!-- Status Selection -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:text="Task Status"
+        android:textAppearance="@style/TextAppearance.CMS.Caption"
+        android:textColor="@color/cms_text_tertiary" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_xs"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupStatusUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStatusPending"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PENDING"
+                app:chipBackgroundColor="@color/cms_card_elevated" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStatusInProgress"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IN_PROGRESS"
+                app:chipBackgroundColor="@color/cms_card_elevated" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStatusBlocked"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BLOCKED"
+                app:chipBackgroundColor="@color/cms_card_elevated" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStatusCompleted"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="COMPLETED"
+                app:chipBackgroundColor="@color/cms_card_elevated" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Save Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveTaskUpdate"
+        style="@style/Widget.CMS.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_xl"
+        android:text="UPDATE PROGRESS" />
+
+    <ProgressBar
+        android:id="@+id/progressUpdateTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:indeterminateTint="@color/cms_accent"
+        android:visibility="gone" />
+
+</LinearLayout>
