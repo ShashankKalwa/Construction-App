@@ -80,6 +80,42 @@ CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at);
 -- Seed Demo Data for Project: prj_commercial_tower_b
 -- =============================================================================
 
+-- Ensure Organization exists
+INSERT INTO organizations (id, name, slug)
+VALUES ('org_apex_infra', 'Apex Infra Ltd', 'apex-infra')
+ON CONFLICT (id) DO NOTHING;
+
+-- Ensure Project exists
+INSERT INTO projects (id, name, code, location, budget_inr, status, progress_pct, organization_id)
+VALUES ('prj_commercial_tower_b', 'Commercial Tower B', 'CTB-02', 'Whitefield, Bangalore', 54000000.00, 'Active', 42.0, 'org_apex_infra')
+ON CONFLICT (id) DO NOTHING;
+
+-- Seed Apex Infra Demo Users
+INSERT INTO users (id, email, full_name, hashed_password, organization_id, role_id)
+VALUES
+('usr_pm_rahul', 'rahul.verma@apexinfra.com', 'Rahul Verma', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'project_manager'),
+('usr_eng_priya', 'priya.sharma@apexinfra.com', 'Priya Sharma', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'civil_engineer'),
+('usr_super_admin_01', 'superadmin@apexinfra.com', 'Vikram Malhotra', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'super_admin'),
+('usr_company_admin_02', 'companyadmin@apexinfra.com', 'Rajesh Sharma', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'company_admin'),
+('usr_pm_03', 'pm@apexinfra.com', 'Priya Nair', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'project_manager'),
+('usr_engineer_04', 'engineer@apexinfra.com', 'Anand Verma', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'civil_engineer'),
+('usr_supervisor_05', 'supervisor@apexinfra.com', 'Shashank Kumar', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'site_supervisor'),
+('usr_storekeeper_06', 'storekeeper@apexinfra.com', 'Ramesh Yadav', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'storekeeper'),
+('usr_accountant_07', 'accountant@apexinfra.com', 'Sunita Roy', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'accountant'),
+('usr_contractor_08', 'contractor@apexinfra.com', 'Harpreet Singh', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'contractor'),
+('usr_client_09', 'client@apexinfra.com', 'Deepak Singhal', '$2a$10$fDFzjDgA4/FMQV7YtuOB4.4zlmmMJbnIAHPac0IYEkmkKo11WvRea', 'org_apex_infra', 'client_owner')
+ON CONFLICT (id) DO NOTHING;
+
+-- Seed Project Members for Commercial Tower B
+INSERT INTO project_members (id, project_id, user_id, assigned_role)
+VALUES
+('pm_ctb_04', 'prj_commercial_tower_b', 'usr_pm_rahul', 'Project Manager'),
+('pm_ctb_05', 'prj_commercial_tower_b', 'usr_eng_priya', 'Civil Engineer'),
+('pm_ctb_06', 'prj_commercial_tower_b', 'usr_pm_03', 'Project Manager'),
+('pm_ctb_07', 'prj_commercial_tower_b', 'usr_engineer_04', 'Civil Engineer'),
+('pm_ctb_08', 'prj_commercial_tower_b', 'usr_supervisor_05', 'Site Supervisor')
+ON CONFLICT (id) DO NOTHING;
+
 -- Seed Documents
 INSERT INTO documents (id, project_id, organization_id, title, document_type, category, latest_version, status, created_by, created_at, updated_at)
 VALUES

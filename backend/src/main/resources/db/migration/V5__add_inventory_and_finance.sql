@@ -164,6 +164,22 @@ CREATE INDEX idx_contractor_bills_status ON contractor_bills(status);
 -- Seed Demo Data for prj_commercial_tower_b
 -- =============================================================================
 
+-- Ensure Organization, Project and Project Members exist
+INSERT INTO organizations (id, name, slug)
+VALUES ('org_apex_infra', 'Apex Infra Ltd', 'apex-infra')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO projects (id, name, code, location, budget_inr, status, progress_pct, organization_id)
+VALUES ('prj_commercial_tower_b', 'Commercial Tower B', 'CTB-02', 'Whitefield, Bangalore', 54000000.00, 'Active', 42.0, 'org_apex_infra')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO project_members (id, project_id, user_id, assigned_role)
+VALUES
+('pm_ctb_01', 'prj_commercial_tower_b', 'usr_pm', 'Project Manager'),
+('pm_ctb_02', 'prj_commercial_tower_b', 'usr_engineer', 'Civil Engineer'),
+('pm_ctb_03', 'prj_commercial_tower_b', 'usr_supervisor', 'Site Supervisor')
+ON CONFLICT (id) DO NOTHING;
+
 -- Materials
 INSERT INTO materials (id, project_id, code, name, category, unit, current_stock, min_stock_threshold, unit_cost)
 VALUES
@@ -180,7 +196,10 @@ INSERT INTO vendors (id, organization_id, name, gstin, phone, email, category, p
 VALUES
 ('vnd_ultratech', 'org_green_valley', 'UltraTech Cement Distribution Hub', '29AABCU1234F1Z1', '+91 98765 43210', 'sales@ultratech-hub.com', 'CEMENT_SUPPLIER', 'Net 30 Days'),
 ('vnd_tata_steel', 'org_green_valley', 'Tata Tiscon Steel Depot', '29AAACT9876E1Z5', '+91 98450 11223', 'orders@tiscondepot.com', 'STEEL_TRADER', 'Net 15 Days'),
-('vnd_apex_quarry', 'org_green_valley', 'Apex Blue Metal & Sand Quarry', '29AABBA5566G1Z9', '+91 99001 22334', 'quarry@apexaggregates.in', 'AGGREGATE_QUARRY', 'Advance 50%')
+('vnd_apex_quarry', 'org_green_valley', 'Apex Blue Metal & Sand Quarry', '29AABBA5566G1Z9', '+91 99001 22334', 'quarry@apexaggregates.in', 'AGGREGATE_QUARRY', 'Advance 50%'),
+('vnd_apex_ultratech', 'org_apex_infra', 'UltraTech Cement Distribution Hub', '29AABCU1234F1Z1', '+91 98765 43210', 'sales@ultratech-hub.com', 'CEMENT_SUPPLIER', 'Net 30 Days'),
+('vnd_apex_tata_steel', 'org_apex_infra', 'Tata Tiscon Steel Depot', '29AAACT9876E1Z5', '+91 98450 11223', 'orders@tiscondepot.com', 'STEEL_TRADER', 'Net 15 Days'),
+('vnd_apex_quarry_apex', 'org_apex_infra', 'Apex Blue Metal & Sand Quarry', '29AABBA5566G1Z9', '+91 99001 22334', 'quarry@apexaggregates.in', 'AGGREGATE_QUARRY', 'Advance 50%')
 ON CONFLICT (id) DO NOTHING;
 
 -- Purchase Orders
