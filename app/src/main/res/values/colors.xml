@@ -37,4 +37,6 @@
     <color name="cms_chart_muted">#4A4A4D</color>
     <color name="cms_toggle_off">#3A3A3C</color>
     <color name="cms_transparent">#00000000</color>
+    <color name="cms_skeleton">#262628</color>
+    <color name="cms_skeleton_highlight">#38383C</color>
 </resources>

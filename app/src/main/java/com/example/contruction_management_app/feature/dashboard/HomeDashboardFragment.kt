@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.contruction_management_app.R
+import com.example.contruction_management_app.core.util.SkeletonAnimator
 import com.example.contruction_management_app.databinding.FragmentHomeDashboardBinding
 import com.example.contruction_management_app.domain.model.Project
 import com.example.contruction_management_app.feature.auth.AuthUiState
@@ -142,9 +143,15 @@ class HomeDashboardFragment : Fragment() {
                 dashboardViewModel.uiState.collect { state ->
                     when (state) {
                         is HomeDashboardUiState.Loading -> {
-                            binding.swipeRefreshHome.isRefreshing = true
+                            binding.swipeRefreshHome.isRefreshing = false
+                            binding.layoutSkeleton.root.visibility = View.VISIBLE
+                            binding.layoutContent.visibility = View.GONE
+                            SkeletonAnimator.startPulsing(binding.layoutSkeleton.root)
                         }
                         is HomeDashboardUiState.Success -> {
+                            SkeletonAnimator.stopPulsing(binding.layoutSkeleton.root)
+                            binding.layoutSkeleton.root.visibility = View.GONE
+                            binding.layoutContent.visibility = View.VISIBLE
                             binding.swipeRefreshHome.isRefreshing = state.isRefreshing
                             currentProjects = state.projects
 
@@ -213,6 +220,7 @@ class HomeDashboardFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        SkeletonAnimator.stopPulsing(binding.layoutSkeleton.root)
         super.onDestroyView()
         _binding = null
     }

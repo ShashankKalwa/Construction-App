@@ -7,6 +7,8 @@ import com.example.contruction_management_app.domain.model.DashboardSummary
 import com.example.contruction_management_app.domain.model.Project
 import com.example.contruction_management_app.domain.repository.ProjectRepository
 import com.example.contruction_management_app.domain.repository.ProjectRepositoryImpl
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,46 +43,79 @@ class HomeDashboardViewModel @JvmOverloads constructor(
 
     fun loadDashboard(forceRefresh: Boolean = false) {
         viewModelScope.launch {
+            val activeId = repository.getActiveProjectId().firstOrNull()
+
+            // 1. FAST CACHE-FIRST EMISSION: If cached projects exist, show them instantly without waiting for network!
             if (!forceRefresh && _uiState.value !is HomeDashboardUiState.Success) {
-                _uiState.value = HomeDashboardUiState.Loading
+                val cached = repository.getCachedProjects()
+                if (cached.isNotEmpty()) {
+                    val activeProject = if (activeId != null) {
+                        cached.find { it.id == activeId } ?: cached.firstOrNull()
+                    } else {
+                        cached.firstOrNull()
+                    }
+                    _uiState.value = HomeDashboardUiState.Success(
+                        summary = repository.getCachedDashboardSummary(),
+                        projects = cached,
+                        activeProject = activeProject,
+                        selectedCategory = currentCategory,
+                        isRefreshing = true
+                    )
+                } else {
+                    _uiState.value = HomeDashboardUiState.Loading
+                }
             } else if (forceRefresh && _uiState.value is HomeDashboardUiState.Success) {
                 val current = _uiState.value as HomeDashboardUiState.Success
                 _uiState.value = current.copy(isRefreshing = true)
             }
 
             try {
-                val activeId = repository.getActiveProjectId().firstOrNull()
-                val projectsResult = repository.getProjects()
-                val projects = projectsResult.getOrDefault(emptyList())
+                // 2. PARALLEL NETWORK FETCHING: Fetch projects and dashboard summary concurrently
+                val (projectsResult, summaryResult) = coroutineScope {
+                    val projectsDeferred = async { repository.getProjects() }
+                    val summaryDeferred = async { repository.getDashboardSummary(activeId) }
+                    Pair(projectsDeferred.await(), summaryDeferred.await())
+                }
 
+                val projects = projectsResult.getOrDefault(repository.getCachedProjects())
                 val activeProject = if (activeId != null) {
                     projects.find { it.id == activeId } ?: projects.firstOrNull()
                 } else {
                     projects.firstOrNull()
                 }
 
-                // If no active project set yet, set the first one
                 if (activeId == null && activeProject != null) {
                     repository.setActiveProjectId(activeProject.id)
                 }
 
-                val summaryResult = repository.getDashboardSummary(activeProject?.id)
-                val summary = summaryResult.getOrNull()
+                val summary = summaryResult.getOrDefault(repository.getCachedDashboardSummary())
 
-                if (summary != null) {
+                _uiState.value = HomeDashboardUiState.Success(
+                    summary = summary,
+                    projects = projects,
+                    activeProject = activeProject,
+                    selectedCategory = currentCategory,
+                    isRefreshing = false
+                )
+            } catch (e: Exception) {
+                // If network fails, fallback smoothly to cached data
+                val cached = repository.getCachedProjects()
+                if (cached.isNotEmpty()) {
+                    val activeProject = if (activeId != null) {
+                        cached.find { it.id == activeId } ?: cached.firstOrNull()
+                    } else {
+                        cached.firstOrNull()
+                    }
                     _uiState.value = HomeDashboardUiState.Success(
-                        summary = summary,
-                        projects = projects,
+                        summary = repository.getCachedDashboardSummary(),
+                        projects = cached,
                         activeProject = activeProject,
                         selectedCategory = currentCategory,
                         isRefreshing = false
                     )
                 } else {
-                    val errorMsg = summaryResult.exceptionOrNull()?.message ?: "Failed to load dashboard summary"
-                    _uiState.value = HomeDashboardUiState.Error(errorMsg)
+                    _uiState.value = HomeDashboardUiState.Error(e.message ?: "An unexpected error occurred")
                 }
-            } catch (e: Exception) {
-                _uiState.value = HomeDashboardUiState.Error(e.message ?: "An unexpected error occurred")
             }
         }
     }

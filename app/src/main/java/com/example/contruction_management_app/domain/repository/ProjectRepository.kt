@@ -18,6 +18,8 @@ interface ProjectRepository {
     suspend fun getDashboardSummary(projectId: String?): Result<DashboardSummary>
     fun getActiveProjectId(): Flow<String?>
     suspend fun setActiveProjectId(projectId: String)
+    fun getCachedProjects(): List<Project>
+    fun getCachedDashboardSummary(): DashboardSummary
 }
 
 class ProjectRepositoryImpl(
@@ -327,6 +329,10 @@ class ProjectRepositoryImpl(
     override suspend fun setActiveProjectId(projectId: String) {
         sessionDataStore.setActiveProjectId(projectId)
     }
+
+    override fun getCachedProjects(): List<Project> = cachedProjects.toList()
+
+    override fun getCachedDashboardSummary(): DashboardSummary = fallbackDashboardSummary()
 
     private fun fallbackProjectDetail(projectId: String): Result<ProjectDetail> {
         val project = cachedProjects.find { it.id == projectId } ?: cachedProjects.first()

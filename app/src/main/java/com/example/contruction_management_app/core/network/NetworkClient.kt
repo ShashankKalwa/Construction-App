@@ -50,9 +50,9 @@ object NetworkClient {
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(sessionDataStore))
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(7, TimeUnit.SECONDS)
+            .writeTimeout(7, TimeUnit.SECONDS)
             .build()
 
         return Retrofit.Builder()
