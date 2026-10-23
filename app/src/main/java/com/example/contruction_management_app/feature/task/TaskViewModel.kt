@@ -25,7 +25,7 @@ sealed interface PhasesUiState {
     data class Error(val message: String) : PhasesUiState
 }
 
-class TaskViewModel(
+class TaskViewModel @JvmOverloads constructor(
     application: Application,
     private val repository: ProjectRepository = ProjectRepositoryImpl(application)
 ) : AndroidViewModel(application) {

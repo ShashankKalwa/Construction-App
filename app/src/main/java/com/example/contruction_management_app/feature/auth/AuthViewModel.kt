@@ -18,7 +18,7 @@ sealed interface AuthUiState {
     data class Error(val message: String) : AuthUiState
 }
 
-class AuthViewModel(
+class AuthViewModel @JvmOverloads constructor(
     application: Application,
     private val sessionDataStore: SessionDataStore = SessionDataStore(application)
 ) : AndroidViewModel(application) {

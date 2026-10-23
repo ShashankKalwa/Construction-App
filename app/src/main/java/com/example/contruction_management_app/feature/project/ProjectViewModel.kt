@@ -34,7 +34,7 @@ sealed interface ProjectDetailUiState {
     data class Error(val message: String) : ProjectDetailUiState
 }
 
-class ProjectViewModel(
+class ProjectViewModel @JvmOverloads constructor(
     application: Application,
     private val repository: ProjectRepository = ProjectRepositoryImpl(application)
 ) : AndroidViewModel(application) {

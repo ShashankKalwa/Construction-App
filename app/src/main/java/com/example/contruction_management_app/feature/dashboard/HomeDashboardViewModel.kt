@@ -25,7 +25,7 @@ sealed interface HomeDashboardUiState {
     data class Error(val message: String) : HomeDashboardUiState
 }
 
-class HomeDashboardViewModel(
+class HomeDashboardViewModel @JvmOverloads constructor(
     application: Application,
     private val repository: ProjectRepository = ProjectRepositoryImpl(application)
 ) : AndroidViewModel(application) {
