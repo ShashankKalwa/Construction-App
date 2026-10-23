@@ -25,3 +25,12 @@ data class ProjectSummary(
     val status: String,
     val budgetInr: Double
 )
+
+data class RoleCredential(
+    val role: Role,
+    val username: String,
+    val email: String,
+    val password: String,
+    val description: String
+)
+

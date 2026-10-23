@@ -41,17 +41,30 @@ class AuthViewModel @JvmOverloads constructor(
         }
     }
 
-    fun login(email: String, role: Role) {
+    fun loginWithCredentials(username: String, password: String, role: Role) {
         viewModelScope.launch {
             _uiState.value = AuthUiState.Loading
-            val result = userRepository.authenticateUser(email, role)
+            val result = userRepository.authenticateWithCredentials(username, password, role)
             result.onSuccess { user ->
                 _uiState.value = AuthUiState.Authenticated(user)
             }.onFailure { e ->
-                _uiState.value = AuthUiState.Error(e.message ?: "Login failed")
+                _uiState.value = AuthUiState.Error(e.message ?: "Authentication failed")
             }
         }
     }
+
+    fun login(email: String, role: Role) {
+        val cred = userRepository.getCredentialsForRole(role)
+        loginWithCredentials(
+            username = email.ifBlank { cred.username },
+            password = cred.password,
+            role = role
+        )
+    }
+
+    fun getCredentialsForRole(role: Role) = userRepository.getCredentialsForRole(role)
+
+    fun getAllCredentials() = userRepository.getAllRoleCredentials()
 
     fun logout() {
         viewModelScope.launch {

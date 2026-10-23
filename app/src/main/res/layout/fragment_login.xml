@@ -82,22 +82,79 @@
                         android:textColor="@color/cms_text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Email Input -->
+                <!-- Username / Email Input -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilEmail"
+                    android:id="@+id/tilUsername"
                     style="@style/Widget.CMS.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/cms_spacing_md"
-                    android:hint="Email Address">
+                    android:hint="Username or Email"
+                    app:startIconDrawable="@drawable/ic_user"
+                    app:startIconTint="@color/cms_text_secondary">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etEmail"
+                        android:id="@+id/etUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
+                        android:inputType="text"
                         android:textColor="@color/cms_text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Password Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPassword"
+                    style="@style/Widget.CMS.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_md"
+                    android:hint="Password"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="@color/cms_text_secondary"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:startIconTint="@color/cms_text_secondary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:textColor="@color/cms_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Active Role Credentials Hint Box -->
+                <LinearLayout
+                    android:id="@+id/layoutCredentialsHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    android:background="@drawable/bg_card"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/cms_spacing_md"
+                    android:paddingVertical="@dimen/cms_spacing_sm">
+
+                    <TextView
+                        android:id="@+id/tvCredentialsHint"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="superadmin • Admin@123"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_accent" />
+
+                    <TextView
+                        android:id="@+id/btnShowCredentials"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="4dp"
+                        android:text="All Roles ▾"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_info" />
+                </LinearLayout>
 
                 <!-- Sign In Button -->
                 <com.google.android.material.button.MaterialButton

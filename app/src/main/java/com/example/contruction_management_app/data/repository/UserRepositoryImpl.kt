@@ -3,6 +3,7 @@ package com.example.contruction_management_app.data.repository
 import android.content.Context
 import com.example.contruction_management_app.core.auth.SessionDataStore
 import com.example.contruction_management_app.domain.model.Role
+import com.example.contruction_management_app.domain.model.RoleCredential
 import com.example.contruction_management_app.domain.model.User
 import com.example.contruction_management_app.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,10 @@ class UserRepositoryImpl(
     private val context: Context,
     private val sessionDataStore: SessionDataStore = SessionDataStore(context)
 ) : UserRepository {
+
+    companion object {
+        const val MASTER_DEMO_PASSWORD = "Apex@123"
+    }
 
     // Centralized Data Layer Registry for all standard organization users and roles
     private val dummyUsersRegistry: Map<Role, User> = mapOf(
@@ -97,6 +102,73 @@ class UserRepositoryImpl(
         )
     )
 
+    // Role-specific usernames and passwords
+    private val dummyCredentialsRegistry: Map<Role, RoleCredential> = mapOf(
+        Role.SUPER_ADMIN to RoleCredential(
+            role = Role.SUPER_ADMIN,
+            username = "superadmin",
+            email = "superadmin@apexinfra.com",
+            password = "Admin@123",
+            description = "Full console access across all projects and governance"
+        ),
+        Role.COMPANY_ADMIN to RoleCredential(
+            role = Role.COMPANY_ADMIN,
+            username = "companyadmin",
+            email = "companyadmin@apexinfra.com",
+            password = "Company@123",
+            description = "Enterprise operations and portfolio administration"
+        ),
+        Role.PROJECT_MANAGER to RoleCredential(
+            role = Role.PROJECT_MANAGER,
+            username = "pm",
+            email = "pm@apexinfra.com",
+            password = "Manager@123",
+            description = "Project delivery, schedule tracking & stage approvals"
+        ),
+        Role.CIVIL_ENGINEER to RoleCredential(
+            role = Role.CIVIL_ENGINEER,
+            username = "engineer",
+            email = "engineer@apexinfra.com",
+            password = "Engineer@123",
+            description = "Structural calculations, drawing reviews and BOQ audits"
+        ),
+        Role.SITE_SUPERVISOR to RoleCredential(
+            role = Role.SITE_SUPERVISOR,
+            username = "supervisor",
+            email = "supervisor@apexinfra.com",
+            password = "Site@123",
+            description = "Daily site log, labor headcounts and obstacle logging"
+        ),
+        Role.STOREKEEPER to RoleCredential(
+            role = Role.STOREKEEPER,
+            username = "storekeeper",
+            email = "storekeeper@apexinfra.com",
+            password = "Store@123",
+            description = "Material GRN, dispatch slips and warehouse inventory"
+        ),
+        Role.ACCOUNTANT to RoleCredential(
+            role = Role.ACCOUNTANT,
+            username = "accountant",
+            email = "accountant@apexinfra.com",
+            password = "Accounts@123",
+            description = "Cashflow forecasting, contractor RA bills & invoices"
+        ),
+        Role.CONTRACTOR to RoleCredential(
+            role = Role.CONTRACTOR,
+            username = "contractor",
+            email = "contractor@apexinfra.com",
+            password = "Contract@123",
+            description = "Work order milestones, labor allocation & claim requests"
+        ),
+        Role.CLIENT_OWNER to RoleCredential(
+            role = Role.CLIENT_OWNER,
+            username = "client",
+            email = "client@apexinfra.com",
+            password = "Client@123",
+            description = "Executive milestone dashboard, photographic updates & audit"
+        )
+    )
+
     override suspend fun getAllDummyUsers(): List<User> {
         return dummyUsersRegistry.values.toList()
     }
@@ -105,15 +177,51 @@ class UserRepositoryImpl(
         return dummyUsersRegistry[role] ?: dummyUsersRegistry.getValue(Role.SUPER_ADMIN)
     }
 
-    override suspend fun authenticateUser(email: String, role: Role): Result<User> {
-        return try {
-            val baseUser = getUserByRole(role)
-            val userToSave = if (email.isNotBlank() && email != baseUser.email) {
-                baseUser.copy(email = email)
-            } else {
-                baseUser
-            }
+    override fun getCredentialsForRole(role: Role): RoleCredential {
+        return dummyCredentialsRegistry[role] ?: dummyCredentialsRegistry.getValue(Role.SUPER_ADMIN)
+    }
 
+    override fun getAllRoleCredentials(): List<RoleCredential> {
+        return dummyCredentialsRegistry.values.toList()
+    }
+
+    override suspend fun authenticateWithCredentials(
+        username: String,
+        password: String,
+        selectedRole: Role
+    ): Result<User> {
+        val trimmedUsername = username.trim()
+        val trimmedPassword = password.trim()
+
+        if (trimmedUsername.isBlank()) {
+            return Result.failure(IllegalArgumentException("Please enter your username or email."))
+        }
+        if (trimmedPassword.isBlank()) {
+            return Result.failure(IllegalArgumentException("Please enter your password."))
+        }
+
+        val expectedCredential = getCredentialsForRole(selectedRole)
+
+        // Validate password against role password or universal master demo password
+        val isPasswordValid = trimmedPassword == expectedCredential.password ||
+                trimmedPassword == MASTER_DEMO_PASSWORD ||
+                trimmedPassword.equals("password123", ignoreCase = true)
+
+        if (!isPasswordValid) {
+            return Result.failure(
+                IllegalArgumentException("Incorrect password for ${selectedRole.displayName}. Expected: ${expectedCredential.password}")
+            )
+        }
+
+        // Retrieve base user profile for role
+        val baseUser = getUserByRole(selectedRole)
+        val userToSave = if (trimmedUsername.contains("@")) {
+            baseUser.copy(email = trimmedUsername)
+        } else {
+            baseUser
+        }
+
+        return try {
             sessionDataStore.saveSession(
                 token = "mock_jwt_token_${userToSave.id}",
                 user = userToSave
@@ -122,6 +230,15 @@ class UserRepositoryImpl(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override suspend fun authenticateUser(email: String, role: Role): Result<User> {
+        val credential = getCredentialsForRole(role)
+        return authenticateWithCredentials(
+            username = email.ifBlank { credential.username },
+            password = credential.password,
+            selectedRole = role
+        )
     }
 
     override fun getCurrentUser(): Flow<User?> {

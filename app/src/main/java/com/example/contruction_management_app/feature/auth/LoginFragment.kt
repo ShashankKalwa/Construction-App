@@ -38,6 +38,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRoleDropdown()
+        updateCredentialsForRole(selectedRole)
         setupListeners()
         observeUiState()
     }
@@ -48,23 +49,49 @@ class LoginFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, roleNames)
         binding.actvRole.setAdapter(adapter)
         binding.actvRole.setText(selectedRole.displayName, false)
-        binding.etEmail.setText("${selectedRole.id}@apexinfra.com")
 
         binding.actvRole.setOnItemClickListener { _, _, position, _ ->
             selectedRole = roles[position]
-            binding.etEmail.setText("${selectedRole.id}@apexinfra.com")
+            updateCredentialsForRole(selectedRole)
         }
+    }
+
+    private fun updateCredentialsForRole(role: Role) {
+        val cred = authViewModel.getCredentialsForRole(role)
+        binding.etUsername.setText(cred.username)
+        binding.etPassword.setText(cred.password)
+        binding.tvCredentialsHint.text = "${cred.username} • ${cred.password}"
     }
 
     private fun setupListeners() {
         binding.btnSignIn.setOnClickListener {
-            val email = binding.etEmail.text?.toString().orEmpty()
-            authViewModel.login(email, selectedRole)
+            val username = binding.etUsername.text?.toString().orEmpty()
+            val password = binding.etPassword.text?.toString().orEmpty()
+            authViewModel.loginWithCredentials(username, password, selectedRole)
+        }
+
+        binding.layoutCredentialsHint.setOnClickListener {
+            showCredentialsCheatsheet()
+        }
+
+        binding.btnShowCredentials.setOnClickListener {
+            showCredentialsCheatsheet()
         }
 
         binding.btnOpenGallery.setOnClickListener {
             findNavController().navigate(R.id.action_login_to_gallery)
         }
+    }
+
+    private fun showCredentialsCheatsheet() {
+        val dialog = RoleCredentialsBottomSheetDialog(authViewModel.getAllCredentials()) { role, cred ->
+            selectedRole = role
+            binding.actvRole.setText(role.displayName, false)
+            binding.etUsername.setText(cred.username)
+            binding.etPassword.setText(cred.password)
+            binding.tvCredentialsHint.text = "${cred.username} • ${cred.password}"
+        }
+        dialog.show(parentFragmentManager, RoleCredentialsBottomSheetDialog.TAG)
     }
 
     private fun observeUiState() {

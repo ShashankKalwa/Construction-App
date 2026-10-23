@@ -52,9 +52,25 @@ A production-grade, role-based native Android application and Spring Boot backen
 ## Features & Implementation Highlights
 
 ### 1. Role-Based Access Control (RBAC) & Authentication
-- **Roles**: `ADMIN`, `PROJECT_MANAGER`, `SITE_ENGINEER`, `SUPERVISOR`, `SUBCONTRACTOR`, `CLIENT`.
+- **Roles**: All 9 enterprise roles supported with specific permission scopes.
+- **Username & Password Authentication**: Dedicated credentials per operator role with auto-fill support and master demo pass (`Apex@123`).
 - Secure JWT bearer authentication with token expiration, auto-header injection via `AuthInterceptor`, and method-level backend security (`@PreAuthorize`).
 - Clean user session management backed by encrypted `SessionDataStore`.
+
+#### Default Operator Role Credentials
+
+| Role | Username | Email | Default Password | Primary Scope |
+| :--- | :--- | :--- | :--- | :--- |
+| **Super Admin** | `superadmin` | `superadmin@apexinfra.com` | `Admin@123` | Full enterprise console control |
+| **Company Admin** | `companyadmin` | `companyadmin@apexinfra.com` | `Company@123` | Operations & organization setup |
+| **Project Manager** | `pm` | `pm@apexinfra.com` | `Manager@123` | Milestones, tasks & stage approvals |
+| **Civil Engineer** | `engineer` | `engineer@apexinfra.com` | `Engineer@123` | Technical calculations, BOQ & drawings |
+| **Site Supervisor** | `supervisor` | `supervisor@apexinfra.com` | `Site@123` | Daily logs, labor counts & roadblocks |
+| **Storekeeper** | `storekeeper` | `storekeeper@apexinfra.com` | `Store@123` | Material GRN, stock issues & ledger |
+| **Accountant** | `accountant` | `accountant@apexinfra.com` | `Accounts@123` | Budgets, billing, petty cash & payouts |
+| **Contractor** | `contractor` | `contractor@apexinfra.com` | `Contract@123` | Work packages, claims & labor supply |
+| **Client Owner** | `client` | `client@apexinfra.com` | `Client@123` | Executive dashboard & audit reports |
+| *Universal Demo* | *(any)* | *(any)* | `Apex@123` | Master password for development/demo |
 
 ### 2. Civil Engineering Calculation Engine
 Native calculation tools complying with standard Indian civil engineering codes:
