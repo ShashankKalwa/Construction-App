@@ -1,6 +1,7 @@
 package com.example.contruction_management_app.feature.auth
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.contruction_management_app.core.auth.SessionDataStore
 import com.example.contruction_management_app.domain.model.Role
@@ -18,8 +19,9 @@ sealed interface AuthUiState {
 }
 
 class AuthViewModel(
-    private val sessionDataStore: SessionDataStore
-) : ViewModel() {
+    application: Application,
+    private val sessionDataStore: SessionDataStore = SessionDataStore(application)
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState.Idle)
     val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()

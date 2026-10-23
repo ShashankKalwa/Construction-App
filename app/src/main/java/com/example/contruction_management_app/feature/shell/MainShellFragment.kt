@@ -32,6 +32,8 @@ class MainShellFragment : Fragment() {
     private val authViewModel: AuthViewModel by activityViewModels()
     private val projectViewModel: ProjectViewModel by activityViewModels()
 
+    private var isNavigatingInternally = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,32 +65,31 @@ class MainShellFragment : Fragment() {
                     3 -> R.id.nav_tools
                     else -> R.id.nav_home
                 }
-                binding.bottomNavView.selectedItemId = menuId
+                if (binding.bottomNavView.selectedItemId != menuId) {
+                    isNavigatingInternally = true
+                    binding.bottomNavView.selectedItemId = menuId
+                    isNavigatingInternally = false
+                }
             }
         })
     }
 
     private fun setupBottomNavigation() {
         binding.bottomNavView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> {
-                    binding.viewPagerShell.setCurrentItem(0, false)
-                    true
-                }
-                R.id.nav_projects -> {
-                    binding.viewPagerShell.setCurrentItem(1, false)
-                    true
-                }
-                R.id.nav_tasks -> {
-                    binding.viewPagerShell.setCurrentItem(2, false)
-                    true
-                }
-                R.id.nav_tools -> {
-                    binding.viewPagerShell.setCurrentItem(3, false)
-                    true
-                }
-                else -> false
+            if (isNavigatingInternally) return@setOnItemSelectedListener true
+
+            val targetPage = when (item.itemId) {
+                R.id.nav_home -> 0
+                R.id.nav_projects -> 1
+                R.id.nav_tasks -> 2
+                R.id.nav_tools -> 3
+                else -> -1
             }
+
+            if (targetPage != -1 && binding.viewPagerShell.currentItem != targetPage) {
+                binding.viewPagerShell.setCurrentItem(targetPage, false)
+            }
+            targetPage != -1
         }
     }
 
@@ -115,7 +116,9 @@ class MainShellFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.uiState.collect { state ->
                     if (state is AuthUiState.Idle) {
-                        findNavController().navigate(R.id.action_mainShell_to_login)
+                        if (findNavController().currentDestination?.id == R.id.mainShellFragment) {
+                            findNavController().navigate(R.id.action_mainShell_to_login)
+                        }
                     }
                 }
             }

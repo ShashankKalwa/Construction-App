@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.contruction_management_app.R
-import com.example.contruction_management_app.core.auth.SessionDataStore
 import com.example.contruction_management_app.databinding.FragmentLoginBinding
 import com.example.contruction_management_app.domain.model.Role
 import kotlinx.coroutines.launch
@@ -24,18 +22,7 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val authViewModel: AuthViewModel by lazy {
-        val sessionDataStore = SessionDataStore(requireContext().applicationContext)
-        ViewModelProvider(
-            requireActivity(),
-            object : ViewModelProvider.Factory {
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return AuthViewModel(sessionDataStore) as T
-                }
-            }
-        )[AuthViewModel::class.java]
-    }
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     private var selectedRole: Role = Role.SUPER_ADMIN
 
@@ -96,7 +83,9 @@ class LoginFragment : Fragment() {
                         is AuthUiState.Authenticated -> {
                             binding.progressBarLogin.visibility = View.GONE
                             binding.btnSignIn.isEnabled = true
-                            findNavController().navigate(R.id.action_login_to_mainShell)
+                            if (findNavController().currentDestination?.id == R.id.loginFragment) {
+                                findNavController().navigate(R.id.action_login_to_mainShell)
+                            }
                         }
                         is AuthUiState.Error -> {
                             binding.progressBarLogin.visibility = View.GONE
