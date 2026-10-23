@@ -4,6 +4,7 @@ import com.example.contruction_management_app.core.network.*
 import retrofit2.Response
 
 open class FakeCmsApiService : CmsApiService {
+    override suspend fun login(request: LoginNetworkRequest): Response<LoginNetworkResponse> = throw UnsupportedOperationException()
     override suspend fun getProjects(): Response<List<ProjectNetworkDto>> = Response.success(emptyList())
     override suspend fun createProject(request: CreateProjectRequest): Response<ProjectNetworkDto> = throw UnsupportedOperationException()
     override suspend fun getProjectDetail(id: String): Response<ProjectDetailNetworkDto> = throw UnsupportedOperationException()

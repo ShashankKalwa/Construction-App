@@ -2,6 +2,9 @@ package com.example.contruction_management_app.data.repository
 
 import android.content.Context
 import com.example.contruction_management_app.core.auth.SessionDataStore
+import com.example.contruction_management_app.core.network.CmsApiService
+import com.example.contruction_management_app.core.network.LoginNetworkRequest
+import com.example.contruction_management_app.core.network.NetworkClient
 import com.example.contruction_management_app.domain.model.Role
 import com.example.contruction_management_app.domain.model.RoleCredential
 import com.example.contruction_management_app.domain.model.User
@@ -10,8 +13,10 @@ import kotlinx.coroutines.flow.Flow
 
 class UserRepositoryImpl(
     private val context: Context,
-    private val sessionDataStore: SessionDataStore = SessionDataStore(context)
+    private val sessionDataStore: SessionDataStore = SessionDataStore(context),
+    private val apiService: CmsApiService = NetworkClient.getApiService(context)
 ) : UserRepository {
+
 
     companion object {
         const val MASTER_DEMO_PASSWORD = "Apex@123"
@@ -213,7 +218,35 @@ class UserRepositoryImpl(
             )
         }
 
-        // Retrieve base user profile for role
+        val loginEmail = if (trimmedUsername.contains("@")) trimmedUsername else expectedCredential.email
+
+        // 1. Attempt database authentication via live backend REST API
+        try {
+            val response = apiService.login(LoginNetworkRequest(loginEmail, trimmedPassword))
+            if (response.isSuccessful && response.body() != null) {
+                val loginBody = response.body()!!
+                val netUser = loginBody.user
+                val authenticatedUser = User(
+                    id = netUser.id,
+                    email = netUser.email,
+                    fullName = netUser.fullName,
+                    avatarUrl = netUser.avatarUrl,
+                    organizationId = netUser.organizationId,
+                    organizationName = netUser.organizationName.ifBlank { "Apex Infra Ltd" },
+                    role = Role.fromId(netUser.role.id)
+                )
+
+                sessionDataStore.saveSession(
+                    token = loginBody.accessToken,
+                    user = authenticatedUser
+                )
+                return Result.success(authenticatedUser)
+            }
+        } catch (_: Exception) {
+            // Network offline / timeout fallback: proceed with local offline session
+        }
+
+        // 2. Fallback to offline local session if network or backend is unreachable
         val baseUser = getUserByRole(selectedRole)
         val userToSave = if (trimmedUsername.contains("@")) {
             baseUser.copy(email = trimmedUsername)

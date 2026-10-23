@@ -746,7 +746,39 @@ data class AuditSummaryNetworkDto(
     val paymentsCount: Long
 )
 
+// --- Auth Network DTOs ---
+data class LoginNetworkRequest(
+    val email: String,
+    val password: String
+)
+
+data class RoleNetworkDto(
+    val id: String,
+    val name: String,
+    val description: String?,
+    val permissions: List<String> = emptyList()
+)
+
+data class UserNetworkDto(
+    val id: String,
+    val email: String,
+    val fullName: String,
+    val avatarUrl: String?,
+    val organizationId: String,
+    val organizationName: String,
+    val role: RoleNetworkDto
+)
+
+data class LoginNetworkResponse(
+    val accessToken: String,
+    val tokenType: String,
+    val user: UserNetworkDto
+)
+
 interface CmsApiService {
+    @POST("auth/login")
+    suspend fun login(@Body request: LoginNetworkRequest): Response<LoginNetworkResponse>
+
     @GET("projects")
     suspend fun getProjects(): Response<List<ProjectNetworkDto>>
 
