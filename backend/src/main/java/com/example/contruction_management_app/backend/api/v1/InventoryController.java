@@ -67,6 +67,32 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryService.getStockMovements(projectId, materialId, principal));
     }
 
+    @GetMapping("/projects/{projectId}/materials/low-stock")
+    public ResponseEntity<List<MaterialDto>> getLowStockMaterials(
+        @PathVariable String projectId,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        return ResponseEntity.ok(inventoryService.getLowStockMaterials(projectId, principal));
+    }
+
+    @GetMapping("/projects/{projectId}/stock-ledger")
+    public ResponseEntity<List<StockMovementDto>> getProjectStockLedger(
+        @PathVariable String projectId,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        return ResponseEntity.ok(inventoryService.getProjectStockLedger(projectId, principal));
+    }
+
+    @PostMapping("/projects/{projectId}/materials/{materialId}/return")
+    public ResponseEntity<MaterialDto> returnStock(
+        @PathVariable String projectId,
+        @PathVariable String materialId,
+        @Valid @RequestBody StockReturnDto dto,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        return ResponseEntity.ok(inventoryService.returnStock(projectId, materialId, dto, principal));
+    }
+
     @GetMapping("/projects/{projectId}/material-requests")
     public ResponseEntity<List<MaterialRequestDto>> getMaterialRequests(
         @PathVariable String projectId,
@@ -85,12 +111,41 @@ public class InventoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PatchMapping("/projects/{projectId}/material-requests/{requestId}/approve")
+    @PostMapping("/projects/{projectId}/material-requests/{requestId}/approve")
     public ResponseEntity<MaterialRequestDto> approveMaterialRequest(
         @PathVariable String projectId,
         @PathVariable String requestId,
         @AuthenticationPrincipal UserPrincipal principal
     ) {
         return ResponseEntity.ok(inventoryService.approveMaterialRequest(projectId, requestId, principal));
+    }
+
+    @PatchMapping("/projects/{projectId}/material-requests/{requestId}/approve")
+    public ResponseEntity<MaterialRequestDto> approveMaterialRequestPatch(
+        @PathVariable String projectId,
+        @PathVariable String requestId,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        return ResponseEntity.ok(inventoryService.approveMaterialRequest(projectId, requestId, principal));
+    }
+
+    @PostMapping("/projects/{projectId}/material-requests/{requestId}/reject")
+    public ResponseEntity<MaterialRequestDto> rejectMaterialRequest(
+        @PathVariable String projectId,
+        @PathVariable String requestId,
+        @Valid @RequestBody MaterialRequestRejectDto dto,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        return ResponseEntity.ok(inventoryService.rejectMaterialRequest(projectId, requestId, dto, principal));
+    }
+
+    @PostMapping("/projects/{projectId}/material-requests/{requestId}/issue")
+    public ResponseEntity<MaterialRequestDto> issueMaterialRequest(
+        @PathVariable String projectId,
+        @PathVariable String requestId,
+        @RequestBody(required = false) MaterialRequestIssueDto dto,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        return ResponseEntity.ok(inventoryService.issueMaterialRequest(projectId, requestId, dto, principal));
     }
 }

@@ -190,4 +190,112 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- Action 4: Daily Site Report -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/actionQuickDsr"
+        style="@style/Widget.CMS.Card.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/cms_spacing_card">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Daily Site Report"
+                android:src="@drawable/ic_document"
+                app:tint="@color/cms_success" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_md"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit Daily Site Diary"
+                    android:textAppearance="@style/TextAppearance.CMS.Body"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log daily labor headcount, weather and activities"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="Arrow"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/cms_text_secondary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Action 5: Submit Expense -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/actionQuickExpense"
+        style="@style/Widget.CMS.Card.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_sm"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/cms_spacing_card">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Expense"
+                android:src="@drawable/ic_plus"
+                app:tint="@color/cms_warning" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_md"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Record Field Expense"
+                    android:textAppearance="@style/TextAppearance.CMS.Body"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit petty cash voucher, fuel or equipment cost"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="Arrow"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/cms_text_secondary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>

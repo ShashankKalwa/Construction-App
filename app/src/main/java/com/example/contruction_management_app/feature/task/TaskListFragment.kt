@@ -72,6 +72,7 @@ class TaskListFragment : Fragment() {
         binding.chipGroupTaskStatus.setOnCheckedStateChangeListener { _, checkedIds ->
             val status = when (checkedIds.firstOrNull()) {
                 R.id.chipTaskInProgress -> TaskStatus.IN_PROGRESS
+                R.id.chipTaskUnderReview -> TaskStatus.SUBMITTED_FOR_REVIEW
                 R.id.chipTaskBlocked -> TaskStatus.BLOCKED
                 R.id.chipTaskCompleted -> TaskStatus.COMPLETED
                 else -> null

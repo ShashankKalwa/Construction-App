@@ -7,5 +7,7 @@ public enum AuditAction {
     APPROVE,
     REJECT,
     ISSUE_STOCK,
+    RECEIVE_STOCK,
+    STATUS_CHANGE,
     PAY_BILL
 }

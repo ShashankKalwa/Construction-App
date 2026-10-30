@@ -14,10 +14,11 @@
         android:paddingHorizontal="@dimen/cms_spacing_lg"
         android:paddingVertical="@dimen/cms_spacing_lg">
 
+        <!-- SCOPE CARD -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PROJECT SCOPE"
+            android:text="PROJECT SCOPE &amp; DETAILS"
             android:textAppearance="@style/TextAppearance.CMS.Caption"
             android:textColor="@color/cms_text_tertiary" />
 
@@ -46,6 +47,64 @@
                     android:layout_marginVertical="@dimen/cms_spacing_md"
                     android:background="@color/cms_divider" />
 
+                <!-- Client & Project Type Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CLIENT"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_text_tertiary" />
+
+                        <TextView
+                            android:id="@+id/tvOverviewClient"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textStyle="bold"
+                            tools:text="Apex Developments" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PROJECT TYPE"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_text_tertiary" />
+
+                        <TextView
+                            android:id="@+id/tvOverviewType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textStyle="bold"
+                            tools:text="Commercial" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="@dimen/cms_spacing_md"
+                    android:background="@color/cms_divider" />
+
+                <!-- Dates Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -96,6 +155,100 @@
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- MILESTONES SECTION -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xl"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="KEY MILESTONES"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_accent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddMilestone"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Milestone"
+                android:textColor="@color/cms_accent" />
+        </LinearLayout>
+
+        <!-- Milestones Progress Header -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.CMS.Card.Elevated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xs">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/cms_spacing_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvMilestoneSummary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.CMS.Body"
+                        tools:text="1 of 3 Milestones Reached (33%)" />
+
+                    <TextView
+                        android:id="@+id/tvMilestonesPct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.CMS.Mono"
+                        android:textColor="@color/cms_accent"
+                        android:textStyle="bold"
+                        tools:text="33%" />
+                </LinearLayout>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressMilestones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/cms_spacing_sm"
+                    app:indicatorColor="@color/cms_accent"
+                    app:trackColor="@color/cms_card"
+                    app:trackCornerRadius="@dimen/cms_radius_pill"
+                    app:trackThickness="@dimen/cms_stroke_progress"
+                    tools:progress="33" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Milestones RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMilestones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_sm"
+            android:nestedScrollingEnabled="false" />
+
+        <TextView
+            android:id="@+id/tvEmptyMilestones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:gravity="center"
+            android:text="No milestones defined yet. Click + Milestone to track major milestones."
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_text_tertiary"
+            android:visibility="gone" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

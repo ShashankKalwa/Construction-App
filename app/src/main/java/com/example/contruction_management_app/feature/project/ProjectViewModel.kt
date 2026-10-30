@@ -34,6 +34,18 @@ sealed interface ProjectDetailUiState {
     data class Error(val message: String) : ProjectDetailUiState
 }
 
+sealed interface MilestonesUiState {
+    data object Loading : MilestonesUiState
+    data class Success(val milestones: List<com.example.contruction_management_app.domain.model.Milestone>) : MilestonesUiState
+    data class Error(val message: String) : MilestonesUiState
+}
+
+sealed interface ProjectMembersUiState {
+    data object Loading : ProjectMembersUiState
+    data class Success(val members: List<com.example.contruction_management_app.domain.model.ProjectMember>) : ProjectMembersUiState
+    data class Error(val message: String) : ProjectMembersUiState
+}
+
 class ProjectViewModel @JvmOverloads constructor(
     application: Application,
     private val repository: ProjectRepository = ProjectRepositoryImpl(application)
@@ -44,6 +56,12 @@ class ProjectViewModel @JvmOverloads constructor(
 
     private val _detailState = MutableStateFlow<ProjectDetailUiState>(ProjectDetailUiState.Loading)
     val detailState: StateFlow<ProjectDetailUiState> = _detailState.asStateFlow()
+
+    private val _milestonesState = MutableStateFlow<MilestonesUiState>(MilestonesUiState.Loading)
+    val milestonesState: StateFlow<MilestonesUiState> = _milestonesState.asStateFlow()
+
+    private val _membersState = MutableStateFlow<ProjectMembersUiState>(ProjectMembersUiState.Loading)
+    val membersState: StateFlow<ProjectMembersUiState> = _membersState.asStateFlow()
 
     private var allProjects: List<Project> = emptyList()
     private var currentQuery: String = ""
@@ -103,8 +121,12 @@ class ProjectViewModel @JvmOverloads constructor(
         code: String,
         location: String,
         budgetInr: BigDecimal,
-        onSuccess: (Project) -> Unit,
-        onError: (String) -> Unit
+        projectType: String? = "Commercial",
+        clientName: String? = "Apex Developments",
+        startDate: String? = null,
+        endDate: String? = null,
+        onSuccess: (Project) -> Unit = {},
+        onError: (String) -> Unit = {}
     ) {
         viewModelScope.launch {
             val current = _listState.value
@@ -112,7 +134,16 @@ class ProjectViewModel @JvmOverloads constructor(
                 _listState.value = current.copy(isCreating = true)
             }
 
-            val result = repository.createProject(name, code, location, budgetInr)
+            val result = repository.createProject(
+                name = name,
+                code = code,
+                location = location,
+                budgetInr = budgetInr,
+                projectType = projectType,
+                clientName = clientName,
+                startDate = startDate,
+                endDate = endDate
+            )
             result.onSuccess { newProject ->
                 allProjects = listOf(newProject) + allProjects
                 applyFilters()
@@ -142,6 +173,139 @@ class ProjectViewModel @JvmOverloads constructor(
         val current = _detailState.value
         if (current is ProjectDetailUiState.Success) {
             _detailState.value = current.copy(selectedTabIndex = tabIndex)
+        }
+    }
+
+    fun updateProjectStatus(
+        projectId: String,
+        status: String,
+        onSuccess: (Project) -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = repository.updateProjectStatus(projectId, status)
+            result.onSuccess { updated ->
+                loadProjectDetail(projectId)
+                loadProjects()
+                onSuccess(updated)
+            }.onFailure { error ->
+                onError(error.message ?: "Failed to update project status")
+            }
+        }
+    }
+
+    fun loadMilestones(projectId: String) {
+        viewModelScope.launch {
+            _milestonesState.value = MilestonesUiState.Loading
+            val result = repository.getMilestones(projectId)
+            result.onSuccess { list ->
+                _milestonesState.value = MilestonesUiState.Success(list)
+            }.onFailure { error ->
+                _milestonesState.value = MilestonesUiState.Error(error.message ?: "Failed to load milestones")
+            }
+        }
+    }
+
+    fun createMilestone(
+        projectId: String,
+        title: String,
+        dueDate: String?,
+        targetCompletionPct: Double? = 0.0,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = repository.createMilestone(projectId, title, dueDate, targetCompletionPct)
+            result.onSuccess {
+                loadMilestones(projectId)
+                onSuccess()
+            }.onFailure { error ->
+                onError(error.message ?: "Failed to create milestone")
+            }
+        }
+    }
+
+    fun updateMilestoneStatus(
+        milestoneId: String,
+        projectId: String,
+        status: String,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = repository.updateMilestoneStatus(milestoneId, status)
+            result.onSuccess {
+                loadMilestones(projectId)
+                onSuccess()
+            }.onFailure { error ->
+                onError(error.message ?: "Failed to update milestone")
+            }
+        }
+    }
+
+    fun loadMembers(projectId: String) {
+        viewModelScope.launch {
+            _membersState.value = ProjectMembersUiState.Loading
+            val result = repository.getProjectMembers(projectId)
+            result.onSuccess { list ->
+                _membersState.value = ProjectMembersUiState.Success(list)
+            }.onFailure { error ->
+                _membersState.value = ProjectMembersUiState.Error(error.message ?: "Failed to load members")
+            }
+        }
+    }
+
+    fun assignMember(
+        projectId: String,
+        userId: String,
+        assignedRole: String,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = repository.assignMember(projectId, userId, assignedRole)
+            result.onSuccess {
+                loadMembers(projectId)
+                loadProjectDetail(projectId)
+                onSuccess()
+            }.onFailure { error ->
+                onError(error.message ?: "Failed to assign member")
+            }
+        }
+    }
+
+    fun removeMember(
+        projectId: String,
+        userId: String,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = repository.removeMember(projectId, userId)
+            result.onSuccess {
+                loadMembers(projectId)
+                loadProjectDetail(projectId)
+                onSuccess()
+            }.onFailure { error ->
+                onError(error.message ?: "Failed to deactivate member")
+            }
+        }
+    }
+
+    fun createPhase(
+        projectId: String,
+        name: String,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = repository.createPhase(projectId, name)
+            result.onSuccess {
+                loadProjectDetail(projectId)
+                onSuccess()
+            }.onFailure { error ->
+                onError(error.message ?: "Failed to create phase")
+            }
         }
     }
 }

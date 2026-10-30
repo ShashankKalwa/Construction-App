@@ -35,7 +35,10 @@ class SyncQueueDialog : BottomSheetDialogFragment() {
         val apiService = NetworkClient.getApiService(requireContext().applicationContext)
         syncRepository = SyncQueueRepository(apiService)
 
-        adapter = SyncQueueAdapter()
+        adapter = SyncQueueAdapter { item, resolution ->
+            syncRepository.resolveConflict(item.id, resolution)
+            Toast.makeText(requireContext(), "Applied resolution: ${resolution.name}", Toast.LENGTH_SHORT).show()
+        }
         binding.rvSyncQueue.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSyncQueue.adapter = adapter
 
@@ -43,10 +46,11 @@ class SyncQueueDialog : BottomSheetDialogFragment() {
             syncRepository.syncState.collect { queue ->
                 adapter.submitList(queue)
                 val pending = syncRepository.getPendingCount()
-                binding.tvSyncSummary.text = if (pending > 0) {
-                    "$pending local drafts waiting for cloud sync"
-                } else {
-                    "All records synced with cloud database"
+                val conflicts = syncRepository.getConflictCount()
+                binding.tvSyncSummary.text = when {
+                    conflicts > 0 -> "$conflicts conflict(s) require manual resolution"
+                    pending > 0 -> "$pending local draft(s) waiting for cloud sync"
+                    else -> "All records synced with cloud database"
                 }
             }
         }

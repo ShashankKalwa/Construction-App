@@ -79,6 +79,15 @@
         <item name="rippleColor">@color/cms_accent_pressed</item>
     </style>
 
+    <style name="Widget.CMS.Button.Secondary" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:backgroundTint">@color/cms_card_elevated</item>
+        <item name="android:textColor">@color/cms_accent</item>
+        <item name="cornerRadius">@dimen/cms_radius_chip</item>
+        <item name="android:minHeight">@dimen/cms_touch_target_min</item>
+        <item name="android:textStyle">bold</item>
+        <item name="rippleColor">@color/cms_accent_tint</item>
+    </style>
+
     <style name="Widget.CMS.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">@color/cms_accent</item>
         <item name="strokeColor">@color/cms_accent</item>

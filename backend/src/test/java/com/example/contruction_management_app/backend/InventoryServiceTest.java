@@ -180,10 +180,15 @@ public class InventoryServiceTest {
 
         when(materialRequestRepository.findById(created.id())).thenReturn(Optional.of(entity));
 
-        MaterialRequestDto approved = inventoryService.approveMaterialRequest("prj_green_valley_residency", created.id(), storeManagerPrincipal);
+        UserPrincipal pmPrincipal = new UserPrincipal(
+            "usr_pm", "pm@greenvalley.com", "hash",
+            "org_green_valley", "project_manager", List.of(), true
+        );
+
+        MaterialRequestDto approved = inventoryService.approveMaterialRequest("prj_green_valley_residency", created.id(), pmPrincipal);
 
         assertNotNull(approved);
         assertEquals(MaterialRequestStatus.APPROVED, approved.status());
-        assertEquals("usr_store", approved.approvedBy());
+        assertEquals("usr_pm", approved.approvedBy());
     }
 }

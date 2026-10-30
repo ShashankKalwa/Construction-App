@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardWorkspaceProject"
+    style="@style/Widget.CMS.Card.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/cms_spacing_sm"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/cms_spacing_card">
+
+        <TextView
+            android:id="@+id/tvProjectCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_chip_selected"
+            android:paddingHorizontal="@dimen/cms_spacing_sm"
+            android:paddingVertical="@dimen/cms_spacing_xs"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_accent"
+            android:textStyle="bold"
+            tools:text="CTB-02" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/cms_spacing_md"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvProjectName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.CMS.Body"
+                android:textColor="@color/cms_text_primary"
+                android:textStyle="bold"
+                tools:text="Commercial Tower B" />
+
+            <TextView
+                android:id="@+id/tvProjectLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_text_secondary"
+                tools:text="Whitefield, Bangalore" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvProjectStatusBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_status_badge"
+            android:paddingHorizontal="@dimen/cms_spacing_sm"
+            android:paddingVertical="2dp"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_success"
+            tools:text="Active" />
+
+        <ImageView
+            android:id="@+id/ivSelectedCheck"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/cms_spacing_sm"
+            android:contentDescription="Selected Project"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="@color/cms_accent"
+            tools:visibility="visible" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

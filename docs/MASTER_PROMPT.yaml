@@ -1,422 +1,397 @@
 # =====================================================================
-# MASTER PROMPT — Construction Management System (CMS) — for Antigravity
-# Design reference: "Smart Home App UI – Modern IoT Control & Energy Dashboard"
-# Colors/sizes below are estimated from the screenshot. Verify with an
-# eyedropper and adjust the tokens in ONE place (ui/theme/Tokens.kt).
+# MASTER PROMPT — Construction Management System (CMS), company workflow edition
+# Repo: https://github.com/ShashankKalwa/Construction-App
+# Target customer: medium-sized construction company (20-100 staff, several active projects)
+# Stack: Kotlin + XML (ViewBinding) Android app, Java 17 + Spring Boot 3.4 backend,
+#        PostgreSQL (Supabase) + Flyway, Render hosting.
+# This file REPLACES the earlier master prompt. Save it as docs/MASTER_PROMPT.yaml.
 # =====================================================================
 
 meta:
   project_name: "Construction Management System (CMS)"
-  platform: "Android native (NOT WebView)"
-  one_liner: >
-    Role-based Android app that replaces notebooks, Excel sheets, WhatsApp
-    updates and manual calculations with one connected system for projects,
-    civil calculators, BOQ, inventory, labor, expenses, documents and reports.
-  sample_project: "Green Valley Residency (residential, 2 buildings, 24 apartments, Rs 2.5 Cr)"
-  phase_to_build_now: 6   # ALL PHASES (1, 2, 3, 4, 5, and 6) FULLY COMPLETED AND PRODUCTION-VERIFIED.
-
-existing_project:
-  status: "A blank Android Studio project ALREADY EXISTS and is the open workspace folder. Do NOT create a new project or a new folder."
-  first_step_inspect:
-    - "Read settings.gradle.kts, build.gradle.kts (root and app), gradle/libs.versions.toml (if present), AndroidManifest.xml and the existing MainActivity."
-    - "Detect the real applicationId / package name and use it everywhere. Treat `com.yourcompany.construction` in this file as a placeholder only."
-    - "Template is View-based with Kotlin and XML layouts using ViewBinding and Material 3 Dark theme."
-    - "Report minSdk, targetSdk, compileSdk, AGP, Kotlin, and Java 17 toolchain versions found. Do not downgrade anything that already works."
-  rules:
-    - "Keep the existing project structure and Gradle setup. Add to it, do not regenerate it."
-    - "Remove template leftovers (default layout, default purple theme) only when replacing them with the CMS theme."
-    - "Add dependencies incrementally through the version catalog, only the ones the current phase needs, and confirm the project still syncs and builds after each batch."
-    - "Add INTERNET permission and a debug-only cleartext/dev base URL config via BuildConfig fields, never hard-coded in code."
-    - "Create a root-level `docs/` folder and save this YAML there as docs/MASTER_PROMPT.yaml, plus a short README.md with run instructions."
-
-agent_instructions:
-  role: >
-    You are a senior Android engineer and product designer. You build
-    production-quality Kotlin + XML Views (ViewBinding) Android code and a Java 17 / Spring Boot 3.4.2 backend.
-  working_style:
-    - "Before coding any phase, produce an implementation plan artifact and wait for my approval."
-    - "Build ONE phase at a time. Do not scaffold later phases."
-    - "After each task, run the build and tests, and show a screenshot/recording of the UI for verification."
-    - "Never invent library versions. Use current stable versions from the official Android toolchain and a version catalog (libs.versions.toml)."
-    - "Prefer small, reviewable commits with clear messages."
-    - "If a requirement is ambiguous, ask ONE concise question, otherwise state your assumption and proceed."
-    - "Do not add boilerplate layers for trivial features."
-  hard_rules:
-    - "MainActivity only initializes the app and hosts navigation. No business logic inside it."
-    - "No hard-coded colors, text sizes, spacing or radii in screens. Everything comes from design tokens/theme."
-    - "No secrets, service keys, production URLs or DB credentials in the Android app."
-    - "The Android app never connects to PostgreSQL directly. It talks only to the Spring Boot backend."
-    - "Never trust a role value sent by the client. The backend derives permissions from trusted data."
-    - "Stock, payments, approvals and budgets are decided by server-side business logic only."
+  repo_state: "Existing, unfinished project. EXTEND it. Do NOT rebuild or restart it."
+  core_problem_to_solve: >
+    Role-based LOGIN exists, but all roles land on the same page and there is no real
+    role-based ACCESS or WORKFLOW. Fix this by adding company membership, project
+    membership, backend-enforced permissions, role-aware navigation and connected workflows.
+  guiding_principle: "One company -> multiple projects -> assigned teams -> connected workflows -> company-wide visibility."
+  phase_to_build_now: 1
 
 # =====================================================================
-# 1. DESIGN LANGUAGE (extracted from the reference UI)
+# 0. HOW YOU (THE AGENT) MUST WORK
+# =====================================================================
+agent_instructions:
+  role: "Senior Android (Kotlin/XML) + Java Spring Boot engineer and product designer."
+  start_here:
+    - "STEP 1: Audit the existing code before changing anything (see `audit_first`)."
+    - "STEP 2: Show me the audit report and an implementation plan for the current phase only. Wait for my approval."
+    - "STEP 3: Implement one phase at a time, in small commits, verifying build and tests after each task."
+  rules:
+    - "Never rebuild what already works. Reuse existing modules, migrations, screens and styles."
+    - "Never edit existing Flyway migrations (V1-V6). Add new versioned migrations only (V7, V8, ...)."
+    - "Never change the package name, applicationId, Gradle wrapper, AGP or Kotlin version unless the build is broken. Tell me first."
+    - "No hard-coded colors, sizes or strings in layouts. Use @color, @dimen, @string, @style only."
+    - "No Jetpack Compose anywhere. UI is Kotlin + XML + ViewBinding only. No findViewById. No DataBinding."
+    - "Backend is Java 17 + Spring Boot only. No Kotlin or Python in :backend."
+    - "The backend is the ONLY authority for permissions. Never trust a role, company id or project id sent by the client."
+    - "Do not edit .idea/, *.iml or local.properties. Never commit secrets."
+    - "Ask at most ONE concise question if something blocks you. Otherwise state your assumption and proceed."
+  after_each_task:
+    - "Run the verification commands in `verification`."
+    - "Show a screenshot of every new or changed screen (normal and large font scale)."
+    - "Report what changed, what was deleted, risks, and wait for approval before the next phase."
+
+audit_first:
+  goal: "Understand what exists so we extend it instead of duplicating it. Produce docs/AUDIT.md."
+  inspect:
+    - "settings.gradle.kts, root and module build files, gradle/libs.versions.toml, gradle.properties, render.yaml, Dockerfile, docker-compose.yml, .run/, .github/workflows/."
+    - "Android :app — package structure (core, domain, feature), navigation, how login routes after success, why every role reaches the same page, SessionDataStore, AuthInterceptor, Room/SyncQueueItem, existing layouts and theme."
+    - "Backend :backend — controllers, services, entities, repositories, security config, JWT claims, @PreAuthorize usage, DTOs, exception handling."
+    - "Database — Flyway migrations V1-V6, tables, relationships, constraints, seeded data."
+  report_format:
+    - "A table of modules/features with status: Working | Partial | UI-only | Missing."
+    - "How roles are currently stored, issued in the JWT and enforced (or not) on the backend."
+    - "Whether projects are owned by a company, and whether project membership exists in the DB and API."
+    - "Gaps against this master prompt, risks, and a proposed list of new migrations."
+  security_finding_to_handle_immediately:
+    - "The README publishes demo usernames, passwords and a universal demo password. Remove all credentials from the README and docs."
+    - "Universal/master password login must only work under the `dev` Spring profile and must be disabled in production. Add a startup guard that fails if it is enabled in a non-dev profile."
+    - "Tell me which seeded accounts must have their passwords rotated in the deployed Supabase database."
+
+# =====================================================================
+# 1. EXISTING STACK (keep)
+# =====================================================================
+stack:
+  android:
+    language: "Kotlin"
+    ui: "XML layouts + ViewBinding + Material 3 (Material Components, dark theme, dynamic color OFF)"
+    architecture: "MVVM + Clean Architecture, Coroutines, StateFlow (collect with repeatOnLifecycle)"
+    navigation: "Single Activity + Fragments with Navigation Component (nav graph XML), unless the audit shows an existing pattern to keep"
+    libs: "Retrofit 2, OkHttp3, Room/SQLite, DataStore, Coil. Do not add a DI framework without telling me."
+    sdk: "compileSdk 37, minSdk 24, targetSdk 37 (keep as is)"
+    backend_url: "BuildConfig.BACKEND_BASE_URL from local.properties key cms.backend.url, fallback http://10.0.2.2:8080/api/v1/"
+  backend:
+    language: "Java 17"
+    framework: "Spring Boot 3.4 (Spring Web)"
+    libs: "Spring Data JPA/Hibernate, Spring Security + JJWT, Jakarta Bean Validation, Flyway"
+    tests: "JUnit 5, Mockito, Testcontainers (skippable when Docker is unavailable)"
+    db: "PostgreSQL 16 (Supabase in cloud, docker-compose locally)"
+    hosting: "Render web service, health path /api/v1/health, GitHub Actions keep-alive"
+  repo_layout: |
+    app/        Android client (core, domain, feature, res)
+    backend/    Spring Boot service (db/migration for Flyway)
+    docs/       MASTER_PROMPT.yaml, AUDIT.md
+    Root Gradle multi-module build: include(":app", ":backend")
+  isolation_rules:
+    - ":app must not depend on :backend, and :backend must not depend on Android libraries."
+    - "Android plugins only in :app. Spring Boot plugins only in :backend."
+    - "One version catalog (gradle/libs.versions.toml) as the single source of versions."
+    - "Gradle JVM = JDK 17 for the whole build."
+
+# =====================================================================
+# 2. DESIGN LANGUAGE — "Dark Industrial Console" (keep and complete)
 # =====================================================================
 design_language:
-  name: "Dark Industrial Console"
-  personality: "Premium, calm, high-contrast dark UI with one vivid orange accent. Dense but breathable. Feels like a control panel."
+  reference: "Smart-home dark UI shot: dark charcoal cards, one vivid orange accent, big numbers over small gray labels."
   principles:
-    - "Dark charcoal surfaces layered by subtle elevation, never pure-black cards on pure-black background."
-    - "ONE accent color (orange) reserved for: active states, primary actions, selected chips, toggles, sliders, progress and chart highlights."
-    - "Everything is a rounded card. Large radii, soft 1px borders, faint inner gradient for depth. No hard drop shadows."
-    - "Big numbers, small gray labels: key figures are large and bold, supporting text is small and muted."
-    - "Icons are thin-line (outline) style, 20-24dp, inside rounded tiles when they act as category markers."
-    - "Generous spacing, consistent 16dp screen padding, 12dp gaps between cards."
-    - "Outdoor readability wins over decoration: minimum body text 14sp, touch targets at least 48dp, strong contrast."
-  tokens:
-    colors:
-      background: "#0F0F10"
-      surface: "#171718"            # bottom bar, sheets
-      card: "#1F1F20"               # standard card
-      card_elevated: "#262627"      # selected/pressed/nested tile
-      border: "#2E2E30"             # 1px card outline
-      divider: "#2A2A2C"
-      text_primary: "#FFFFFF"
-      text_secondary: "#A0A0A6"
-      text_tertiary: "#6E6E74"
-      accent: "#F26B1D"             # signature orange
-      accent_pressed: "#D95A10"
-      accent_tint: "#F26B1D26"      # accent at ~15% alpha for selected backgrounds
-      accent_on: "#FFFFFF"          # text/icons on accent
-      success: "#3DDC84"            # positive delta, completed
-      warning: "#F5B031"            # near deadline, low stock
-      error: "#FF5A4F"              # blocked, overdue, failed
-      info: "#4DA3FF"
-      chart_muted_bar: "#4A4A4D"    # gray segment of stacked bars
-      toggle_off_track: "#3A3A3C"
-    gradients:
-      card_surface: "vertical, #232324 -> #1B1B1C (very subtle)"
-      accent_button: "vertical, #F57A2E -> #E85F12"
-    shape:
-      radius_card: "20dp"
-      radius_tile: "16dp"
-      radius_chip: "14dp"
-      radius_pill: "999dp"
-      radius_icon_tile: "12dp"
-      radius_phone_image: "20dp"
-    stroke:
-      card: "1dp border"
-      selected_chip: "1dp accent"
-    spacing:
-      screen_padding: "16dp"
-      card_padding: "14dp"
-      grid_gap: "12dp"
-      section_gap: "24dp"
-      section_title_to_content: "12dp"
-    elevation:
-      approach: "No heavy shadows. Use color layering + 1dp border. FAB gets a soft orange glow (blur 16dp, accent at 35% alpha)."
-    motion:
-      duration_ms: { quick: 150, standard: 250, emphasized: 400 }
-      easing: "FastOutSlowIn"
-      rules:
-        - "Toggle, tab, segmented control and chip changes animate color/position (150-250ms)."
-        - "Bar chart bars grow from the baseline on first load."
-        - "Progress bars animate to value."
-        - "Press state: scale 0.97 + card_elevated color."
-  typography:
-    font_family: "Inter (fallback: Plus Jakarta Sans, then system sans). Load via Google Fonts downloadable fonts."
-    scale:
-      greeting:        { size: "12sp", weight: "Regular",  color: "text_secondary" }
-      screen_title:    { size: "18sp", weight: "SemiBold", color: "text_primary" }
-      section_title:   { size: "16sp", weight: "SemiBold", color: "text_primary" }
-      stat_value:      { size: "24sp", weight: "SemiBold", color: "text_primary", note: "unit (kWh-style) is 14sp Regular next to it" }
-      card_title:      { size: "14sp", weight: "Medium",   color: "text_primary" }
-      card_subtitle:   { size: "12sp", weight: "Regular",  color: "text_secondary" }
-      body:            { size: "14sp", weight: "Regular",  color: "text_primary" }
-      label_small:     { size: "11sp", weight: "Regular",  color: "text_tertiary" }
-      button:          { size: "14sp", weight: "SemiBold" }
-      accent_value:    { size: "16sp", weight: "SemiBold", color: "accent", note: "e.g. timer/deadline values" }
-  iconography:
-    style: "Outline, 1.5dp stroke, rounded joins"
-    library: "Material Symbols Outlined (rounded) or Lucide-style outline icons"
-    sizes: { nav: "24dp", card: "20dp", chip: "22dp", inline: "16dp" }
-    active_color: "accent"
-    inactive_color: "text_secondary"
+    - "Layered dark surfaces with 1dp borders and a very subtle card gradient. No heavy shadows."
+    - "ONE accent (safety orange) only for active states, primary actions, selected chips/tabs, toggles, sliders, progress and chart highlights."
+    - "Rounded cards (16-20dp). Consistent 16dp screen padding, 12dp gaps."
+    - "Outdoor readability first: body text 14sp minimum, 48dp touch targets, strong contrast. Fewer decorations."
+  colors:
+    background: "#0F0F10"
+    surface: "#171718"
+    card: "#1F1F20"
+    card_elevated: "#262627"
+    border: "#2E2E30"
+    divider: "#2A2A2C"
+    text_primary: "#FFFFFF"
+    text_secondary: "#A0A0A6"
+    text_tertiary: "#6E6E74"
+    accent: "#F26B1D"
+    accent_pressed: "#D95A10"
+    accent_tint: "#26F26B1D"
+    success: "#3DDC84"
+    warning: "#F5B031"
+    error: "#FF5A4F"
+    info: "#4DA3FF"
+    chart_muted_bar: "#4A4A4D"
+  note_on_tokens: "Reuse the tokens already in the repo's colors.xml/dimens.xml/styles. Add only what is missing. Keep them in ONE place."
+  typography: "Inter. greeting 12sp, screen_title 18sp SemiBold, section_title 16sp SemiBold, stat_value 24sp SemiBold, card_title 14sp Medium, body 14sp, label 11sp."
+  shapes: "card 20dp, tile 16dp, chip 14dp, pill fully rounded"
+  components_to_reuse_or_create:
+    - "GreetingHeader (avatar, name, bell with badge)"
+    - "WorkspaceSwitcher (company/project dropdown opening a bottom sheet)"
+    - "CategoryChipRow (icon tile chips; selected = accent tint + accent border)"
+    - "ProjectCard, StatCard (icon tile, big value, delta row), ValueRowCard, ConsumerListRow (thin accent progress bar)"
+    - "UnderlineTabs (TabLayout) for project workspace; SegmentedControl for time ranges"
+    - "StatusBadge: Draft(gray) Submitted(info) Approved(success) Rejected(error) Pending Sync(warning) Confirmed(success) Failed(error) Overdue(error) Active(accent)"
+    - "BottomNav with centered orange FAB for Quick Create (permission-filtered)"
+    - "ApprovalStepper, EmptyState, ErrorState, SkeletonLoading, form fields with unit suffix and inline validation"
+    - "Bar chart as custom Canvas view (accent = actual, gray = planned, tap tooltip)"
 
 # =====================================================================
-# 2. REUSABLE COMPONENT LIBRARY (build first, in core/ui)
+# 3. BUSINESS MODEL AND ROLES
 # =====================================================================
-components:
-  - name: CmsScaffold
-    spec: "Dark background, status-bar aware, optional top bar, bottom nav with centered FAB."
-  - name: GreetingHeader
-    spec: "Left: 40dp circular avatar + 'Good Morning,' (greeting style) over user name (screen_title). Right: bell icon button with optional orange dot badge."
-  - name: ProjectSwitcher
-    spec: "Text button like 'Green Valley Residency v' (section_title + chevron). Opens a bottom sheet of the projects the user is a member of."
-  - name: CategoryChipRow
-    spec: "Horizontal row of square-ish tiles (~72x64dp): icon on top, label below. Selected = accent_tint background + 1dp accent border + accent icon/label. Unselected = card background + border."
-  - name: ProjectCard
-    spec: "2-column grid card. Top: small status icon/thumbnail area. Title (card_title), subtitle (location/phase), kebab menu top-right, bottom-right pill toggle or progress ring. Used for pinned projects/sites."
-  - name: StatCard
-    spec: "Card with label (card_subtitle), icon in 32dp rounded tile top-right (accent icon), large stat_value with unit, and delta row: arrow icon (success/error) + small text like '12% less than last week'."
-  - name: UnderlineTabs
-    spec: "Text tabs; selected = accent text + 2dp accent underline; others text_secondary."
-  - name: SegmentedControl
-    spec: "Full-width rounded container (card color, pill radius); selected segment = filled accent pill with white text. Options like Day | Week | Month | Year."
-  - name: ActionTile
-    spec: "Rounded tile with icon + label, used for Quick Actions (4 across). Press state animates."
-  - name: ControlTile
-    spec: "Wide tile with 24dp icon at left, small label (card_subtitle) and accent value (e.g. 'On', '80%'). Used in the calculator screen for key inputs."
-  - name: AccentSlider
-    spec: "Track card_elevated, active portion accent, white circular thumb 24dp, tiny icons at both ends."
-  - name: ModeSelector
-    spec: "Row of 3 equal tiles. Selected = solid accent fill with white text/icon. Unselected = card with border. Shows title + small subtitle (e.g. M20 / 1:1.5:3)."
-  - name: ValueRowCard
-    spec: "Row card with label left, accent value right and chevron (e.g. 'Timer / Deadline  02:30:00 >')."
-  - name: BarChart
-    spec: "Custom Compose Canvas. Rounded-top bars, stacked: accent (actual) over chart_muted_bar (planned). Dashed horizontal gridlines in divider color, y labels in label_small. Tapping a bar shows a white tooltip bubble with dark text (e.g. '72 m3') and a small caret."
-  - name: ConsumerListRow
-    spec: "Icon in rounded tile, name (card_title), thin 3dp accent progress bar under it, right side value + percentage in text_secondary, chevron at the end."
-  - name: PrimaryFab
-    spec: "56dp circle, accent gradient, white '+' icon, soft orange glow, centered and overlapping the bottom bar by ~16dp."
-  - name: BottomNav
-    spec: "Surface color, rounded top corners (24dp). 4 destinations + center FAB gap. Selected = accent icon+label, others text_secondary. Labels 11sp."
-  - name: StatusBadge
-    spec: "Small pill: Draft(gray), Active(accent), On Hold(warning), Completed(success), Blocked/Overdue(error), Pending Sync(warning), Confirmed(success), Failed(error)."
-  - name: StateViews
-    spec: "Consistent Loading (skeleton shimmer on card color), Empty (outline icon + one line + action), Error (message + Retry) for every list/screen."
-  - name: FormFields
-    spec: "Filled dark text fields (card color, 16dp radius, accent focus border), unit suffix chip, inline validation message in error color, large 48dp+ targets."
-
-# =====================================================================
-# 3. NAVIGATION & SHELL
-# =====================================================================
-navigation:
-  bottom_nav:
-    - { label: "Home",     icon: "home" }
-    - { label: "Projects", icon: "apartment / folder" }
-    - { center_fab: "Quick Create (bottom sheet: Daily Report, Material Request, Expense, Task, Calculation)" }
-    - { label: "Tasks",    icon: "task_alt" }
-    - { label: "Tools",    icon: "construction",  note: "Engineer: calculators and measurements. Storekeeper: inventory. Accountant: expenses and invoices." }
-  profile_access: "Avatar in the GreetingHeader opens Profile/Settings (no Profile tab, to match the FAB layout)."
-  rules:
-    - "Items, FAB actions and project modules are filtered by the user's permissions."
-    - "Session check on launch: no session -> Login, valid session -> load user + permissions -> role dashboard."
-  project_workspace_modules: [Overview, Tasks, Calculators, Measurements, BOQ, Materials, Expenses, Documents, Reports]
-  project_workspace_pattern: "Uses UnderlineTabs like the 'Control / Schedule / Usage / Settings' header in the reference; show only authorized modules."
-
-# =====================================================================
-# 4. SCREEN MAPPING (reference screen -> CMS screen)
-# =====================================================================
-screens:
-  home_dashboard:
-    reference: "Screen 1 (Good Morning, My Home, Favorite Devices, Quick Actions)"
-    layout:
-      - "GreetingHeader (avatar, name, bell)."
-      - "ProjectSwitcher replaces 'My Home' dropdown."
-      - "CategoryChipRow: All, Projects, Tasks, Materials, Finance (role-dependent; chips replace All Devices/Lights/Security/Climate)."
-      - "Section 'Pinned Projects': 2-column ProjectCard grid (name, location, progress %, status toggle replaced by progress ring or StatusBadge)."
-      - "Section 'Quick Actions': 4 ActionTiles, role-dependent (e.g. Daily Report, Request Material, Calculator, Add Expense)."
-      - "Role-specific summary StatCards above or below pinned section (see role_dashboards)."
-  calculator_screen:
-    reference: "Screen 2 (Main Light control: hero image, Power/Brightness tiles, slider, Light Mode, Timer)"
-    example: "Concrete calculator"
-    layout:
-      - "Top bar: back arrow, title 'Concrete Calculator', settings/info icon."
-      - "UnderlineTabs: Calculate | History | Assumptions | Settings."
-      - "Hero card (rounded 20dp): schematic illustration of the element (slab/beam/column) in dark style with orange highlight."
-      - "ControlTiles for key inputs: Length, Width, Depth (accent value + unit)."
-      - "AccentSlider for wastage % (default 5%) or element thickness."
-      - "ModeSelector: concrete grade tiles (M15 / M20 / M25) with mix ratio subtitle. Mix assumptions must be shown and editable."
-      - "Result card: volume in m3 (stat_value), expandable 'Formula and steps' section, assumptions list, units always visible."
-      - "ValueRowCard: 'Link to BOQ item >' and primary accent button 'Save to project'."
-    rules:
-      - "Validate inputs (reject zero/negative/missing). Never show a plausible-looking result for invalid input."
-      - "Show formula, steps, assumptions, units. Persist inputs, outputs and calculation version when saved."
-      - "Concrete volume != cement/sand/aggregate quantity. Material estimates depend on mix, yield and wastage and are shown as estimates."
-      - "Add a footer note: quantity estimation only, not structural design."
-  budget_dashboard:
-    reference: "Screen 3 (Energy Usage: Day/Week/Month/Year, Total Usage, Total Cost, Usage Overview, Top Consumers)"
-    layout:
-      - "Top bar: back, title 'Project Cost', calendar icon (date range)."
-      - "SegmentedControl: Week | Month | Quarter | Total."
-      - "Two StatCards: 'Actual Cost' (Rs value, delta vs planned) and 'Budget Used' (percent, delta)."
-      - "Section 'Cost Overview': BarChart, accent = actual, gray = planned, tooltip on tap."
-      - "Section 'Top Material Consumption': ConsumerListRows (Cement, Steel, Sand, Aggregate...) with progress bar vs approved quantity, value and %."
-      - "Same BottomNav + FAB."
-  other_screens_to_derive_in_same_style:
-    - "Login / company onboarding (dark, accent button, large fields)."
-    - "Project list and project detail (workspace with UnderlineTabs)."
-    - "Task list with status chips (Pending, In Progress, Blocked, Completed) and priority tags."
-    - "Daily site report form (phone-friendly: dropdowns, photo upload tiles, labor counter steppers)."
-    - "BOQ list/detail with revision history and approval status badges."
-    - "Inventory (stock by location, low-stock warning in warning color), material request flow."
-    - "Expenses and approvals (states: Submitted > Verified > Approved > Paid shown as a stepper)."
-    - "Documents list with category chips and version badges."
-    - "Notifications list, Profile and settings."
-  role_dashboards:
-    company_admin:       [Total projects and employees, Company-wide status, Budget overview, Team and roles, Pending approvals]
-    project_manager:     [Assigned projects and progress, Deadlines and delays, Budget vs actual, Milestones, Pending approvals, Risks]
-    civil_engineer:      [Assigned projects, Calculators, Measurements and quantity takeoff, BOQ, Drawings and revisions]
-    site_supervisor:     [Today's tasks, Daily progress entry, Labor attendance, Site photos, Material requests, Issues]
-    storekeeper:         [Stock by location, Requests awaiting action, Goods received and issued, Low-stock alerts, Consumption and wastage]
-    accountant:          [Expenses and invoices, Payments due, Contractor bills, Budget variance, Reports]
-    contractor:          [Assigned work, Instructions and deadlines, Progress submission with photos, Bills]
-    client_owner:        [Approved progress reports, Milestones, Authorized budget summary, Approved documents]
-    note: "Reuse the same components. Only content, navigation and actions change by permission."
-
-# =====================================================================
-# 5. ANDROID ARCHITECTURE
-# =====================================================================
-android:
-  language: Kotlin
-  ui: "Kotlin + XML Layouts (Views) with ViewBinding and Material 3 Dark theme (Theme.Material3.Dark.NoActionBar); no Compose, no DataBinding"
-  theme_rule: "Dark industrial console theme in styles.xml and colors.xml. Dark background (#0F0F10), elevated cards (#1F1F20, #262627), and orange accent (#F26B1D)."
-  architecture: "MVVM + feature-based Clean Architecture (presentation / domain / data per feature, only where the feature is non-trivial)"
-  libraries:
-    navigation: "Jetpack Navigation Component (nav_graph.xml, NavHostFragment, ViewPager2, BottomAppBar)"
-    state: "ViewModel + StateFlow (single UiState per screen)"
-    di: Hilt
-    network: "Retrofit + OkHttp (auth interceptor, no secrets in code)"
-    serialization: "Gson / Moshi"
-    local_db: "Room"
-    preferences: "DataStore"
-    background: "WorkManager (SyncWorker, UploadWorker)"
-    images: Coil
-    testing: "JUnit, coroutine test, Espresso"
-  package_root: "com.example.contruction_management_app"
+business_model:
+  customer: "Construction company managing several projects at once."
   structure: |
-    app/src/main/java/com/example/contruction_management_app/
-      MainActivity.kt
-      core/        navigation/ network/ auth/
-      domain/      model/ repository/
-      feature/     auth/ dashboard/ project/ task/ tools/ gallery/ shell/
-    app/src/main/res/
-      layout/      activity_main.xml, fragment_*.xml, item_*.xml, bottom_sheet_*.xml
-      navigation/  nav_graph.xml
-      menu/        bottom_nav_menu.xml
-      drawable/    bg_*.xml, ic_*.xml
-      values/      colors.xml, dimens.xml, styles.xml, themes.xml, strings.xml
-  feature_template: |
-    feature/<name>/
-      presentation/  <Name>Fragment.kt, <Name>ViewModel.kt, <Name>UiState.kt
-      domain/        model, repository interface, use cases
-      data/          RepositoryImpl, RemoteDataSource, Dto
-  ui_state_rules:
-    - "Every screen handles Loading, Success, Error and Empty."
-    - "Use consistent units, date format and currency formatting (INR, Indian digit grouping, e.g. Rs 2,50,00,000 or Rs 2.5 Cr)."
-    - "Support different screen sizes and larger font scales without clipping."
-    - "Add contentDescription to icons and ensure contrast meets WCAG AA."
+    Company
+      Company Admin
+      Project A -> Project Manager, Civil Engineer, Site Supervisor, Storekeeper, Accountant, Contractors
+      Project B -> Project Manager, Site Engineer, Site Supervisor, other assigned staff
+      Company-wide reports and settings
+  key_rules:
+    - "Users belong to a company. Their access to projects is decided by PROJECT MEMBERSHIP."
+    - "Role = what kind of actions are allowed. Project membership = which projects are visible. Both are mandatory checks."
+    - "Do NOT use a simple hierarchy where higher roles inherit everything. Authority depends on the action (an accountant cannot edit drawings, an engineer cannot approve payments)."
+    - "Separate SUBMITTING a request from APPROVING it. A requester cannot approve their own request."
+    - "A user not assigned to a project must not be able to open it even by guessing its id. Backend returns 404/403."
+    - "Removing a member revokes future access but keeps historical records."
+    - "Laborers, drivers, suppliers and visitors do NOT get accounts in v1. Supervisors record labor attendance."
+  roles:
+    platform_level:
+      - { name: SUPER_ADMIN, scope: "Operates the platform across companies. Not visible to or usable by companies." }
+    company_level:
+      - { name: COMPANY_ADMIN, scope: "Company profile, employees, invitations, role assignment, all company projects, settings." }
+      - { name: ACCOUNTANT, scope: "Company or project finances depending on assignment: expenses, bills, payments, budget variance." }
+    project_level:
+      - { name: PROJECT_MANAGER, scope: "Creates and coordinates projects (if permitted), assigns team, tasks, milestones, approvals." }
+      - { name: CIVIL_ENGINEER, scope: "Technical documents, quantities, BOQ, calculations, inspections, drawings." }
+      - { name: SITE_SUPERVISOR, scope: "Daily site diary, labor, work progress, site issues, material requests." }
+      - { name: STOREKEEPER, scope: "Stock, goods receipts, material issues, returns, low-stock alerts." }
+      - { name: CONTRACTOR, scope: "Assigned work packages, progress submissions, claims. Limited external access." }
+    external:
+      - { name: CLIENT_OWNER, scope: "Read-only approved progress, milestones, documents, invoices; approves agreed milestones." }
+  v1_priority_roles: [COMPANY_ADMIN, PROJECT_MANAGER, CIVIL_ENGINEER, SITE_SUPERVISOR, STOREKEEPER, ACCOUNTANT]
+  later_roles: [CONTRACTOR, CLIENT_OWNER]   # Keep their enums and basic read-only screens, deepen later.
+  who_can_create_project: "Company Admin and Project Manager (configurable by company setting). Client never creates internal projects."
+
+  permission_matrix:
+    note: "Starting point. Implement as data (permissions table) plus code constants, not scattered if-statements."
+    view_project_overview:   { PM: "assigned/all", ENG: "assigned", SUP: "assigned", STORE: "assigned", ACC: "assigned", CONTRACTOR: "assigned", CLIENT: "read-only" }
+    create_edit_project:     { COMPANY_ADMIN: yes, PM: yes, others: no }
+    manage_project_team:     { COMPANY_ADMIN: yes, PM: yes, others: no }
+    edit_boq_drawings:       { ENG: yes, PM: "approve/manage", SUP: "view relevant", STORE: "view quantities", ACC: "view costs", CONTRACTOR: "assigned scope", CLIENT: "approved only" }
+    daily_site_reports:      { SUP: "create", PM: "review", ENG: "technical input", ACC: "view relevant", CONTRACTOR: "submit work updates", CLIENT: "approved only" }
+    material_requests:       { SUP: "request", ENG: "request/recommend", PM: "approve", STORE: "process/issue", ACC: "view costs", CONTRACTOR: "request for assigned work" }
+    expenses_payments:       { SUP: "submit", STORE: "record material transactions", ACC: "manage", PM: "approve within limits", CONTRACTOR: "submit claims", CLIENT: "view invoices, approve milestones" }
+    inspections_defects:     { ENG: "inspect", SUP: "report", PM: "review", CONTRACTOR: "fix assigned", CLIENT: "view reports" }
+    close_project:           { PM: "initiate", ENG: "technical sign-off", SUP: "site sign-off", STORE: "stock reconciliation", ACC: "financial reconciliation", CLIENT: "final approval if required" }
+
+  membership_example:
+    - "Rahul: global role Project Manager, lead on Project A and Project B."
+    - "Priya: Civil Engineer on Project A. Amit: Site Supervisor on Project A. Neha: Accountant on Project A. Vikram: Contractor (masonry package) on Project A."
+    - "The same user can have different project roles on different projects."
 
 # =====================================================================
-# 6. BACKEND, DATABASE, SECURITY
+# 4. ACCESS MODEL (build first — Phase 1)
 # =====================================================================
-backend:
-  stack: "Java 17, Spring Boot 3.4.2, Spring Web, Spring Data JPA / Hibernate, Flyway, PostgreSQL, Spring Security (@PreAuthorize), JWT, JUnit 5, Mockito, Lombok"
-  structure: |
-    backend/
-      build.gradle.kts
-      src/main/java/com/example/contruction_management_app/backend/
-        BackendApplication.java
-        config/        SecurityConfig
-        security/      JwtTokenProvider, JwtAuthenticationFilter, UserPrincipal
-        domain/        Organization, Role, Permission, User, Project, ProjectMember, Phase, Task
-        repository/    UserRepository, RoleRepository, ProjectRepository, TaskRepository, etc.
-        service/       AuthService, ProjectService, TaskService, DashboardService
-        dto/           LoginRequest, TokenResponse, UserDto, ProjectResponseDto, etc. (Java Records)
-        api/v1/        AuthController, ProjectController, TaskController, DashboardController, HealthController
-        exception/     GlobalExceptionHandler, ResourceNotFoundException, etc.
-      src/main/resources/
-        application.yml, db/migration/V1__initial_schema.sql, db/migration/V2__seed_demo_data.sql
-      src/test/java/
-  principles:
-    - "Controllers stay thin. Business rules live in services. Formulas live in calculations/."
-    - "Consistent response envelope, correct HTTP status codes, pagination for lists, clear error messages."
-    - "Every protected operation checks BOTH role permission AND project membership AND organization via Spring Security @PreAuthorize."
-  key_endpoints:
-    - "POST /api/v1/projects | GET /api/v1/projects | GET /api/v1/projects/{id} | PATCH /api/v1/projects/{id}"
-    - "POST /api/v1/calculators/concrete | POST /api/v1/calculations"
-    - "POST /api/v1/boqs"
-    - "POST /api/v1/material-requests | POST /api/v1/inventory/transactions"
-    - "POST /api/v1/expenses | POST /api/v1/approvals/{id}/decision"
-    - "GET /api/v1/reports/project/{id}"
+access_model:
+  concepts: [User, CompanyMembership, ProjectMembership, Permission]
+  backend_check_for_every_project_request:
+    - "1. Validate JWT and load the user."
+    - "2. Check the project exists AND belongs to the user's company."
+    - "3. Verify active ProjectMembership, or an authorized company-level admin role."
+    - "4. Check the permission for the requested action on this resource."
+    - "5. Return only data this user is allowed to see."
+  implementation:
+    - "Create a PermissionService / custom method-security bean (for example @projectAccess.can(#projectId, 'BOQ_EDIT')) used with @PreAuthorize, because a role annotation alone cannot check project membership."
+    - "JWT carries user id and company id. Project roles and permissions are loaded server-side from the DB, never from client input."
+    - "All repositories used by controllers must be company-scoped (findByIdAndCompanyId...)."
+    - "Document download, export and background jobs must apply the same checks."
+    - "Add an /api/v1/me endpoint returning user, company memberships, project memberships and effective permissions. The app uses it to build role-aware navigation."
+  invitations:
+    flow: "Admin/PM invites by email or username -> invitation (pending, expiry) -> user accepts -> membership becomes ACTIVE -> project appears in their list."
+    rules: ["Pending invitations grant no access.", "New registration never makes someone a company admin."]
+  multi_workspace: "If a user has several companies or roles, show a workspace/project switcher instead of picking one arbitrarily."
 
+# =====================================================================
+# 5. ROLE-AWARE APP FLOW (Android)
+# =====================================================================
+app_flow:
+  launch: |
+    App launch -> check session -> (none: Login) / (valid: GET /me)
+    -> load company, memberships, permissions -> route to the role's home
+  shell:
+    - "One Activity, one NavHost, one bottom bar with centered FAB. Items are built from the permissions in /me."
+    - "Home, Projects, [+ Quick Create], Tasks, Tools. Profile opens from the avatar."
+    - "Tools tab content depends on role: Engineer = calculators, measurements, BOQ. Storekeeper = inventory. Accountant = expenses and invoices."
+    - "Hide what the user cannot use, but the backend still enforces everything."
+  role_homes:
+    COMPANY_ADMIN: "Company overview, employees and invitations, roles, company-wide project status, pending approvals."
+    PROJECT_MANAGER: "Project portfolio, milestones, delays, tasks awaiting review, budget vs actual, pending approvals, team activity."
+    CIVIL_ENGINEER: "Assigned drawings and revisions, BOQ, calculations, inspections awaiting action, defects to verify."
+    SITE_SUPERVISOR: "Today's tasks, daily report to submit, labor attendance, site issues, material requests and deliveries."
+    STOREKEEPER: "Stock by site, incoming deliveries, requests awaiting processing, issued and returned, low-stock alerts."
+    ACCOUNTANT: "Expenses awaiting approval, supplier bills and due dates, payments and receivables, budget variance."
+    CONTRACTOR: "Assigned work packages, deadlines, progress submissions, corrections."
+    CLIENT_OWNER: "Milestones, approved progress reports, documents, invoices, pending client decisions."
+    SUPER_ADMIN: "Companies, platform health, global users, audit activity."
+    rule: "Each home answers: What do I need to know or act on today? Do NOT show the same cards with a few buttons hidden. Reuse components, change content, priorities and actions."
+  project_workspace:
+    tabs: [Overview, Team, Tasks, Daily Reports, BOQ and Measurements, Documents, Materials, Expenses, Inspections, Approvals, Reports and Activity]
+    rule: "Show only tabs the user is permitted to open. Use UnderlineTabs."
+  navigation_tree: |
+    Company workspace
+      Company dashboard -> Employees and Invitations, Roles and Permissions, Company reports
+      Projects -> Create Project (if allowed), My Projects -> Project workspace (tabs above)
+
+# =====================================================================
+# 6. FEATURE MAP
+# =====================================================================
+features:
+  organization:
+    must: [Company profile, Employee directory, Invitations, Roles and permissions, Project membership, Team reassignment with history kept, Password reset and session management, Audit log]
+    later: [Departments, Custom role builder]
+  project_management:
+    - "Create project: name, type, address, client, start and planned completion dates, contract details, budget."
+    - "Status: Draft, Planning, Active, On Hold, Completed, Archived."
+    - "Configurable breakdown: phases, work packages, tasks (do not hard-code floors; allow other project types)."
+    - "Milestones, schedule with dependencies, budget (approved, committed, actual, forecast), change requests, project closure checklist."
+    - "Project becomes Active only after required setup (team assigned, budget set). Approval rules are configurable per company."
+  task_lifecycle: "Planned -> Assigned -> In Progress -> Submitted for Review -> Approved -> Completed. Rejected -> Corrections Required -> Resubmitted. Review is configurable per task type."
+  site_operations:
+    - "Daily site diary (date, weather, activities, issues, labor headcount)."
+    - "Work progress with planned, reported and VERIFIED quantities stored separately."
+    - "Photo evidence linked to project, task, location and date."
+    - "Labor attendance by trade or subcontractor, recorded by supervisors."
+    - "Inspections with checklists, snag list (pass/fail), defects with owner, deadline and re-inspection."
+    - "Safety reporting and incident severity. Equipment tracking and measurement records (later if time is short)."
+  engineering:
+    - "Calculators: concrete (M15/M20/M25), brickwork and mortar, steel weight (D^2/162 x L), excavation and backfill, plastering and flooring, unit conversion, cost estimation. Keep the existing calculation engine and its tests."
+    - "Each calculator validates input, shows formula, steps, assumptions and units, and can be saved to a project and linked to a BOQ item."
+    - "Quantity estimation only, not structural design. Show a note."
+    - "BOQ: items, unit rates, estimated vs consumed quantities, variance, revisions and approval. Never overwrite an approved BOQ without a revision trail."
+  materials_procurement:
+    - "Material catalogue, suppliers, site-level stock locations."
+    - "Stages are SEPARATE records: Request -> Approval -> Purchase requisition/PO -> Delivery receipt (GRN) -> Stock issue -> Return/wastage/adjustment."
+    - "Every stock movement is an immutable transaction with a reason. Balance is derived, never edited directly."
+    - "Low-stock alerts and consumption reports."
+  finance:
+    - "Budget by category. Expense entry with receipt, approval (Submitted -> Verified -> Approved -> Paid as distinct states)."
+    - "Supplier bills, purchase commitments, payment tracking, client invoices and receivables."
+    - "Cost summary: Approved budget, Committed, Actual, Forecast. An approved PO is not a paid expense."
+  documents_communication:
+    - "Drawings, BOQs, contracts, permits with version history, uploader, category, approval status and access permissions."
+    - "Comments on tasks, requests, expenses, inspections. In-app notifications only to people who must act."
+  reporting:
+    - "Dashboards are DERIVED from persisted data, never separately entered. A task is not complete just because it was submitted."
+    - "Project progress, budget variance, stock movement, delayed tasks, labor, approvals."
+
+# =====================================================================
+# 7. DATA FLOWS
+# =====================================================================
+data_flow:
+  overall: "Android (screens, ViewModels, Room queue) -> HTTPS + JWT -> Spring Boot (authenticate, authorize, validate rules, execute workflow) -> PostgreSQL + file storage -> derived reports, notifications, audit log."
+  project_creation: "PM submits form -> backend checks permission and company -> validates -> ONE transaction: save project + create memberships -> notify assignees -> project appears in their lists."
+  task_progress: "Manager creates task -> assignee notified -> supervisor submits progress + photos (reported) -> engineer/manager reviews -> Approve = verified progress updated, Reject = corrections recorded -> resubmit."
+  material_and_finance: "Supervisor request -> approver decision -> storekeeper checks stock -> issue from stock OR purchase order -> delivery receipt -> inventory updated -> stock issued -> project cost records. Each stage is its own record and status."
+  offline:
+    - "Create record offline -> save in Room with a client-generated UUID -> mark PENDING_SYNC -> send when online (idempotency key) -> server validates permissions and rules -> CONFIRMED or FAILED/CONFLICT."
+    - "Never silently overwrite newer server data. Show Pending Sync, Confirmed, Failed badges."
+    - "Stock issues, payments and approval decisions need server confirmation and must not be shown as confirmed while pending."
+    - "Keep the existing SyncQueueItem engine. Extend it, do not replace it."
+
+# =====================================================================
+# 8. DATABASE (new Flyway migrations only)
+# =====================================================================
 database:
-  engine: PostgreSQL
-  groups:
-    users_permissions: [users, organizations, organization_members, roles, permissions, role_permissions, project_members, invitations]
-    projects_execution: [projects, project_phases, buildings, floors, tasks, task_dependencies, milestones, daily_site_reports, site_issues, labor_attendance]
-    engineering: [calculations, calculation_versions, measurements, boqs, boq_items, boq_item_sources, unit_rates]
-    inventory_purchasing: [materials, warehouses, inventory_transactions, material_requests, suppliers, purchase_orders, purchase_order_items, goods_receipts, material_consumption]
-    finance_documents: [budgets, expenses, invoices, payments, contractors, contractor_bills, documents, document_versions, approvals, notifications, audit_logs]
+  principle: "Reconcile this logical model with the EXISTING V1-V6 schema (see AUDIT.md). Add only what is missing in new migrations V7+."
+  entities:
+    access: [companies, users, company_memberships, roles, permissions, role_permissions, project_memberships, invitations]
+    projects: [projects, project_phases, work_packages, milestones, tasks, task_assignments, task_dependencies]
+    site: [daily_reports, work_progress, labor_attendance, inspections, defects, safety_incidents, measurements]
+    engineering: [calculations, boqs, boq_items, drawings, document_versions]
+    materials: [materials, inventory_locations, stock_transactions, material_requests, suppliers, purchase_orders, goods_receipts]
+    finance: [budgets, expenses, supplier_invoices, client_invoices, payments]
+    platform: [documents, attachments, approvals, notifications, audit_logs]
   rules:
-    - "Foreign keys, indexes on hot columns, constraints for critical invariants."
-    - "Money and quantities use DECIMAL/NUMERIC, never floats. Units are explicit (kg, tonne, m2, m3)."
-    - "Project hierarchy is configurable (building floors vs road chainage). Do not hard-code buildings with floors."
-    - "Every company-owned record carries organization_id (multi-company isolation)."
-    - "Stock balance changes only via recorded inventory_transactions. Never edit a balance directly."
-    - "Approved BOQs are never overwritten. Revisions keep the original estimate."
-    - "Expense states are distinct: Submitted, Verified, Approved, Paid."
-
-security:
-  - "Auth via Supabase Auth, tokens validated on the backend with expiry handling."
-  - "Organization isolation on reads, updates, downloads, exports and background jobs."
-  - "Authorized file upload/download for documents (private storage, metadata in PostgreSQL)."
-  - "Audit logs for important actions and approval decisions (who, what, when, comment)."
-  - "Input validation for quantities, units, IDs and amounts."
-  - "Idempotency keys on stock issues and payments to prevent duplicates on retry."
-  - "New registrants never become company admin automatically; use invitations and controlled role assignment."
-  - "A user cannot approve their own request by manipulating the client."
-
-roles:
-  list: [Super Admin, Company Admin, Project Manager, Civil Engineer, Site Supervisor, Storekeeper, Accountant, Contractor, Client/Owner]
-  rule: "Role decides WHAT actions are allowed. Project membership decides WHICH projects are visible. Both checks are mandatory."
-
-offline:
-  allowed_offline: [Downloaded project details, Calculator formulas and local history, Draft daily reports, Draft task updates, Photos pending upload, Measurements pending sync]
-  needs_server_confirmation: [Stock issuance, Payments, Approval decisions, Shared budget changes, Conflicting task/document edits]
-  workflow: "Save draft in Room -> mark Pending Sync -> queue via WorkManager -> server validates permissions and state -> mark Confirmed or Failed -> surface conflicts to the user."
-  ui_rule: "Always show distinct StatusBadges: Pending Sync, Confirmed, Failed. Never display a payment or stock issue as confirmed before the server confirms."
+    - "Every project-related row carries company_id and project_id and is always queried with company scope."
+    - "Money and quantities use NUMERIC/BigDecimal, with explicit units."
+    - "Foreign keys, indexes on company_id/project_id/status/dates, CHECK constraints for critical invariants."
+    - "Use soft delete or archive for users and projects. Keep history when employees leave."
+    - "Approvals table records submitter, reviewer, decision, time and comment."
+    - "Idempotency key column on stock transactions, expenses and payments."
 
 # =====================================================================
-# 7. ROADMAP (execute strictly in order)
+# 9. SECURITY AND RELIABILITY
+# =====================================================================
+security:
+  - "Backend authorization on every endpoint including downloads and exports."
+  - "Audit log for sensitive actions and approval decisions (who, what, when)."
+  - "Backend input validation (Jakarta Bean Validation). Reject negative or zero quantities and invalid units."
+  - "Database transactions for related writes. Prevent duplicate stock issues and payments with idempotency."
+  - "Secrets only through environment variables (DB_URL, DB_USERNAME, DB_PASSWORD, JWT_SECRET) and local.properties. Nothing sensitive in the repo or README."
+  - "Dev-only features (master demo password, seeded demo users) only under the dev profile."
+  - "Debug-only cleartext config for http://10.0.2.2:8080. Release uses HTTPS only."
+  - "Backups for the database and files. Separate dev, staging and production configuration."
+
+# =====================================================================
+# 10. ROADMAP — build strictly in this order
 # =====================================================================
 roadmap:
-  phase_1_foundation:
-    tasks:
-      - "Inspect the existing blank project (see existing_project), then add version catalog entries, Hilt, Navigation Compose and Compose Material 3 to it."
-      - "Implement design tokens, CmsTheme, typography and ALL core components from `components` with a debug-only component gallery screen."
-      - "Login and session handling, backend connection, role/permission loading."
-      - "Shell: BottomNav + center FAB with permission-filtered items."
-      - "Backend: Pure Java 17 / Spring Boot 3.4 skeleton, auth validation, PostgreSQL schema + Flyway migrations for users/orgs/roles/project_members/tasks/calculations."
-    deliverable: "Authenticated, role-aware app with the full dark orange design system in place."
-  phase_2_projects:
-    tasks: ["Create/edit projects", "List assigned projects", "Project details and team", "Phases and tasks", "Role-specific home dashboards (screen: home_dashboard)"]
-  phase_3_calculators:
-    tasks: ["Concrete, steel, brickwork, excavation, plaster, painting, unit conversion", "Calculation history and project linking (screen: calculator_screen)"]
-  phase_4_boq_site_ops:
-    tasks: ["Measurements", "BOQ items, unit rates, revisions, approvals", "Daily site reports, labor attendance, task progress, site issues"]
-  phase_5_inventory_finance:
-    tasks: ["Material catalogue, requests, stock issuance", "Purchase orders and goods receipts", "Expenses, invoices, contractor bills, approvals", "Cost dashboard (screen: budget_dashboard)"]
-  phase_6_production:
-    tasks: ["Offline sync", "Notifications and background uploads", "Document versioning", "Audit reports", "Performance and security testing", "Backups and signed AAB"]
-  out_of_scope_for_v1: ["AI drawing analysis", "Automated quantity takeoff", "Predictive analytics"]
+  phase_1_access_foundation:
+    scope:
+      - "Audit and docs/AUDIT.md; fix README credential exposure and master-password guard."
+      - "Migrations for company_memberships, project_memberships, invitations, permissions as needed."
+      - "PermissionService with project-scoped checks; company-scoped repositories; GET /me."
+      - "Invitations and employee management (Company Admin)."
+      - "Android: role-aware routing after login, permission-driven bottom bar and Quick Create, separate role home screens, workspace/project switcher."
+    done_when: "A user sees only authorized projects and actions. Direct calls to another project's id are rejected. Each role lands on its own home."
+  phase_2_project_workspace:
+    scope: ["Create/edit project, status lifecycle", "Team and assignments", "Milestones, work packages, tasks with review lifecycle", "Project overview"]
+    done_when: "A Project Manager can create a project, assign a team, and coordinate tasks; assignees see the project."
+  phase_3_site_operations:
+    scope: ["Daily site diary", "Reported vs verified progress", "Photos", "Documents and drawing revisions", "Inspections, defects, approvals"]
+  phase_4_materials:
+    scope: ["Material requests and approvals", "Goods receipts, stock issues, returns, adjustments", "Inventory ledger and low-stock alerts"]
+  phase_5_finance:
+    scope: ["Budgets, expenses with approval states", "Supplier bills, purchase commitments, invoices, payments", "Cost summary and variance"]
+  phase_6_reporting_reliability:
+    scope: ["Company and project dashboards", "Notifications", "Offline sync hardening and conflicts", "Audit coverage, backups, security tests"]
+  deferred: [Payroll, Supplier portal, Predictive analytics, Complex scheduling, Custom role builder, AI drawing analysis]
 
 # =====================================================================
-# 8. TESTING AND DEFINITION OF DONE
+# 11. ANDROID STUDIO SAFETY (no conflicts when I open and run it)
 # =====================================================================
+android_studio_safety:
+  - "Keep the multi-module build intact and the .run configurations working."
+  - "Do not touch .idea/, local.properties, *.iml. Keep .gitignore complete (build/, .gradle/, .idea/, local.properties, *.iml, .env)."
+  - "No duplicate or conflicting dependency declarations. Add dependencies only through the version catalog and only when a phase needs them."
+  - "No unused imports, no dead files, no leftover Compose artifacts."
+  - "XML only: all layouts use ViewBinding. Lists use RecyclerView with ListAdapter + DiffUtil."
+  - "Both modules must build and run independently: ':app:assembleDebug' and ':backend:bootRun'."
+
+verification:
+  commands:
+    - "./gradlew clean"
+    - "./gradlew :app:assembleDebug"
+    - "./gradlew :app:lintDebug"
+    - "./gradlew :app:testDebugUnitTest :backend:test"
+    - "./gradlew :backend:build"
+    - "./gradlew :backend:bootRun, then GET /api/v1/health returns 200"
+  must_confirm:
+    - "Gradle sync passes without warnings about duplicate classes or Java/Kotlin version mismatch."
+    - "The app launches on the emulator and each role reaches its own home (attach screenshots)."
+    - "Authorization tests: wrong role, wrong project and wrong company are rejected; a user cannot approve their own request."
+
 testing:
-  unit: "Calculator formulas against known reference examples, unit conversions, validation, cost math, boundary cases (zero, negative, invalid units, missing inputs)."
-  viewmodel: "Loading, success, error, empty states."
-  api: "Validation, auth, status codes."
-  authorization: "Cross-project and cross-organization access is denied; self-approval is denied."
-  database: "Constraints and transaction integrity."
-  integration: "Workflows: create project -> calculate -> BOQ -> approve; request -> approve -> issue material -> low-stock alert."
-  concurrency: "Concurrent and duplicate stock-issue requests."
-  android_ui: "Navigation, forms, role-specific screens, error handling."
-  offline: "Pending updates, retries, sync conflicts."
+  - "Backend: permission tests for every role (allowed and forbidden), cross-company and cross-project access, approval and rejection flows, stock balance and financial calculations, idempotent retries."
+  - "Android: ViewModel tests for loading, success, error, empty; role-based navigation tests; offline retry and duplicate submission tests."
+  - "Calculators: known reference examples and boundary cases (zero, negative, invalid units must never give plausible results)."
 
 definition_of_done:
-  - "Builds cleanly and all tests pass."
-  - "UI matches the design tokens: no hard-coded colors/sizes, orange accent used only for active/primary states."
-  - "Screenshot of every new screen attached for review, checked at normal and large font scale."
-  - "Loading, empty, error and success states implemented."
-  - "Permission and organization checks verified for every new backend endpoint."
-  - "No secrets in the app. README updated."
+  - "Builds cleanly and all tests pass in both modules."
+  - "No hard-coded colors, sizes or strings. Design tokens used. Orange only for active and primary states."
+  - "Loading, empty, error and success states for every screen."
+  - "Every new endpoint has company, project-membership and permission checks plus tests."
+  - "No secrets or credentials anywhere in the repo or docs."
+  - "docs/MASTER_PROMPT.yaml and docs/AUDIT.md updated."
 
 first_task_for_agent: >
-  Read this whole file. First inspect the existing blank Android project in the
-  open workspace (see existing_project) and report what you found: package name,
-  SDK and tool versions, and whether Compose is already set up. Then produce an
-  implementation plan for Phase 1 only, starting with the design tokens,
-  CmsTheme and the component gallery, and wait for my approval before writing code.
+  Read this whole file. Do NOT write feature code yet. First produce docs/AUDIT.md
+  by inspecting the existing repository as described in audit_first, including the
+  credential-exposure finding. Then give me an implementation plan for Phase 1 only
+  (migrations, permission service, /me endpoint, invitations, role-aware Android
+  routing and home screens) and wait for my approval.

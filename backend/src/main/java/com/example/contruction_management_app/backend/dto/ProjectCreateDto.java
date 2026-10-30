@@ -17,5 +17,14 @@ public record ProjectCreateDto(
 
     @NotNull(message = "Budget is required")
     @Positive(message = "Budget must be positive")
-    BigDecimal budgetInr
-) {}
+    BigDecimal budgetInr,
+
+    String projectType,
+    String clientName,
+    String startDate,
+    String endDate
+) {
+    public ProjectCreateDto(String name, String code, String location, BigDecimal budgetInr) {
+        this(name, code, location, budgetInr, "Commercial", "Apex Developments", null, null);
+    }
+}

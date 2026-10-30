@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cms_surface"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Site Inspection"
+        android:textColor="@color/cms_text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Execute digital quality, safety, or structural checklist"
+        android:textColor="@color/cms_text_tertiary"
+        android:textSize="12sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilInspectionTitle"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Inspection Title"
+        android:textColorHint="@color/cms_text_tertiary"
+        app:boxStrokeColor="@color/cms_accent"
+        app:hintTextColor="@color/cms_accent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etInspectionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:textColor="@color/cms_text_primary"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Inspection Type Chips -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Inspection Discipline:"
+        android:textColor="@color/cms_text_secondary"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupInspectionType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipQuality"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Quality"
+            android:textColor="@color/cms_text_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipSafety"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Safety"
+            android:textColor="@color/cms_text_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipStructural"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Structural"
+            android:textColor="@color/cms_text_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMep"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MEP"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilLocation"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Site Location / Grid Ref"
+        android:textColorHint="@color/cms_text_tertiary"
+        app:boxStrokeColor="@color/cms_accent"
+        app:hintTextColor="@color/cms_accent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:textColor="@color/cms_text_primary"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Checklist Items -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Standard Checklist Items:"
+        android:textColor="@color/cms_text_secondary"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cbChecklist1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Structural alignment &amp; dimensions within tolerance"
+        android:textColor="@color/cms_text_primary"
+        android:textSize="13sp" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cbChecklist2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Formwork cleanliness, oiling &amp; bracing stability"
+        android:textColor="@color/cms_text_primary"
+        android:textSize="13sp" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cbChecklist3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Edge fall protections &amp; PPE compliance"
+        android:textColor="@color/cms_text_primary"
+        android:textSize="13sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilInspectionNotes"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Inspection Observations / Notes"
+        android:textColorHint="@color/cms_text_tertiary"
+        app:boxStrokeColor="@color/cms_accent"
+        app:hintTextColor="@color/cms_accent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etInspectionNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:textColor="@color/cms_text_primary"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="Cancel"
+            android:textColor="@color/cms_text_secondary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmitInspection"
+            style="@style/Widget.CMS.Button.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:text="Submit Inspection" />
+    </LinearLayout>
+
+</LinearLayout>

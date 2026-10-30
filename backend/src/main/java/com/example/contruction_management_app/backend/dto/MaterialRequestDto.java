@@ -17,6 +17,9 @@ public record MaterialRequestDto(
     LocalDate requiredByDate,
     String requestedBy,
     String approvedBy,
+    String rejectionReason,
+    String issuedBy,
+    Instant issuedAt,
     MaterialRequestStatus status,
     String phaseOrTaskDesc,
     Instant createdAt
@@ -32,6 +35,9 @@ public record MaterialRequestDto(
             r.getRequiredByDate(),
             r.getRequestedBy(),
             r.getApprovedBy(),
+            r.getRejectionReason(),
+            r.getIssuedBy(),
+            r.getIssuedAt(),
             r.getStatus(),
             r.getPhaseOrTaskDesc(),
             r.getCreatedAt()

@@ -5,6 +5,8 @@ import com.example.contruction_management_app.backend.dto.ProjectDetailDto;
 import com.example.contruction_management_app.backend.dto.ProjectMemberAssignDto;
 import com.example.contruction_management_app.backend.dto.ProjectMemberDto;
 import com.example.contruction_management_app.backend.dto.ProjectResponseDto;
+import com.example.contruction_management_app.backend.dto.ProjectStatusUpdateDto;
+import com.example.contruction_management_app.backend.dto.ProjectUpdateDto;
 import com.example.contruction_management_app.backend.security.UserPrincipal;
 import com.example.contruction_management_app.backend.service.ProjectService;
 import jakarta.validation.Valid;
@@ -60,6 +62,37 @@ public class ProjectController {
         return ResponseEntity.ok(detail);
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("@projectAccess.can(#id, 'projects:edit') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN')")
+    public ResponseEntity<ProjectResponseDto> updateProject(
+        @PathVariable String id,
+        @Valid @RequestBody ProjectUpdateDto dto,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        ProjectResponseDto updated = projectService.updateProject(id, dto, principal);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("@projectAccess.can(#id, 'projects:edit') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN')")
+    public ResponseEntity<ProjectResponseDto> updateProjectStatus(
+        @PathVariable String id,
+        @Valid @RequestBody ProjectStatusUpdateDto dto,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        ProjectResponseDto updated = projectService.updateProjectStatus(id, dto, principal);
+        return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/{id}/members")
+    public ResponseEntity<List<ProjectMemberDto>> listMembers(
+        @PathVariable String id,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        List<ProjectMemberDto> members = projectService.listProjectMembers(id, principal);
+        return ResponseEntity.ok(members);
+    }
+
     @PostMapping("/{id}/members")
     @PreAuthorize("hasAuthority('projects:edit') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN')")
     public ResponseEntity<ProjectMemberDto> assignMember(
@@ -69,5 +102,16 @@ public class ProjectController {
     ) {
         ProjectMemberDto member = projectService.assignMember(id, dto, principal);
         return ResponseEntity.status(HttpStatus.CREATED).body(member);
+    }
+
+    @DeleteMapping("/{id}/members/{userId}")
+    @PreAuthorize("@projectAccess.can(#id, 'projects:edit') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN')")
+    public ResponseEntity<Void> removeMember(
+        @PathVariable String id,
+        @PathVariable String userId,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        projectService.removeMember(id, userId, principal);
+        return ResponseEntity.noContent().build();
     }
 }

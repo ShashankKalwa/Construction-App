@@ -29,6 +29,10 @@ public class UserPrincipal implements UserDetails {
         this.active = active;
     }
 
+    public UserPrincipal(String id, String email, String passwordHash, String organizationId, String roleId, Collection<GrantedAuthority> authorities) {
+        this(id, email, passwordHash, organizationId, roleId, authorities, true);
+    }
+
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         // Add ROLE_ authority

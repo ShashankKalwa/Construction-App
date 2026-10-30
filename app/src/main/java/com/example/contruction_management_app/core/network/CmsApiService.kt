@@ -13,7 +13,11 @@ data class ProjectNetworkDto(
     val budgetInr: BigDecimal,
     val status: String,
     val progressPct: Double,
-    val organizationId: String
+    val organizationId: String,
+    val projectType: String? = "Commercial",
+    val clientName: String? = "Apex Developments",
+    val startDate: String? = null,
+    val endDate: String? = null
 )
 
 data class UserSummaryNetworkDto(
@@ -27,7 +31,8 @@ data class ProjectMemberNetworkDto(
     val id: String,
     val user: UserSummaryNetworkDto,
     val assignedRole: String?,
-    val joinedAt: String
+    val joinedAt: String,
+    val status: String = "ACTIVE"
 )
 
 data class ProjectDetailNetworkDto(
@@ -41,7 +46,11 @@ data class ProjectDetailNetworkDto(
     val organizationId: String,
     val members: List<ProjectMemberNetworkDto>,
     val phasesCount: Int,
-    val tasksCount: Int
+    val tasksCount: Int,
+    val projectType: String = "Commercial",
+    val clientName: String = "Apex Developments",
+    val startDate: String? = null,
+    val endDate: String? = null
 )
 
 data class TaskNetworkDto(
@@ -56,7 +65,11 @@ data class TaskNetworkDto(
     val status: String,
     val startDate: String?,
     val dueDate: String?,
-    val progressPct: Double
+    val progressPct: Double,
+    val reviewStatus: String = "NONE",
+    val reviewedBy: UserSummaryNetworkDto? = null,
+    val reviewNotes: String? = null,
+    val reviewedAt: String? = null
 )
 
 data class PhaseNetworkDto(
@@ -75,7 +88,67 @@ data class CreateProjectRequest(
     val name: String,
     val code: String,
     val location: String,
-    val budgetInr: BigDecimal
+    val budgetInr: BigDecimal,
+    val projectType: String? = "Commercial",
+    val clientName: String? = "Apex Developments",
+    val startDate: String? = null,
+    val endDate: String? = null
+)
+
+data class UpdateProjectRequest(
+    val name: String,
+    val location: String? = null,
+    val budgetInr: BigDecimal? = null,
+    val projectType: String? = null,
+    val clientName: String? = null,
+    val startDate: String? = null,
+    val endDate: String? = null
+)
+
+data class UpdateProjectStatusRequest(
+    val status: String
+)
+
+data class AssignMemberRequest(
+    val userId: String,
+    val assignedRole: String
+)
+
+data class MilestoneNetworkDto(
+    val id: String,
+    val projectId: String,
+    val title: String,
+    val dueDate: String?,
+    val status: String,
+    val targetCompletionPct: Double,
+    val createdAt: String?
+)
+
+data class CreateMilestoneRequest(
+    val title: String,
+    val dueDate: String?,
+    val targetCompletionPct: Double? = 0.0
+)
+
+data class UpdateMilestoneStatusRequest(
+    val status: String
+)
+
+data class CreatePhaseRequest(
+    val name: String,
+    val orderIndex: Int? = null,
+    val startDate: String? = null,
+    val endDate: String? = null
+)
+
+data class TaskSubmitReviewRequest(
+    val progressPct: Double? = null,
+    val notes: String? = null
+)
+
+data class TaskReviewRequest(
+    val action: String, // APPROVE or REQUEST_CORRECTIONS
+    val notes: String? = null
 )
 
 data class CreateTaskRequest(
@@ -380,6 +453,10 @@ data class DailySiteReportNetworkDto(
     val weather: String,
     val workSummary: String,
     val plannedTomorrow: String?,
+    val status: String = "SUBMITTED",
+    val approvedBy: String? = null,
+    val approvedAt: String? = null,
+    val approvalNotes: String? = null,
     val createdBy: String?,
     val laborAttendances: List<LaborAttendanceNetworkDto> = emptyList(),
     val totalHeadcount: Int,
@@ -392,6 +469,128 @@ data class CreateDailySiteReportRequest(
     val workSummary: String,
     val plannedTomorrow: String? = null,
     val laborAttendances: List<LaborAttendanceNetworkDto> = emptyList()
+)
+
+data class DsrApprovalRequest(
+    val action: String,
+    val notes: String? = null
+)
+
+data class WorkProgressNetworkDto(
+    val id: String,
+    val projectId: String,
+    val taskId: String?,
+    val reportId: String?,
+    val itemName: String,
+    val unit: String,
+    val plannedQuantity: BigDecimal,
+    val reportedQuantity: BigDecimal,
+    val verifiedQuantity: BigDecimal,
+    val status: String,
+    val reportedBy: String,
+    val verifiedBy: String?,
+    val verificationNotes: String?,
+    val recordedAt: String,
+    val verifiedAt: String?
+)
+
+data class CreateWorkProgressRequest(
+    val taskId: String? = null,
+    val reportId: String? = null,
+    val itemName: String,
+    val unit: String,
+    val plannedQuantity: BigDecimal,
+    val reportedQuantity: BigDecimal
+)
+
+data class VerifyWorkProgressRequest(
+    val action: String,
+    val verifiedQuantity: BigDecimal,
+    val notes: String? = null
+)
+
+data class SiteInspectionNetworkDto(
+    val id: String,
+    val projectId: String,
+    val title: String,
+    val inspectionType: String,
+    val status: String,
+    val checklistData: String,
+    val inspectorId: String,
+    val inspectionDate: String,
+    val location: String?,
+    val notes: String?,
+    val createdAt: String
+)
+
+data class CreateSiteInspectionRequest(
+    val title: String,
+    val inspectionType: String,
+    val status: String = "PASSED",
+    val checklistData: String = "[]",
+    val inspectionDate: String? = null,
+    val location: String? = null,
+    val notes: String? = null
+)
+
+data class SiteDefectNetworkDto(
+    val id: String,
+    val projectId: String,
+    val inspectionId: String?,
+    val title: String,
+    val description: String,
+    val location: String?,
+    val severity: String,
+    val status: String,
+    val assignedTo: String?,
+    val deadline: String?,
+    val createdBy: String,
+    val createdAt: String,
+    val resolvedAt: String?,
+    val reInspectedBy: String?,
+    val reInspectedAt: String?,
+    val reInspectionNotes: String?
+)
+
+data class CreateSiteDefectRequest(
+    val inspectionId: String? = null,
+    val title: String,
+    val description: String,
+    val location: String? = null,
+    val severity: String = "MEDIUM",
+    val assignedTo: String? = null,
+    val deadline: String? = null
+)
+
+data class UpdateSiteDefectStatusRequest(
+    val status: String
+)
+
+data class ReinspectSiteDefectRequest(
+    val action: String,
+    val notes: String? = null
+)
+
+data class SitePhotoNetworkDto(
+    val id: String,
+    val projectId: String,
+    val reportId: String?,
+    val taskId: String?,
+    val defectId: String?,
+    val photoUrl: String,
+    val caption: String?,
+    val locationTag: String?,
+    val capturedAt: String,
+    val uploadedBy: String
+)
+
+data class CreateSitePhotoRequest(
+    val reportId: String? = null,
+    val taskId: String? = null,
+    val defectId: String? = null,
+    val photoUrl: String,
+    val caption: String? = null,
+    val locationTag: String? = null
 )
 
 data class SiteIssueNetworkDto(
@@ -466,8 +665,39 @@ data class MaterialRequestNetworkDto(
     val requiredByDate: String?,
     val requestedBy: String?,
     val approvedBy: String?,
+    val rejectionReason: String? = null,
+    val issuedBy: String? = null,
+    val issuedAt: String? = null,
     val status: String,
     val phaseOrTaskDesc: String?,
+    val createdAt: String? = null
+)
+
+data class RejectMaterialRequestRequest(
+    val reason: String
+)
+
+data class IssueMaterialRequestRequest(
+    val notes: String? = null,
+    val idempotencyKey: String? = null
+)
+
+data class ReturnStockRequest(
+    val quantity: BigDecimal,
+    val referenceId: String? = null,
+    val notes: String? = null
+)
+
+data class StockMovementNetworkDto(
+    val id: String,
+    val materialId: String,
+    val materialName: String,
+    val movementType: String,
+    val quantity: BigDecimal,
+    val balanceAfter: BigDecimal,
+    val referenceId: String? = null,
+    val notes: String? = null,
+    val performedBy: String? = null,
     val createdAt: String? = null
 )
 
@@ -527,6 +757,7 @@ data class PurchaseOrderNetworkDto(
     val totalAmount: BigDecimal,
     val status: String,
     val createdBy: String?,
+    val idempotencyKey: String? = null,
     val items: List<PurchaseOrderItemNetworkDto> = emptyList(),
     val createdAt: String? = null
 )
@@ -536,6 +767,7 @@ data class CreatePurchaseOrderRequest(
     val vendorId: String,
     val orderDate: String,
     val deliveryDeadline: String? = null,
+    val idempotencyKey: String? = null,
     val items: List<CreatePurchaseOrderItemRequest>
 )
 
@@ -576,6 +808,9 @@ data class ExpenseNetworkDto(
     val verifiedBy: String?,
     val approvedBy: String?,
     val paidBy: String?,
+    val paymentReference: String? = null,
+    val rejectionReason: String? = null,
+    val idempotencyKey: String? = null,
     val createdAt: String? = null
 )
 
@@ -584,11 +819,14 @@ data class CreateExpenseRequest(
     val title: String,
     val amount: BigDecimal,
     val expenseDate: String,
-    val receiptUrl: String? = null
+    val receiptUrl: String? = null,
+    val idempotencyKey: String? = null
 )
 
 data class UpdateExpenseStatusRequest(
-    val status: String
+    val status: String,
+    val rejectionReason: String? = null,
+    val paymentReference: String? = null
 )
 
 data class ContractorBillNetworkDto(
@@ -606,6 +844,8 @@ data class ContractorBillNetworkDto(
     val status: String,
     val workDescription: String?,
     val certifiedBy: String?,
+    val paymentReference: String? = null,
+    val idempotencyKey: String? = null,
     val createdAt: String? = null
 )
 
@@ -616,11 +856,13 @@ data class CreateContractorBillRequest(
     val grossAmount: BigDecimal,
     val retentionPct: BigDecimal = BigDecimal.valueOf(5.00),
     val tdsPct: BigDecimal = BigDecimal.valueOf(2.00),
-    val workDescription: String? = null
+    val workDescription: String? = null,
+    val idempotencyKey: String? = null
 )
 
 data class UpdateBillStatusRequest(
-    val status: String
+    val status: String,
+    val paymentReference: String? = null
 )
 
 data class CategoryCostNetworkDto(
@@ -769,6 +1011,39 @@ data class UserNetworkDto(
     val role: RoleNetworkDto
 )
 
+data class CompanyMembershipNetworkDto(
+    val id: String,
+    val organizationId: String,
+    val organizationName: String,
+    val roleId: String,
+    val roleName: String,
+    val status: String,
+    val joinedAt: String?
+)
+
+data class ProjectMembershipNetworkDto(
+    val id: String,
+    val projectId: String,
+    val projectName: String,
+    val projectCode: String,
+    val assignedRole: String?,
+    val status: String,
+    val joinedAt: String?
+)
+
+data class UserMeNetworkResponse(
+    val id: String,
+    val email: String,
+    val fullName: String,
+    val avatarUrl: String?,
+    val activeCompanyId: String,
+    val activeCompanyName: String,
+    val primaryRole: RoleNetworkDto,
+    val companyMemberships: List<CompanyMembershipNetworkDto> = emptyList(),
+    val projectMemberships: List<ProjectMembershipNetworkDto> = emptyList(),
+    val effectivePermissions: List<String> = emptyList()
+)
+
 data class LoginNetworkResponse(
     val accessToken: String,
     val tokenType: String,
@@ -779,17 +1054,53 @@ interface CmsApiService {
     @POST("auth/login")
     suspend fun login(@Body request: LoginNetworkRequest): Response<LoginNetworkResponse>
 
+    @GET("me")
+    suspend fun getMe(): Response<UserMeNetworkResponse>
+
     @GET("projects")
     suspend fun getProjects(): Response<List<ProjectNetworkDto>>
 
     @POST("projects")
     suspend fun createProject(@Body request: CreateProjectRequest): Response<ProjectNetworkDto>
 
+    @PUT("projects/{id}")
+    suspend fun updateProject(
+        @Path("id") id: String,
+        @Body request: UpdateProjectRequest
+    ): Response<ProjectNetworkDto>
+
+    @PATCH("projects/{id}/status")
+    suspend fun updateProjectStatus(
+        @Path("id") id: String,
+        @Body request: UpdateProjectStatusRequest
+    ): Response<ProjectNetworkDto>
+
     @GET("projects/{id}/detail")
     suspend fun getProjectDetail(@Path("id") id: String): Response<ProjectDetailNetworkDto>
 
+    @GET("projects/{id}/members")
+    suspend fun getProjectMembers(@Path("id") id: String): Response<List<ProjectMemberNetworkDto>>
+
+    @POST("projects/{id}/members")
+    suspend fun assignProjectMember(
+        @Path("id") id: String,
+        @Body request: AssignMemberRequest
+    ): Response<ProjectMemberNetworkDto>
+
+    @DELETE("projects/{id}/members/{userId}")
+    suspend fun removeProjectMember(
+        @Path("id") id: String,
+        @Path("userId") userId: String
+    ): Response<Unit>
+
     @GET("projects/{projectId}/phases")
     suspend fun getPhasesWithTasks(@Path("projectId") projectId: String): Response<List<PhaseNetworkDto>>
+
+    @POST("projects/{projectId}/phases")
+    suspend fun createPhase(
+        @Path("projectId") projectId: String,
+        @Body request: CreatePhaseRequest
+    ): Response<PhaseNetworkDto>
 
     @POST("projects/{projectId}/tasks")
     suspend fun createTask(
@@ -802,6 +1113,33 @@ interface CmsApiService {
         @Path("taskId") taskId: String,
         @Body request: UpdateTaskProgressRequest
     ): Response<TaskNetworkDto>
+
+    @POST("tasks/{taskId}/submit-review")
+    suspend fun submitTaskReview(
+        @Path("taskId") taskId: String,
+        @Body request: TaskSubmitReviewRequest
+    ): Response<TaskNetworkDto>
+
+    @POST("tasks/{taskId}/review")
+    suspend fun reviewTask(
+        @Path("taskId") taskId: String,
+        @Body request: TaskReviewRequest
+    ): Response<TaskNetworkDto>
+
+    @GET("projects/{projectId}/milestones")
+    suspend fun getMilestones(@Path("projectId") projectId: String): Response<List<MilestoneNetworkDto>>
+
+    @POST("projects/{projectId}/milestones")
+    suspend fun createMilestone(
+        @Path("projectId") projectId: String,
+        @Body request: CreateMilestoneRequest
+    ): Response<MilestoneNetworkDto>
+
+    @PATCH("milestones/{milestoneId}/status")
+    suspend fun updateMilestoneStatus(
+        @Path("milestoneId") milestoneId: String,
+        @Body request: UpdateMilestoneStatusRequest
+    ): Response<MilestoneNetworkDto>
 
     @GET("dashboard/summary")
     suspend fun getDashboardSummary(
@@ -900,9 +1238,76 @@ interface CmsApiService {
         @Body req: CreateDailySiteReportRequest
     ): Response<DailySiteReportNetworkDto>
 
-    @GET("daily-reports/{id}")
-    suspend fun getDailyReportById(@Path("id") id: String): Response<DailySiteReportNetworkDto>
+    @POST("projects/{projectId}/daily-reports/{reportId}/approve")
+    suspend fun approveDailyReport(
+        @Path("projectId") projectId: String,
+        @Path("reportId") reportId: String,
+        @Body req: DsrApprovalRequest
+    ): Response<DailySiteReportNetworkDto>
 
+    // --- Work Progress (Reported vs Verified Quantities) ---
+    @GET("projects/{projectId}/work-progress")
+    suspend fun getWorkProgress(@Path("projectId") projectId: String): Response<List<WorkProgressNetworkDto>>
+
+    @POST("projects/{projectId}/work-progress")
+    suspend fun recordWorkProgress(
+        @Path("projectId") projectId: String,
+        @Body req: CreateWorkProgressRequest
+    ): Response<WorkProgressNetworkDto>
+
+    @POST("projects/{projectId}/work-progress/{progressId}/verify")
+    suspend fun verifyWorkProgress(
+        @Path("projectId") projectId: String,
+        @Path("progressId") progressId: String,
+        @Body req: VerifyWorkProgressRequest
+    ): Response<WorkProgressNetworkDto>
+
+    // --- Digital Site Inspections ---
+    @GET("projects/{projectId}/inspections")
+    suspend fun getInspections(@Path("projectId") projectId: String): Response<List<SiteInspectionNetworkDto>>
+
+    @POST("projects/{projectId}/inspections")
+    suspend fun createInspection(
+        @Path("projectId") projectId: String,
+        @Body req: CreateSiteInspectionRequest
+    ): Response<SiteInspectionNetworkDto>
+
+    // --- Snag List & Defects ---
+    @GET("projects/{projectId}/defects")
+    suspend fun getDefects(
+        @Path("projectId") projectId: String,
+        @Query("status") status: String? = null
+    ): Response<List<SiteDefectNetworkDto>>
+
+    @POST("projects/{projectId}/defects")
+    suspend fun createDefect(
+        @Path("projectId") projectId: String,
+        @Body req: CreateSiteDefectRequest
+    ): Response<SiteDefectNetworkDto>
+
+    @PATCH("defects/{id}/status")
+    suspend fun updateDefectStatus(
+        @Path("id") id: String,
+        @Body req: UpdateSiteDefectStatusRequest
+    ): Response<SiteDefectNetworkDto>
+
+    @POST("defects/{id}/reinspect")
+    suspend fun reinspectDefect(
+        @Path("id") id: String,
+        @Body req: ReinspectSiteDefectRequest
+    ): Response<SiteDefectNetworkDto>
+
+    // --- Photo Evidence ---
+    @GET("projects/{projectId}/photos")
+    suspend fun getSitePhotos(@Path("projectId") projectId: String): Response<List<SitePhotoNetworkDto>>
+
+    @POST("projects/{projectId}/photos")
+    suspend fun createSitePhoto(
+        @Path("projectId") projectId: String,
+        @Body req: CreateSitePhotoRequest
+    ): Response<SitePhotoNetworkDto>
+
+    // --- Legacy Site Issues ---
     @GET("projects/{projectId}/issues")
     suspend fun getProjectIssues(
         @Path("projectId") projectId: String,
@@ -952,6 +1357,39 @@ interface CmsApiService {
         @Path("projectId") projectId: String,
         @Path("requestId") requestId: String
     ): Response<MaterialRequestNetworkDto>
+
+    @POST("projects/{projectId}/material-requests/{requestId}/reject")
+    suspend fun rejectMaterialRequest(
+        @Path("projectId") projectId: String,
+        @Path("requestId") requestId: String,
+        @Body req: RejectMaterialRequestRequest
+    ): Response<MaterialRequestNetworkDto>
+
+    @POST("projects/{projectId}/material-requests/{requestId}/issue")
+    suspend fun issueMaterialRequest(
+        @Path("projectId") projectId: String,
+        @Path("requestId") requestId: String,
+        @Body req: IssueMaterialRequestRequest
+    ): Response<MaterialRequestNetworkDto>
+
+    @GET("projects/{projectId}/materials/low-stock")
+    suspend fun getLowStockMaterials(@Path("projectId") projectId: String): Response<List<MaterialNetworkDto>>
+
+    @GET("projects/{projectId}/stock-ledger")
+    suspend fun getProjectStockLedger(@Path("projectId") projectId: String): Response<List<StockMovementNetworkDto>>
+
+    @GET("projects/{projectId}/materials/{materialId}/movements")
+    suspend fun getStockMovementsForMaterial(
+        @Path("projectId") projectId: String,
+        @Path("materialId") materialId: String
+    ): Response<List<StockMovementNetworkDto>>
+
+    @POST("projects/{projectId}/materials/{materialId}/return")
+    suspend fun returnStock(
+        @Path("projectId") projectId: String,
+        @Path("materialId") materialId: String,
+        @Body req: ReturnStockRequest
+    ): Response<MaterialNetworkDto>
 
     // --- Phase 5: Procurement & Vendors ---
     @GET("organizations/{organizationId}/vendors")

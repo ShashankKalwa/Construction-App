@@ -28,6 +28,9 @@ public class ExpenseDto {
     private String verifiedBy;
     private String approvedBy;
     private String paidBy;
+    private String paymentReference;
+    private String rejectionReason;
+    private String idempotencyKey;
     private Instant createdAt;
     private Instant updatedAt;
 }

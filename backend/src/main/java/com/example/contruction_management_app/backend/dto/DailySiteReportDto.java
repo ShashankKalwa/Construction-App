@@ -1,6 +1,7 @@
 package com.example.contruction_management_app.backend.dto;
 
 import com.example.contruction_management_app.backend.domain.DailySiteReport;
+import com.example.contruction_management_app.backend.domain.DsrStatus;
 import com.example.contruction_management_app.backend.domain.WeatherCondition;
 
 import java.time.Instant;
@@ -14,6 +15,10 @@ public record DailySiteReportDto(
     WeatherCondition weather,
     String workSummary,
     String plannedTomorrow,
+    DsrStatus status,
+    String approvedBy,
+    Instant approvedAt,
+    String approvalNotes,
     String createdBy,
     List<LaborAttendanceDto> laborAttendances,
     Integer totalHeadcount,
@@ -33,6 +38,10 @@ public record DailySiteReportDto(
             r.getWeather(),
             r.getWorkSummary(),
             r.getPlannedTomorrow(),
+            r.getStatus() != null ? r.getStatus() : DsrStatus.SUBMITTED,
+            r.getApprovedBy(),
+            r.getApprovedAt(),
+            r.getApprovalNotes(),
             r.getCreatedBy(),
             laList,
             totalHeadcount,

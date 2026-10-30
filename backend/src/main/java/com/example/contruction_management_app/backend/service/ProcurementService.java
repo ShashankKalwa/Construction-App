@@ -130,7 +130,7 @@ public class ProcurementService {
             Material material = materialRepository.findById(itemDto.getMaterialId())
                 .orElseThrow(() -> new ResourceNotFoundException("Material not found: " + itemDto.getMaterialId()));
 
-            BigDecimal totalItemPrice = itemDto.getOrderedQuantity().multiply(itemDto.getUnitPrice());
+            BigDecimal totalItemPrice = itemDto.getOrderedQuantity().multiply(itemDto.getUnitPrice()).setScale(2, java.math.RoundingMode.HALF_UP);
             runningTotal = runningTotal.add(totalItemPrice);
 
             String itemId = "poi_" + UUID.randomUUID().toString().replace("-", "").substring(0, 16);
@@ -147,7 +147,7 @@ public class ProcurementService {
             po.getItems().add(item);
         }
 
-        po.setTotalAmount(runningTotal);
+        po.setTotalAmount(runningTotal.setScale(2, java.math.RoundingMode.HALF_UP));
         PurchaseOrder saved = purchaseOrderRepository.save(po);
         return mapToPoDto(saved);
     }

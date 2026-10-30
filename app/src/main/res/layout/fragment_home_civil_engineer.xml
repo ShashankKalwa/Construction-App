@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshEngineer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cms_background">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/cms_spacing_lg"
+            android:paddingTop="@dimen/cms_spacing_lg"
+            android:paddingBottom="80dp">
+
+            <!-- Engineer Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Engineering &amp; Technical Desk,"
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvEngineerName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.CMS.Headline"
+                        android:textColor="@color/cms_text_primary"
+                        tools:text="Priya Sharma" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_chip_selected"
+                            android:paddingHorizontal="@dimen/cms_spacing_sm"
+                            android:paddingVertical="2dp"
+                            android:text="CIVIL ENGINEER"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_accent"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvEngineerOrgName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/cms_spacing_sm"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_text_secondary"
+                            tools:text="Commercial Tower B" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btnEngineerNotifications"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Notifications"
+                    android:src="@drawable/ic_bell"
+                    app:tint="@color/cms_text_secondary" />
+
+                <ImageButton
+                    android:id="@+id/btnEngineerLogout"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="@dimen/cms_spacing_xs"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Logout"
+                    android:src="@drawable/ic_logout"
+                    app:tint="@color/cms_text_secondary" />
+            </LinearLayout>
+
+            <!-- Project Switcher Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardEngineerProjectSwitcher"
+                style="@style/Widget.CMS.Card.Elevated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cms_spacing_lg"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/cms_spacing_card">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:contentDescription="Project"
+                        android:src="@drawable/ic_building"
+                        app:tint="@color/cms_accent" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/cms_spacing_md"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="TECHNICAL DRAWINGS &amp; BOQ SCOPE"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_accent" />
+
+                        <TextView
+                            android:id="@+id/tvEngineerActiveProject"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.CMS.Body"
+                            android:textStyle="bold"
+                            tools:text="CTB-02 • Commercial Tower B" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="Switch"
+                        android:src="@drawable/ic_chevron_down"
+                        app:tint="@color/cms_text_secondary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Quick Civil Engineering Calculators -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cms_spacing_xl"
+                android:layout_marginBottom="@dimen/cms_spacing_sm"
+                android:text="ENGINEERING CALCULATORS"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_text_secondary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCalcConcrete"
+                    style="@style/Widget.CMS.Card.Elevated"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/cms_spacing_xs"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/cms_spacing_sm">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CONCRETE"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_accent"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="M20/M25"
+                            android:textAppearance="@style/TextAppearance.CMS.Body" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCalcSteel"
+                    style="@style/Widget.CMS.Card.Elevated"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/cms_spacing_xs"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/cms_spacing_sm">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="STEEL"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_info"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="D²/162"
+                            android:textAppearance="@style/TextAppearance.CMS.Body" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCalcBrickwork"
+                    style="@style/Widget.CMS.Card.Elevated"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/cms_spacing_xs"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/cms_spacing_sm">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="BRICKWORK"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_warning"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mortar"
+                            android:textAppearance="@style/TextAppearance.CMS.Body" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Active Drawings & Revisions Card -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cms_spacing_xl"
+                android:layout_marginBottom="@dimen/cms_spacing_sm"
+                android:text="LATEST DRAWINGS &amp; REVISIONS"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_text_secondary" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.CMS.Card.Elevated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/cms_spacing_card">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="ARCHITECTURAL FLOOR PLAN (L4-L18)"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_text_secondary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_chip_selected"
+                            android:paddingHorizontal="@dimen/cms_spacing_sm"
+                            android:paddingVertical="2dp"
+                            android:text="v2.1 APPROVED"
+                            android:textAppearance="@style/TextAppearance.CMS.Caption"
+                            android:textColor="@color/cms_accent"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/cms_spacing_xs"
+                        android:text="commercial_tower_b_arch_v2.1.pdf (17.3 MB)"
+                        android:textAppearance="@style/TextAppearance.CMS.Body"
+                        android:textColor="@color/cms_text_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Minor alignment with facade curtain-wall mullion spacing."
+                        android:textAppearance="@style/TextAppearance.CMS.Caption"
+                        android:textColor="@color/cms_text_secondary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

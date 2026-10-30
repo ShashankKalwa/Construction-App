@@ -124,13 +124,25 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Action Row: Adjust / Issue to Site -->
+        <!-- Action Row: Return / Issue to Site / Adjust -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/cms_spacing_md"
             android:gravity="end"
             android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReturnStock"
+                style="@style/Widget.CMS.Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="@dimen/cms_spacing_xs"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="@dimen/cms_spacing_sm"
+                android:text="Return"
+                android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnIssueStock"
@@ -141,7 +153,7 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:paddingHorizontal="@dimen/cms_spacing_md"
-                android:text="Issue to Site"
+                android:text="Issue"
                 android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton

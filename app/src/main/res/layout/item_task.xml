@@ -46,6 +46,20 @@
                 android:textAppearance="@style/TextAppearance.CMS.Caption"
                 android:textStyle="bold"
                 tools:text="IN_PROGRESS" />
+
+            <TextView
+                android:id="@+id/tvTaskReviewStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_xs"
+                android:background="@drawable/bg_status_badge"
+                android:paddingHorizontal="@dimen/cms_spacing_sm"
+                android:paddingVertical="2dp"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_warning"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:text="IN REVIEW" />
         </LinearLayout>
 
         <!-- Task Title -->

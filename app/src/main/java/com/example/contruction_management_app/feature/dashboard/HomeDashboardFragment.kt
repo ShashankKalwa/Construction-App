@@ -95,18 +95,9 @@ class HomeDashboardFragment : Fragment() {
 
     private fun showProjectSwitcherMenu() {
         if (currentProjects.isEmpty()) return
-        val popup = PopupMenu(requireContext(), binding.cardProjectSwitcher)
-        currentProjects.forEachIndexed { index, project ->
-            popup.menu.add(0, index, index, "${project.code} - ${project.name}")
-        }
-        popup.setOnMenuItemClickListener { item ->
-            val project = currentProjects.getOrNull(item.itemId)
-            if (project != null) {
-                dashboardViewModel.selectProject(project.id)
-            }
-            true
-        }
-        popup.show()
+        com.example.contruction_management_app.feature.shell.WorkspaceSwitcherBottomSheetDialog.newInstance(currentProjects) { chosen ->
+            dashboardViewModel.selectProject(chosen.id)
+        }.show(parentFragmentManager, com.example.contruction_management_app.feature.shell.WorkspaceSwitcherBottomSheetDialog.TAG)
     }
 
     private fun observeData() {

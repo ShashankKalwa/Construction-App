@@ -4,5 +4,6 @@ public enum MaterialRequestStatus {
     PENDING,
     APPROVED,
     REJECTED,
+    ISSUED,
     FULFILLED
 }

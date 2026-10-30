@@ -67,6 +67,12 @@ public class ContractorBill {
     @Column(name = "certified_by", nullable = false, length = 50)
     private String certifiedBy;
 
+    @Column(name = "payment_reference", length = 100)
+    private String paymentReference;
+
+    @Column(name = "idempotency_key", length = 100)
+    private String idempotencyKey;
+
     @Column(name = "created_at")
     @Builder.Default
     private Instant createdAt = Instant.now();

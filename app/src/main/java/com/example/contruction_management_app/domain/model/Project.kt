@@ -10,7 +10,11 @@ data class Project(
     val budgetInr: BigDecimal,
     val status: String = "Active",
     val progressPct: Double = 0.0,
-    val organizationId: String
+    val organizationId: String,
+    val projectType: String = "Commercial",
+    val clientName: String = "Apex Developments",
+    val startDate: String? = null,
+    val endDate: String? = null
 ) {
     val budgetDisplay: String
         get() {
@@ -34,7 +38,18 @@ data class ProjectMember(
     val id: String,
     val user: UserSummary,
     val assignedRole: String?,
-    val joinedAt: String
+    val joinedAt: String,
+    val status: String = "ACTIVE"
+)
+
+data class Milestone(
+    val id: String,
+    val projectId: String,
+    val title: String,
+    val dueDate: String?,
+    val status: String = "PENDING", // PENDING, REACHED, DELAYED
+    val targetCompletionPct: Double = 0.0,
+    val createdAt: String? = null
 )
 
 data class ProjectDetail(
@@ -48,7 +63,11 @@ data class ProjectDetail(
     val organizationId: String,
     val members: List<ProjectMember> = emptyList(),
     val phasesCount: Int = 0,
-    val tasksCount: Int = 0
+    val tasksCount: Int = 0,
+    val projectType: String = "Commercial",
+    val clientName: String = "Apex Developments",
+    val startDate: String? = null,
+    val endDate: String? = null
 ) {
     val budgetDisplay: String
         get() {

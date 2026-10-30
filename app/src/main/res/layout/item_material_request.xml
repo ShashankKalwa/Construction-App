@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardMaterialRequest"
+    style="@style/Widget.CMS.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/cms_spacing_md">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/cms_spacing_card">
+
+        <!-- Top Header: ID + Status Badge -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvRequestCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_chip_selected"
+                android:paddingHorizontal="@dimen/cms_spacing_sm"
+                android:paddingVertical="@dimen/cms_spacing_xs"
+                android:textAppearance="@style/TextAppearance.CMS.Mono"
+                tools:text="MR-001" />
+
+            <TextView
+                android:id="@+id/tvRequestDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cms_spacing_sm"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_text_tertiary"
+                tools:text="20 Mar 2026" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvStatusBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_badge"
+                android:backgroundTint="@color/cms_warning_tint"
+                android:paddingHorizontal="@dimen/cms_spacing_sm"
+                android:paddingVertical="3dp"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_warning"
+                android:textStyle="bold"
+                tools:text="PENDING APPROVAL" />
+        </LinearLayout>
+
+        <!-- Material Name -->
+        <TextView
+            android:id="@+id/tvMaterialName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_sm"
+            android:textAppearance="@style/TextAppearance.CMS.Title"
+            tools:text="12mm TMT Fe550D Rebar" />
+
+        <!-- Quantity & Required By -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_sm"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Requested Quantity"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_text_secondary" />
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.CMS.Headline"
+                    android:textColor="@color/cms_text_primary"
+                    tools:text="5.00 MT" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Required By"
+                    android:textAppearance="@style/TextAppearance.CMS.Caption"
+                    android:textColor="@color/cms_text_secondary" />
+
+                <TextView
+                    android:id="@+id/tvRequiredDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.CMS.Body"
+                    android:textColor="@color/cms_accent"
+                    tools:text="25 Mar 2026" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Submitter & Phase / Task Desc -->
+        <TextView
+            android:id="@+id/tvTaskDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_xs"
+            android:textAppearance="@style/TextAppearance.CMS.BodySecondary"
+            tools:text="Phase: Foundation footing rebar cage" />
+
+        <TextView
+            android:id="@+id/tvRequestedBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            tools:text="Requested by: Amit Patel (Site Supervisor)" />
+
+        <!-- Approval / Issuance Audit Details -->
+        <TextView
+            android:id="@+id/tvAuditDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_text_secondary"
+            android:visibility="gone"
+            tools:text="Approved by Rahul Varma • Issued by Ramesh Yadav"
+            tools:visibility="visible" />
+
+        <!-- Rejection Reason Container -->
+        <LinearLayout
+            android:id="@+id/containerRejectionReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_sm"
+            android:background="@drawable/bg_status_badge"
+            android:backgroundTint="@color/cms_error_tint"
+            android:orientation="vertical"
+            android:padding="@dimen/cms_spacing_sm"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REJECTION REASON"
+                android:textAppearance="@style/TextAppearance.CMS.Caption"
+                android:textColor="@color/cms_error"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRejectionReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textAppearance="@style/TextAppearance.CMS.BodySecondary"
+                android:textColor="@color/cms_error"
+                tools:text="Existing stock on site is sufficient for this pour phase." />
+        </LinearLayout>
+
+        <!-- Action Buttons Row -->
+        <LinearLayout
+            android:id="@+id/layoutActionButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cms_spacing_md"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReject"
+                style="@style/Widget.CMS.Button.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="@dimen/cms_spacing_sm"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="@dimen/cms_spacing_md"
+                android:strokeColor="@color/cms_error"
+                android:text="Reject"
+                android:textColor="@color/cms_error"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnApprove"
+                style="@style/Widget.CMS.Button.Primary"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="@dimen/cms_spacing_md"
+                android:text="Approve"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnIssueStock"
+                style="@style/Widget.CMS.Button.Primary"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="@dimen/cms_spacing_md"
+                android:text="Issue Stock"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+

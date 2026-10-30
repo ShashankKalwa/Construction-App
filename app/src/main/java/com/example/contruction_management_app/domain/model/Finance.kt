@@ -8,7 +8,9 @@ enum class ExpenseCategory {
     UTILITIES,
     SUBCONTRACTOR,
     PETTY_CASH,
-    MATERIALS
+    MATERIALS,
+    SAFETY,
+    OTHER
 }
 
 enum class ExpenseStatus {
@@ -39,6 +41,9 @@ data class Expense(
     val verifiedBy: String?,
     val approvedBy: String?,
     val paidBy: String?,
+    val paymentReference: String? = null,
+    val rejectionReason: String? = null,
+    val idempotencyKey: String? = null,
     val createdAt: String? = null
 )
 
@@ -57,5 +62,7 @@ data class ContractorBill(
     val status: BillPaymentStatus,
     val workDescription: String?,
     val certifiedBy: String?,
+    val paymentReference: String? = null,
+    val idempotencyKey: String? = null,
     val createdAt: String? = null
 )

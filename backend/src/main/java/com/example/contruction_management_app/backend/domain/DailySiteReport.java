@@ -26,6 +26,9 @@ public class DailySiteReport {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
+    @Column(name = "company_id", length = 50)
+    private String companyId;
+
     @Column(name = "report_date", nullable = false)
     private LocalDate reportDate;
 
@@ -38,6 +41,20 @@ public class DailySiteReport {
 
     @Column(name = "planned_tomorrow", columnDefinition = "TEXT")
     private String plannedTomorrow;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    @Builder.Default
+    private DsrStatus status = DsrStatus.SUBMITTED;
+
+    @Column(name = "approved_by", length = 50)
+    private String approvedBy;
+
+    @Column(name = "approved_at")
+    private Instant approvedAt;
+
+    @Column(name = "approval_notes", columnDefinition = "TEXT")
+    private String approvalNotes;
 
     @Column(name = "created_by", length = 50)
     private String createdBy;

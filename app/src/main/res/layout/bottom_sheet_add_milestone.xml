@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_navigation"
+    android:orientation="vertical"
+    android:padding="@dimen/cms_spacing_xl">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/cms_spacing_lg"
+        android:background="@drawable/bg_status_badge" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEW MILESTONE"
+        android:textAppearance="@style/TextAppearance.CMS.Caption"
+        android:textColor="@color/cms_accent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Add Project Milestone"
+        android:textAppearance="@style/TextAppearance.CMS.Headline" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMilestoneTitle"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_lg"
+        android:hint="Milestone Title (e.g. Raft Foundation Complete)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMilestoneTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMilestoneDueDate"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Target Due Date (YYYY-MM-DD)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMilestoneDueDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Target Project Progress"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_text_tertiary" />
+
+        <TextView
+            android:id="@+id/tvMilestoneTargetValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50%"
+            android:textAppearance="@style/TextAppearance.CMS.Title"
+            android:textColor="@color/cms_accent" />
+    </LinearLayout>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sliderMilestoneTarget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_xs"
+        android:stepSize="5"
+        android:value="50"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:thumbColor="@color/cms_accent"
+        app:trackColorActive="@color/cms_accent"
+        app:trackColorInactive="@color/cms_card_elevated" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCreateMilestone"
+        style="@style/Widget.CMS.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_xl"
+        android:text="CREATE MILESTONE" />
+
+    <ProgressBar
+        android:id="@+id/progressCreateMilestone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:indeterminateTint="@color/cms_accent"
+        android:visibility="gone" />
+
+</LinearLayout>

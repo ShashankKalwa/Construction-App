@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_cost_dashboard"
+        android:icon="@drawable/ic_analytics"
+        android:title="Cost Dashboard"
+        app:iconTint="@color/cms_text_primary"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_add_vendor"
+        android:title="Register Approved Vendor"
+        app:showAsAction="never" />
+</menu>
+

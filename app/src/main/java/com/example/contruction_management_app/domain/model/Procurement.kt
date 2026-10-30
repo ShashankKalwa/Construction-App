@@ -10,6 +10,14 @@ enum class PurchaseOrderStatus {
     CANCELLED
 }
 
+enum class VendorCategory {
+    MATERIALS,
+    EQUIPMENT,
+    SUBCONTRACTOR,
+    SERVICES,
+    OTHER
+}
+
 data class Vendor(
     val id: String,
     val organizationId: String,
@@ -19,7 +27,14 @@ data class Vendor(
     val email: String?,
     val category: String?,
     val paymentTerms: String?
-)
+) {
+    val categoryEnum: VendorCategory
+        get() = try {
+            VendorCategory.valueOf(category?.uppercase() ?: "OTHER")
+        } catch (_: Exception) {
+            VendorCategory.OTHER
+        }
+}
 
 data class PurchaseOrderItem(
     val id: String,
@@ -44,6 +59,7 @@ data class PurchaseOrder(
     val totalAmount: BigDecimal,
     val status: PurchaseOrderStatus,
     val createdBy: String?,
+    val idempotencyKey: String? = null,
     val items: List<PurchaseOrderItem> = emptyList(),
     val createdAt: String? = null
 )

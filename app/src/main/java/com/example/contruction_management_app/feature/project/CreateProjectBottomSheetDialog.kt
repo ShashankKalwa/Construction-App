@@ -46,6 +46,9 @@ class CreateProjectBottomSheetDialog(
                 return@setOnClickListener
             }
 
+            val clientName = binding.etProjectClient.text?.toString()?.trim().takeIf { !it.isNullOrBlank() } ?: "Apex Developments"
+            val projectType = binding.etProjectType.text?.toString()?.trim().takeIf { !it.isNullOrBlank() } ?: "Commercial"
+
             binding.btnSubmitProject.isEnabled = false
             binding.progressCreateProject.visibility = View.VISIBLE
 
@@ -54,6 +57,8 @@ class CreateProjectBottomSheetDialog(
                 code = code,
                 location = location,
                 budgetInr = budget,
+                projectType = projectType,
+                clientName = clientName,
                 onSuccess = {
                     binding.progressCreateProject.visibility = View.GONE
                     Toast.makeText(requireContext(), "Project created successfully", Toast.LENGTH_SHORT).show()

@@ -19,6 +19,10 @@ public class Phase {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Organization company;
+
     @Column(nullable = false)
     private String name;
 
@@ -82,6 +86,9 @@ public class Phase {
 
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+
+    public Organization getCompany() { return company; }
+    public void setCompany(Organization company) { this.company = company; }
 
     public List<Task> getTasks() { return tasks; }
     public void setTasks(List<Task> tasks) { this.tasks = tasks; }

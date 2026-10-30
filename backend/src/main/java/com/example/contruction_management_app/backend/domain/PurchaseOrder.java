@@ -52,6 +52,9 @@ public class PurchaseOrder {
     @Column(name = "created_by", nullable = false, length = 50)
     private String createdBy;
 
+    @Column(name = "idempotency_key", length = 100)
+    private String idempotencyKey;
+
     @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<PurchaseOrderItem> items = new ArrayList<>();

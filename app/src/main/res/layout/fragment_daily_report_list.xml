@@ -10,6 +10,39 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!-- Top Mode Chips: DSR vs Progress -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupDsrMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipDsrDiary"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Daily Diary (DSR)"
+                    android:textColor="@color/cms_text_primary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipWorkProgress"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Work Progress Tracking"
+                    android:textColor="@color/cms_text_primary" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
         <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,7 +50,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="12dp">
+            android:paddingVertical="10dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -26,14 +59,16 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvSectionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Daily Site Reports (DSR)"
                     android:textColor="@color/cms_text_primary"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvSectionSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -66,15 +101,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvDailyReports"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingHorizontal="16dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="80dp" />
+                    android:layout_height="match_parent">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvDailyReports"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="80dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvWorkProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="80dp"
+                        android:visibility="gone" />
+
+                </FrameLayout>
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <include

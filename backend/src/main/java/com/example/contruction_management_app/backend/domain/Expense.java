@@ -58,6 +58,15 @@ public class Expense {
     @Column(name = "paid_by", length = 50)
     private String paidBy;
 
+    @Column(name = "payment_reference", length = 100)
+    private String paymentReference;
+
+    @Column(name = "rejection_reason", length = 255)
+    private String rejectionReason;
+
+    @Column(name = "idempotency_key", length = 100)
+    private String idempotencyKey;
+
     @Column(name = "created_at")
     @Builder.Default
     private Instant createdAt = Instant.now();

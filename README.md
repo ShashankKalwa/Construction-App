@@ -43,7 +43,7 @@ A production-grade, role-based native Android application and Spring Boot backen
                                                ▼
 ┌────────────────────────────────────────────────────────┐
 │                  Supabase PostgreSQL                   │
-│       (Flyway Migrations V1-V6 + Seeded Test Data)     │
+│       (Flyway Migrations V1-V12 + Seeded Test Data)    │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -53,24 +53,23 @@ A production-grade, role-based native Android application and Spring Boot backen
 
 ### 1. Role-Based Access Control (RBAC) & Authentication
 - **Roles**: All 9 enterprise roles supported with specific permission scopes.
-- **Username & Password Authentication**: Dedicated credentials per operator role with auto-fill support and master demo pass (`Apex@123`).
+- **Enterprise Authentication**: User credentials authenticate against BCrypt-hashed database records with strict session management.
 - Secure JWT bearer authentication with token expiration, auto-header injection via `AuthInterceptor`, and method-level backend security (`@PreAuthorize`).
 - Clean user session management backed by encrypted `SessionDataStore`.
 
-#### Default Operator Role Credentials
+#### Operator Role Scopes
 
-| Role | Username | Email | Default Password | Primary Scope |
-| :--- | :--- | :--- | :--- | :--- |
-| **Super Admin** | `superadmin` | `superadmin@apexinfra.com` | `Admin@123` | Full enterprise console control |
-| **Company Admin** | `companyadmin` | `companyadmin@apexinfra.com` | `Company@123` | Operations & organization setup |
-| **Project Manager** | `pm` | `pm@apexinfra.com` | `Manager@123` | Milestones, tasks & stage approvals |
-| **Civil Engineer** | `engineer` | `engineer@apexinfra.com` | `Engineer@123` | Technical calculations, BOQ & drawings |
-| **Site Supervisor** | `supervisor` | `supervisor@apexinfra.com` | `Site@123` | Daily logs, labor counts & roadblocks |
-| **Storekeeper** | `storekeeper` | `storekeeper@apexinfra.com` | `Store@123` | Material GRN, stock issues & ledger |
-| **Accountant** | `accountant` | `accountant@apexinfra.com` | `Accounts@123` | Budgets, billing, petty cash & payouts |
-| **Contractor** | `contractor` | `contractor@apexinfra.com` | `Contract@123` | Work packages, claims & labor supply |
-| **Client Owner** | `client` | `client@apexinfra.com` | `Client@123` | Executive dashboard & audit reports |
-| *Universal Demo* | *(any)* | *(any)* | `Apex@123` | Master password for development/demo |
+| Role | Primary Scope | Access Scope |
+| :--- | :--- | :--- |
+| **Super Admin** | Full enterprise console control | Cross-company platform administration |
+| **Company Admin** | Operations & organization setup | Company profile, employees, invitations, all company projects |
+| **Project Manager** | Milestones, tasks & stage approvals | Project delivery, team coordination, approvals, budget |
+| **Civil Engineer** | Technical calculations, BOQ & drawings | Quantities, BOQ items, calculations, inspections, drawings |
+| **Site Supervisor** | Daily logs, labor counts & roadblocks | Daily site diary, labor attendance, material requests |
+| **Storekeeper** | Material GRN, stock issues & ledger | Stock ledger, goods receipts, material issues, low-stock alerts |
+| **Accountant** | Budgets, billing, petty cash & payouts | Expenses, contractor bills, payments, budget variance |
+| **Contractor** | Work packages, claims & labor supply | Assigned work packages, progress submissions |
+| **Client Owner** | Executive dashboard & audit reports | Approved progress, milestone oversight, invoice tracking |
 
 ### 2. Civil Engineering Calculation Engine
 Native calculation tools complying with standard Indian civil engineering codes:
@@ -80,48 +79,59 @@ Native calculation tools complying with standard Indian civil engineering codes:
 - **Excavation & Backfill**: Trench and pit volumes with soil expansion/shrinkage adjustments.
 - **Plastering & Flooring**: Wall surface areas, tile counts, and adhesive mortar estimates.
 
-### 3. BOQ & Field Operations
-- **Bill of Quantities (BOQ)**: Itemized work schedules, unit rates, consumed quantities, and budget variance indicators.
-- **Daily Site Diary**: Daily labor headcount, contractor presence, weather conditions, and site narratives.
-- **Safety & Quality Inspection**: Digital snag lists with pass/fail statuses, corrective notes, and incident severity tracking.
+### 3. Project Workspace, Milestones & Task Coordination
+- **Phased Milestones**: Structural milestones with date constraints, % completion, and stage gating.
+- **Task Management**: Assignment by role/worker, priority weighting, status lifecycles (`PENDING`, `IN_PROGRESS`, `BLOCKED`, `COMPLETED`), and photo attachments.
+- **Team Management**: Project-level memberships, multi-role assignment, and invitation lifecycles.
 
-### 4. Inventory, Procurement & Financial Tracking
-- **Inventory Ledger**: Real-time stock levels, Goods Receipt Notes (GRN), and material issues.
-- **Low-Stock Alerts**: Automatic warnings when critical construction supplies drop below safety thresholds.
-- **Petty Cash & Expense Approvals**: On-site expense submissions with receipt attachments and manager approval workflows.
-- **Contractor & Client Invoicing**: Milestone payment disbursements and client payment tracking.
+### 4. Site Operations, Field Verification & Inspections
+- **Daily Site Diary**: Labor headcount, contractor rosters, weather conditions, work progress summaries, and site narratives.
+- **Site Photos & Progress Verification**: Digital photo logs with geotagging metadata and verification review flows.
+- **Quality & Safety Inspections**: Digital snag lists with pass/fail statuses, corrective action notes, and defect reinspection loops.
 
-### 5. Drawing & Document Management
-- Blueprint and architectural revision control with semantic version tags.
-- Offline document cache for uninterrupted field inspection.
-- System-wide immutable audit trail capturing user, action, and timestamp for all data mutations.
+### 5. Materials Management & Stock Inventory Ledger
+- **Master Material Catalog**: Construction materials categorized with standard units (bags, MT, brass, sq.ft).
+- **Immutable Stock Ledger**: Real-time warehouse balance tracking, stock issues, site transfers, and physical stock returns.
+- **Stock Threshold Alerts**: Real-time warnings when inventory levels drop below defined minimum safety buffers.
 
-### 6. Offline-First Synchronization Engine
-- Background sync queue (`SyncQueueItem`) storing pending mutations when network is unavailable.
-- Network connectivity listener triggers automatic background synchronization upon reconnection.
-- Idempotent API requests preventing duplicate ledger or inventory entries.
+### 6. Finance, Procurement, RA Bills & Budget Dashboard
+- **Purchase Orders (PO) & GRN**: Vendor commitments, line-item quantity tracking, and physical delivery Goods Receipt Notes (GRN).
+- **Contractor RA Billing**: Running Account bills with automated deductions for 5% retention money and 2% TDS.
+- **Expense Dual-Control Workflow**: Multi-tier approvals (`SUBMITTED -> VERIFIED -> APPROVED -> PAID`) preventing self-approval by submitters.
+- **Live Cost Dashboard**: Real-time variance tracking comparing Approved Budget, Actual Cost, Committed Cost, and category-level expenditure.
+
+### 7. Collaboration, Notifications & Immutable Audit Trail
+- **In-App Notification Engine**: Real-time alerts for stock warnings, approval decisions, task reviews, payment disbursements, and document releases.
+- **Company Portfolio vs Project Telemetry**: Executive-level aggregation across all company projects alongside project-specific drill-downs with strict multi-tenant boundary isolation.
+- **Immutable Audit Trail**: Append-only compliance log capturing actor ID, operation, entity type, project ID, details, and IP address for all mutations.
+
+### 8. Hardened Offline-First Sync & Conflict Resolution
+- **Zero-Silent-Overwrite Guarantee**: HTTP 409 conflict detection halts auto-sync when local edits clash with newer server data.
+- **3-Way Resolution Console**: Dark Industrial UI dialog enabling field engineers to choose **Discard Local**, **Merge**, or **Force Overwrite**.
+- **Idempotency Keys**: UUID-based idempotency keys on all network transactions preventing duplicate financial disbursements or inventory adjustments.
 
 ---
 
 ## Repository Structure
 
 ```
-├── app/                                # Android Native Client
+├── app/                                # Android Native Client (Zero Compose, Pure Kotlin + XML ViewBinding)
 │   ├── src/main/java/.../
 │   │   ├── core/                       # Network, Auth, Session & Theme tokens
-│   │   ├── domain/model/               # Domain entities (BOQ, Inventory, Finance, etc.)
-│   │   ├── domain/repository/          # Repository contracts
-│   │   └── feature/                    # UI screens (Auth, Dashboard, Project, Tools, etc.)
-│   ├── src/main/res/                   # Layouts, dark industrial drawables & styles
+│   │   ├── domain/model/               # Domain entities (Project, Task, Material, Finance, Sync, Audit)
+│   │   ├── domain/repository/          # Repository contracts & offline cache implementations
+│   │   └── feature/                    # UI screens (Auth, Dashboard, Project, SiteOps, Inventory, Finance, Sync)
+│   ├── src/main/res/                   # Layouts, dark industrial drawables, styles & themes
 │   └── build.gradle.kts                # Android dependencies and BuildConfig injection
-├── backend/                            # Spring Boot 3.4.2 Service
-│   ├── src/main/java/.../              # Controllers, Services, Entities & Repositories
+├── backend/                            # Spring Boot 3.4.2 Service (Pure Java 17 + Spring Security)
+│   ├── src/main/java/.../              # REST Controllers, Services, JPA Entities & Repositories
 │   ├── src/main/resources/
 │   │   ├── application.yml             # Base Spring profile
 │   │   ├── application-dev.yml         # Development profile (reads environment variables)
-│   │   └── db/migration/               # Flyway SQL migrations (V1 - V6)
+│   │   └── db/migration/               # Flyway SQL migrations (V1 - V12)
 │   └── build.gradle.kts                # Backend Gradle configuration
-├── docs/                               # Architecture guidelines and MASTER_PROMPT.yaml
+├── docs/                               # Architecture guidelines, AUDIT.md, and BACKUP_AND_RESTORE.md
+├── scripts/                            # PowerShell automation scripts (backup_database.ps1, restore_database.ps1)
 ├── .github/workflows/
 │   └── keep_alive.yml                  # Automated cron pinging Render & Supabase
 ├── docker-compose.yml                  # Local PostgreSQL 16 container definition

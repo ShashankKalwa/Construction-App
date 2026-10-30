@@ -29,6 +29,8 @@ public class ContractorBillDto {
     private BillPaymentStatus status;
     private String workDescription;
     private String certifiedBy;
+    private String paymentReference;
+    private String idempotencyKey;
     private Instant createdAt;
     private Instant updatedAt;
 }

@@ -4,11 +4,15 @@ import com.example.contruction_management_app.backend.domain.Phase;
 import com.example.contruction_management_app.backend.domain.Project;
 import com.example.contruction_management_app.backend.domain.Task;
 import com.example.contruction_management_app.backend.domain.User;
+import com.example.contruction_management_app.backend.dto.PhaseCreateDto;
 import com.example.contruction_management_app.backend.dto.PhaseDto;
 import com.example.contruction_management_app.backend.dto.TaskCreateDto;
 import com.example.contruction_management_app.backend.dto.TaskDto;
 import com.example.contruction_management_app.backend.dto.TaskProgressUpdateDto;
+import com.example.contruction_management_app.backend.dto.TaskReviewDto;
+import com.example.contruction_management_app.backend.dto.TaskSubmitReviewDto;
 import com.example.contruction_management_app.backend.dto.UserSummaryDto;
+import com.example.contruction_management_app.backend.exception.BadRequestException;
 import com.example.contruction_management_app.backend.exception.ForbiddenException;
 import com.example.contruction_management_app.backend.exception.ResourceNotFoundException;
 import com.example.contruction_management_app.backend.repository.PhaseRepository;
@@ -20,6 +24,7 @@ import com.example.contruction_management_app.backend.security.UserPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +80,30 @@ public class TaskService {
     }
 
     @Transactional
+    public PhaseDto createPhase(String projectId, PhaseCreateDto dto, UserPrincipal principal) {
+        Project project = validateProjectAccess(projectId, principal);
+        int orderIndex = dto.orderIndex() != null ? dto.orderIndex() : (int) phaseRepository.findByProjectIdOrderByOrderIndexAsc(projectId).size() + 1;
+        LocalDate start = dto.startDate() != null && !dto.startDate().isBlank() ? LocalDate.parse(dto.startDate()) : null;
+        LocalDate end = dto.endDate() != null && !dto.endDate().isBlank() ? LocalDate.parse(dto.endDate()) : null;
+
+        Phase phase = new Phase(project, dto.name(), orderIndex, start, end);
+        phase.setCompany(project.getOrganization());
+        Phase saved = phaseRepository.save(phase);
+
+        return new PhaseDto(
+            saved.getId(),
+            saved.getProject().getId(),
+            saved.getName(),
+            saved.getOrderIndex(),
+            saved.getStartDate() != null ? saved.getStartDate().toString() : null,
+            saved.getEndDate() != null ? saved.getEndDate().toString() : null,
+            saved.getStatus(),
+            saved.getProgressPct(),
+            List.of()
+        );
+    }
+
+    @Transactional
     public TaskDto createTask(String projectId, TaskCreateDto dto, UserPrincipal principal) {
         Project project = validateProjectAccess(projectId, principal);
         Phase phase = phaseRepository.findById(dto.phaseId())
@@ -98,6 +127,7 @@ public class TaskService {
             startDate,
             dueDate
         );
+        task.setCompany(project.getOrganization());
         Task saved = taskRepository.save(task);
         return toDto(saved);
     }
@@ -118,6 +148,64 @@ public class TaskService {
             task.setStatus("COMPLETED");
         } else if (task.getProgressPct() > 0.0 && "PENDING".equalsIgnoreCase(task.getStatus())) {
             task.setStatus("IN_PROGRESS");
+        }
+
+        Task saved = taskRepository.save(task);
+        return toDto(saved);
+    }
+
+    @Transactional
+    public TaskDto submitForReview(String taskId, TaskSubmitReviewDto dto, UserPrincipal principal) {
+        Task task = taskRepository.findById(taskId)
+            .orElseThrow(() -> new ResourceNotFoundException("Task not found: " + taskId));
+
+        validateProjectAccess(task.getProject().getId(), principal);
+
+        if (dto.progressPct() != null) {
+            double progress = Math.max(0.0, Math.min(100.0, dto.progressPct()));
+            task.setProgressPct(progress);
+        }
+        task.setStatus("SUBMITTED_FOR_REVIEW");
+        task.setReviewStatus("PENDING_REVIEW");
+        if (dto.notes() != null) {
+            task.setReviewNotes(dto.notes());
+        }
+
+        Task saved = taskRepository.save(task);
+        return toDto(saved);
+    }
+
+    @Transactional
+    public TaskDto reviewTask(String taskId, TaskReviewDto dto, UserPrincipal principal) {
+        Task task = taskRepository.findById(taskId)
+            .orElseThrow(() -> new ResourceNotFoundException("Task not found: " + taskId));
+
+        validateProjectAccess(task.getProject().getId(), principal);
+
+        // Self-review restriction: Assignee cannot review their own task
+        if (task.getAssignee() != null && task.getAssignee().getId().equals(principal.getId())) {
+            throw new ForbiddenException("Self-review is prohibited: you cannot review or approve your own assigned task");
+        }
+
+        User reviewer = userRepository.findById(principal.getId()).orElse(null);
+        String action = dto.action().trim().toUpperCase();
+
+        if ("APPROVE".equals(action)) {
+            task.setStatus(task.getProgressPct() >= 100.0 ? "COMPLETED" : "APPROVED");
+            task.setReviewStatus("APPROVED");
+            task.setReviewedBy(reviewer);
+            task.setReviewedAt(Instant.now());
+            if (dto.notes() != null && !dto.notes().isBlank()) {
+                task.setReviewNotes(dto.notes());
+            }
+        } else if ("REQUEST_CORRECTIONS".equals(action) || "REJECT".equals(action)) {
+            task.setStatus("CORRECTIONS_REQUIRED");
+            task.setReviewStatus("CORRECTIONS_REQUIRED");
+            task.setReviewedBy(reviewer);
+            task.setReviewedAt(Instant.now());
+            task.setReviewNotes(dto.notes() != null ? dto.notes() : "Corrections required");
+        } else {
+            throw new BadRequestException("Invalid review action: " + dto.action());
         }
 
         Task saved = taskRepository.save(task);
@@ -151,6 +239,17 @@ public class TaskService {
                 t.getAssignee().getAvatarUrl()
             );
         }
+
+        UserSummaryDto reviewerSummary = null;
+        if (t.getReviewedBy() != null) {
+            reviewerSummary = new UserSummaryDto(
+                t.getReviewedBy().getId(),
+                t.getReviewedBy().getFullName(),
+                t.getReviewedBy().getEmail(),
+                t.getReviewedBy().getAvatarUrl()
+            );
+        }
+
         return new TaskDto(
             t.getId(),
             t.getPhase().getId(),
@@ -163,7 +262,11 @@ public class TaskService {
             t.getStatus(),
             t.getStartDate() != null ? t.getStartDate().toString() : null,
             t.getDueDate() != null ? t.getDueDate().toString() : null,
-            t.getProgressPct()
+            t.getProgressPct(),
+            t.getReviewStatus() != null ? t.getReviewStatus() : "NONE",
+            reviewerSummary,
+            t.getReviewNotes(),
+            t.getReviewedAt() != null ? t.getReviewedAt().toString() : null
         );
     }
 }

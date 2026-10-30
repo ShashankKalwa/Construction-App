@@ -96,6 +96,40 @@
             android:textColor="@color/cms_text_primary" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Client Name -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilProjectClient"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Client Name (e.g. Apex Developments)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etProjectClient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Project Type -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilProjectType"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Project Type (e.g. Commercial, Residential)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etProjectType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <!-- Create Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSubmitProject"

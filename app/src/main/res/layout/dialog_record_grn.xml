@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_surface"
+    android:orientation="vertical"
+    android:padding="@dimen/cms_spacing_lg">
+
+    <!-- Handle Bar -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/cms_spacing_md"
+        android:background="@color/cms_border" />
+
+    <TextView
+        android:id="@+id/tvGrnTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Record Goods Receipt Note (GRN)"
+        android:textAppearance="@style/TextAppearance.CMS.Title" />
+
+    <TextView
+        android:id="@+id/tvPoDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textAppearance="@style/TextAppearance.CMS.Caption"
+        android:textColor="@color/cms_text_tertiary"
+        tools:text="PO-2026-0101 • UltraTech Cement Distribution Hub" />
+
+    <!-- Material Line Item Selector -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMaterialItem"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Select Material Item from PO">
+
+        <AutoCompleteTextView
+            android:id="@+id/actvMaterialItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Challan Number -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilChallanNumber"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Delivery Challan / Invoice #">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etChallanNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Received Quantity -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilReceivedQty"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Received Quantity">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etReceivedQty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Quality / Inspection Remarks -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilQualityRemarks"
+        style="@style/Widget.CMS.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_md"
+        android:hint="Inspection &amp; Quality Remarks (e.g. Batch verified, no moisture)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etQualityRemarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:textColor="@color/cms_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cms_spacing_lg"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            style="@style/Widget.CMS.Button.Outlined"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/cms_spacing_sm"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmGrn"
+            style="@style/Widget.CMS.Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Confirm GRN" />
+    </LinearLayout>
+
+</LinearLayout>
+

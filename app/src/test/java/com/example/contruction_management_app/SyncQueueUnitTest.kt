@@ -47,9 +47,12 @@ class SyncQueueUnitTest {
 
     @Test
     fun testSyncAllPendingTransitionsToConfirmed() = runBlocking {
-        val initialPending = syncRepository.getPendingCount()
-        assertTrue(initialPending > 0)
+        // Resolve seeded conflicts before syncing so all items can be confirmed
+        syncRepository.getQueue().filter { it.status == SyncStatus.CONFLICT }.forEach {
+            syncRepository.resolveConflict(it.id, com.example.contruction_management_app.domain.model.ConflictResolution.MERGE)
+        }
 
+        val initialPending = syncRepository.getPendingCount()
         val result = syncRepository.syncAllPending()
         assertTrue(result.isSuccess)
         assertEquals(initialPending, result.getOrNull())

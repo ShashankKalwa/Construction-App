@@ -98,6 +98,20 @@ public class AuditLogService {
         auditLogRepository.save(log);
     }
 
+    @Transactional
+    public void recordLog(
+        String organizationId,
+        String projectId,
+        String userId,
+        String userName,
+        AuditAction action,
+        AuditEntityType entityType,
+        String entityId,
+        String details
+    ) {
+        recordLog(organizationId, projectId, userId, userName, action, entityType, entityId, details, "127.0.0.1");
+    }
+
     private void validateProjectAccess(String projectId, UserPrincipal principal) {
         if (principal == null) return;
         boolean isSuperAdmin = principal.getAuthorities().stream()

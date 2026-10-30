@@ -41,6 +41,15 @@ public class MaterialRequest {
     @Column(name = "approved_by", length = 50)
     private String approvedBy;
 
+    @Column(name = "rejection_reason")
+    private String rejectionReason;
+
+    @Column(name = "issued_by", length = 50)
+    private String issuedBy;
+
+    @Column(name = "issued_at")
+    private Instant issuedAt;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     @Builder.Default

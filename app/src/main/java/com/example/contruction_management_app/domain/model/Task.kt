@@ -3,14 +3,41 @@ package com.example.contruction_management_app.domain.model
 enum class TaskPriority(val displayName: String) {
     HIGH("High"),
     MEDIUM("Medium"),
-    LOW("Low")
+    LOW("Low");
+
+    companion object {
+        fun fromString(str: String?): TaskPriority {
+            return when (str?.uppercase()) {
+                "HIGH" -> HIGH
+                "LOW" -> LOW
+                else -> MEDIUM
+            }
+        }
+    }
 }
 
 enum class TaskStatus(val displayName: String) {
     PENDING("Pending"),
     IN_PROGRESS("In Progress"),
+    SUBMITTED_FOR_REVIEW("In Review"),
+    CORRECTIONS_REQUIRED("Corrections Required"),
+    APPROVED("Approved"),
     BLOCKED("Blocked"),
-    COMPLETED("Completed")
+    COMPLETED("Completed");
+
+    companion object {
+        fun fromString(str: String?): TaskStatus {
+            return when (str?.uppercase()) {
+                "IN_PROGRESS" -> IN_PROGRESS
+                "BLOCKED" -> BLOCKED
+                "COMPLETED" -> COMPLETED
+                "SUBMITTED_FOR_REVIEW", "PENDING_REVIEW" -> SUBMITTED_FOR_REVIEW
+                "CORRECTIONS_REQUIRED", "REJECTED" -> CORRECTIONS_REQUIRED
+                "APPROVED" -> APPROVED
+                else -> PENDING
+            }
+        }
+    }
 }
 
 data class Task(
@@ -25,7 +52,11 @@ data class Task(
     val status: TaskStatus = TaskStatus.PENDING,
     val startDate: String?,
     val dueDate: String?,
-    val progressPct: Double = 0.0
+    val progressPct: Double = 0.0,
+    val reviewStatus: String = "NONE",
+    val reviewedBy: UserSummary? = null,
+    val reviewNotes: String? = null,
+    val reviewedAt: String? = null
 )
 
 data class Phase(

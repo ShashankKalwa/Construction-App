@@ -23,6 +23,7 @@ public class SiteOperationsController {
         this.siteOperationsService = siteOperationsService;
     }
 
+    // Daily Site Reports
     @PostMapping("/projects/{projectId}/daily-reports")
     @PreAuthorize("hasAuthority('reports:daily_site') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN')")
     public ResponseEntity<DailySiteReportDto> createDailyReport(
@@ -34,6 +35,18 @@ public class SiteOperationsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(report);
     }
 
+    @PostMapping("/projects/{projectId}/daily-reports/{reportId}/approve")
+    @PreAuthorize("hasAuthority('reports:daily_site') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN') or hasRole('PROJECT_MANAGER')")
+    public ResponseEntity<DailySiteReportDto> approveDailyReport(
+        @PathVariable String projectId,
+        @PathVariable String reportId,
+        @Valid @RequestBody DsrApprovalDto dto,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        DailySiteReportDto report = siteOperationsService.approveDailyReport(projectId, reportId, dto, principal);
+        return ResponseEntity.ok(report);
+    }
+
     @GetMapping("/projects/{projectId}/daily-reports")
     public ResponseEntity<List<DailySiteReportDto>> getDailyReports(
         @PathVariable String projectId,
@@ -43,6 +56,60 @@ public class SiteOperationsController {
         return ResponseEntity.ok(list);
     }
 
+    // Work Progress (Reported vs Verified Quantities)
+    @PostMapping("/projects/{projectId}/work-progress")
+    @PreAuthorize("hasAuthority('reports:daily_site') or hasAuthority('tasks:update') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN')")
+    public ResponseEntity<WorkProgressDto> recordWorkProgress(
+        @PathVariable String projectId,
+        @Valid @RequestBody WorkProgressCreateDto dto,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        WorkProgressDto wp = siteOperationsService.recordWorkProgress(projectId, dto, principal);
+        return ResponseEntity.status(HttpStatus.CREATED).body(wp);
+    }
+
+    @PostMapping("/projects/{projectId}/work-progress/{progressId}/verify")
+    @PreAuthorize("hasAuthority('tasks:manage') or hasRole('SUPER_ADMIN') or hasRole('COMPANY_ADMIN') or hasRole('PROJECT_MANAGER') or hasRole('CIVIL_ENGINEER')")
+    public ResponseEntity<WorkProgressDto> verifyWorkProgress(
+        @PathVariable String projectId,
+        @PathVariable String progressId,
+        @Valid @RequestBody WorkProgressVerifyDto dto,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        WorkProgressDto wp = siteOperationsService.verifyWorkProgress(projectId, progressId, dto, principal);
+        return ResponseEntity.ok(wp);
+    }
+
+    @GetMapping("/projects/{projectId}/work-progress")
+    public ResponseEntity<List<WorkProgressDto>> getWorkProgress(
+        @PathVariable String projectId,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        List<WorkProgressDto> list = siteOperationsService.getWorkProgressForProject(projectId, principal);
+        return ResponseEntity.ok(list);
+    }
+
+    // Photo Evidence
+    @PostMapping("/projects/{projectId}/photos")
+    public ResponseEntity<SitePhotoDto> saveSitePhoto(
+        @PathVariable String projectId,
+        @Valid @RequestBody SitePhotoCreateDto dto,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        SitePhotoDto photo = siteOperationsService.saveSitePhoto(projectId, dto, principal);
+        return ResponseEntity.status(HttpStatus.CREATED).body(photo);
+    }
+
+    @GetMapping("/projects/{projectId}/photos")
+    public ResponseEntity<List<SitePhotoDto>> getSitePhotos(
+        @PathVariable String projectId,
+        @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        List<SitePhotoDto> list = siteOperationsService.getPhotosForProject(projectId, principal);
+        return ResponseEntity.ok(list);
+    }
+
+    // Issues
     @PostMapping("/projects/{projectId}/issues")
     public ResponseEntity<SiteIssueDto> logSiteIssue(
         @PathVariable String projectId,

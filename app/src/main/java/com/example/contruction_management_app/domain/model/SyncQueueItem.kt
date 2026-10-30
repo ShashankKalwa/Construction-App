@@ -4,7 +4,14 @@ enum class SyncStatus(val displayName: String) {
     PENDING_SYNC("Pending Sync"),
     SYNCING("Syncing..."),
     CONFIRMED("Confirmed"),
-    FAILED("Sync Failed")
+    FAILED("Sync Failed"),
+    CONFLICT("Conflict Detected")
+}
+
+enum class ConflictResolution {
+    OVERWRITE_SERVER,
+    DISCARD_LOCAL,
+    MERGE
 }
 
 enum class SyncActionType(val displayName: String) {
@@ -26,5 +33,7 @@ data class SyncQueueItem(
     val timestamp: Long,
     val status: SyncStatus,
     val retryCount: Int = 0,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val serverConflictData: String? = null,
+    val idempotencyKey: String? = null
 )

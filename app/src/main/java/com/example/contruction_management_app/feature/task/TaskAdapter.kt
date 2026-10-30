@@ -96,14 +96,36 @@ class TaskAdapter(
             binding.tvTaskSubtitle.text = "Assignee: $assigneeName • ${task.priority.displayName} Priority"
 
             val statusColorRes = when (task.status) {
-                TaskStatus.COMPLETED -> R.color.cms_success
+                TaskStatus.COMPLETED, TaskStatus.APPROVED -> R.color.cms_success
                 TaskStatus.IN_PROGRESS -> R.color.cms_accent
-                TaskStatus.BLOCKED -> R.color.cms_error
+                TaskStatus.SUBMITTED_FOR_REVIEW -> R.color.cms_warning
+                TaskStatus.CORRECTIONS_REQUIRED, TaskStatus.BLOCKED -> R.color.cms_error
                 TaskStatus.PENDING -> R.color.cms_text_secondary
             }
             val statusColor = ContextCompat.getColor(context, statusColorRes)
-            binding.tvTaskStatus.text = task.status.name
+            binding.tvTaskStatus.text = task.status.displayName.uppercase()
             binding.tvTaskStatus.setTextColor(statusColor)
+
+            when {
+                task.status == TaskStatus.SUBMITTED_FOR_REVIEW || task.reviewStatus == "SUBMITTED" -> {
+                    binding.tvTaskReviewStatus.visibility = android.view.View.VISIBLE
+                    binding.tvTaskReviewStatus.text = "IN REVIEW"
+                    binding.tvTaskReviewStatus.setTextColor(ContextCompat.getColor(context, R.color.cms_warning))
+                }
+                task.status == TaskStatus.CORRECTIONS_REQUIRED || task.reviewStatus == "CORRECTIONS_REQUIRED" -> {
+                    binding.tvTaskReviewStatus.visibility = android.view.View.VISIBLE
+                    binding.tvTaskReviewStatus.text = "CHANGES NEEDED"
+                    binding.tvTaskReviewStatus.setTextColor(ContextCompat.getColor(context, R.color.cms_error))
+                }
+                task.status == TaskStatus.APPROVED || task.reviewStatus == "APPROVED" -> {
+                    binding.tvTaskReviewStatus.visibility = android.view.View.VISIBLE
+                    binding.tvTaskReviewStatus.text = "APPROVED"
+                    binding.tvTaskReviewStatus.setTextColor(ContextCompat.getColor(context, R.color.cms_success))
+                }
+                else -> {
+                    binding.tvTaskReviewStatus.visibility = android.view.View.GONE
+                }
+            }
 
             val progressInt = task.progressPct.toInt().coerceIn(0, 100)
             binding.progressTask.progress = progressInt

@@ -187,11 +187,131 @@ public class InventoryService {
             throw new BadRequestException("Material request does not belong to project " + projectId);
         }
 
+        if (principal != null && request.getRequestedBy() != null && request.getRequestedBy().equals(principal.getId())) {
+            throw new org.springframework.security.access.AccessDeniedException("Self-approval not permitted. Submitter cannot approve their own material request.");
+        }
+
         request.setStatus(MaterialRequestStatus.APPROVED);
-        request.setApprovedBy(principal.getId());
+        request.setApprovedBy(principal != null ? principal.getId() : "system");
 
         MaterialRequest saved = materialRequestRepository.save(request);
         return MaterialRequestDto.fromEntity(saved);
+    }
+
+    @Transactional
+    public MaterialRequestDto rejectMaterialRequest(String projectId, String requestId, MaterialRequestRejectDto dto, UserPrincipal principal) {
+        validateProjectAccess(projectId, principal);
+
+        MaterialRequest request = materialRequestRepository.findById(requestId)
+            .orElseThrow(() -> new ResourceNotFoundException("Material request not found: " + requestId));
+
+        if (!request.getProject().getId().equals(projectId)) {
+            throw new BadRequestException("Material request does not belong to project " + projectId);
+        }
+
+        request.setStatus(MaterialRequestStatus.REJECTED);
+        request.setApprovedBy(principal != null ? principal.getId() : "system");
+        request.setRejectionReason(dto.reason());
+
+        MaterialRequest saved = materialRequestRepository.save(request);
+        return MaterialRequestDto.fromEntity(saved);
+    }
+
+    @Transactional
+    public MaterialRequestDto issueMaterialRequest(String projectId, String requestId, MaterialRequestIssueDto dto, UserPrincipal principal) {
+        validateProjectAccess(projectId, principal);
+
+        MaterialRequest request = materialRequestRepository.findById(requestId)
+            .orElseThrow(() -> new ResourceNotFoundException("Material request not found: " + requestId));
+
+        if (!request.getProject().getId().equals(projectId)) {
+            throw new BadRequestException("Material request does not belong to project " + projectId);
+        }
+
+        if (request.getStatus() != MaterialRequestStatus.APPROVED) {
+            throw new BadRequestException("Only APPROVED material requests can be issued. Current status: " + request.getStatus());
+        }
+
+        Material material = request.getMaterial();
+        BigDecimal currentStock = material.getCurrentStock() != null ? material.getCurrentStock() : BigDecimal.ZERO;
+        BigDecimal requestedQty = request.getQuantity();
+
+        if (currentStock.compareTo(requestedQty) < 0) {
+            throw new BadRequestException("Insufficient stock to issue request. Available: " + currentStock + " " + material.getUnit() + ", Required: " + requestedQty);
+        }
+
+        BigDecimal newStock = currentStock.subtract(requestedQty);
+        material.setCurrentStock(newStock);
+        materialRepository.save(material);
+
+        StockMovement movement = StockMovement.builder()
+            .material(material)
+            .movementType(MovementType.OUTWARD_ISSUE)
+            .quantity(requestedQty.negate())
+            .balanceAfter(newStock)
+            .referenceId(requestId)
+            .notes(dto != null && dto.notes() != null ? dto.notes() : "Issued for MRN: " + requestId + " (" + request.getPhaseOrTaskDesc() + ")")
+            .idempotencyKey(dto != null ? dto.idempotencyKey() : null)
+            .performedBy(principal != null ? principal.getId() : "system")
+            .createdAt(Instant.now())
+            .build();
+        stockMovementRepository.save(movement);
+
+        request.setStatus(MaterialRequestStatus.ISSUED);
+        request.setIssuedBy(principal != null ? principal.getId() : "system");
+        request.setIssuedAt(Instant.now());
+
+        MaterialRequest saved = materialRequestRepository.save(request);
+        return MaterialRequestDto.fromEntity(saved);
+    }
+
+    @Transactional
+    public MaterialDto returnStock(String projectId, String materialId, StockReturnDto dto, UserPrincipal principal) {
+        validateProjectAccess(projectId, principal);
+
+        Material material = materialRepository.findById(materialId)
+            .orElseThrow(() -> new ResourceNotFoundException("Material not found: " + materialId));
+
+        if (!material.getProject().getId().equals(projectId)) {
+            throw new BadRequestException("Material does not belong to project " + projectId);
+        }
+
+        BigDecimal returnQty = dto.quantity().abs();
+        BigDecimal currentStock = material.getCurrentStock() != null ? material.getCurrentStock() : BigDecimal.ZERO;
+        BigDecimal newStock = currentStock.add(returnQty);
+
+        material.setCurrentStock(newStock);
+        Material saved = materialRepository.save(material);
+
+        StockMovement movement = StockMovement.builder()
+            .material(saved)
+            .movementType(MovementType.RETURN)
+            .quantity(returnQty)
+            .balanceAfter(newStock)
+            .referenceId(dto.referenceId())
+            .notes(dto.notes() != null ? dto.notes() : "Unused material returned to store")
+            .performedBy(principal != null ? principal.getId() : "system")
+            .createdAt(Instant.now())
+            .build();
+        stockMovementRepository.save(movement);
+
+        return MaterialDto.fromEntity(saved);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MaterialDto> getLowStockMaterials(String projectId, UserPrincipal principal) {
+        validateProjectAccess(projectId, principal);
+        return materialRepository.findLowStockMaterials(projectId).stream()
+            .map(MaterialDto::fromEntity)
+            .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<StockMovementDto> getProjectStockLedger(String projectId, UserPrincipal principal) {
+        validateProjectAccess(projectId, principal);
+        return stockMovementRepository.findByMaterialProjectIdOrderByCreatedAtDesc(projectId).stream()
+            .map(StockMovementDto::fromEntity)
+            .toList();
     }
 
     @Transactional(readOnly = true)

@@ -7,6 +7,8 @@ enum class AuditAction(val displayName: String) {
     APPROVE("Approved"),
     REJECT("Rejected"),
     ISSUE_STOCK("Issued Stock"),
+    RECEIVE_STOCK("Received Stock"),
+    STATUS_CHANGE("Status Changed"),
     PAY_BILL("Paid Bill")
 }
 
@@ -17,7 +19,10 @@ enum class AuditEntityType(val displayName: String) {
     STOCK("Inventory Stock"),
     TASK("Task"),
     DOCUMENT("Document"),
-    PROJECT("Project")
+    PROJECT("Project"),
+    MILESTONE("Milestone"),
+    PURCHASE_ORDER("Purchase Order"),
+    MATERIAL_REQUEST("Material Request")
 }
 
 data class AuditLogItem(

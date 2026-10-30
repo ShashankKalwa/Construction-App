@@ -21,7 +21,10 @@ class DailySiteReportListFragment : Fragment() {
 
     private val siteOpsViewModel: SiteOperationsViewModel by activityViewModels()
     private var projectId: String = "prj_commercial_tower_b"
-    private lateinit var adapter: DailyReportAdapter
+    private lateinit var dsrAdapter: DailyReportAdapter
+    private lateinit var progressAdapter: WorkProgressAdapter
+
+    private var isDsrMode: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,65 +39,174 @@ class DailySiteReportListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         projectId = arguments?.getString(ARG_PROJECT_ID) ?: "prj_commercial_tower_b"
 
-        setupRecyclerView()
+        setupRecyclerViews()
         setupListeners()
         observeState()
 
         siteOpsViewModel.loadDailyReports(projectId)
+        siteOpsViewModel.loadWorkProgress(projectId)
     }
 
-    private fun setupRecyclerView() {
-        adapter = DailyReportAdapter()
+    private fun setupRecyclerViews() {
+        dsrAdapter = DailyReportAdapter(
+            onReportClicked = { report ->
+                val dialog = ApproveDsrDialog(report) { action, notes ->
+                    siteOpsViewModel.approveDailyReport(report.id, action, notes)
+                }
+                dialog.show(childFragmentManager, ApproveDsrDialog.TAG)
+            },
+            onApproveClicked = { report ->
+                val dialog = ApproveDsrDialog(report) { action, notes ->
+                    siteOpsViewModel.approveDailyReport(report.id, action, notes)
+                }
+                dialog.show(childFragmentManager, ApproveDsrDialog.TAG)
+            }
+        )
         binding.rvDailyReports.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvDailyReports.adapter = adapter
+        binding.rvDailyReports.adapter = dsrAdapter
+
+        progressAdapter = WorkProgressAdapter(
+            onVerifyClicked = { progress ->
+                val dialog = VerifyProgressDialog(progress) { action, qty, notes ->
+                    siteOpsViewModel.verifyWorkProgress(progress.id, action, qty, notes)
+                }
+                dialog.show(childFragmentManager, VerifyProgressDialog.TAG)
+            }
+        )
+        binding.rvWorkProgress.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvWorkProgress.adapter = progressAdapter
     }
 
     private fun setupListeners() {
         binding.swipeRefreshDsr.setColorSchemeResources(R.color.cms_accent)
         binding.swipeRefreshDsr.setOnRefreshListener {
-            siteOpsViewModel.loadDailyReports(projectId)
+            if (isDsrMode) {
+                siteOpsViewModel.loadDailyReports(projectId)
+            } else {
+                siteOpsViewModel.loadWorkProgress(projectId)
+            }
+        }
+
+        binding.chipGroupDsrMode.setOnCheckedStateChangeListener { _, checkedIds ->
+            isDsrMode = checkedIds.contains(R.id.chipDsrDiary)
+            updateModeUi()
         }
 
         binding.btnNewReport.setOnClickListener {
-            val dialog = CreateDsrDialog { date, weather, summary, tomorrow, labor ->
-                siteOpsViewModel.createDailyReport(date, weather, summary, tomorrow, labor)
+            if (isDsrMode) {
+                val dialog = CreateDsrDialog { date, weather, summary, tomorrow, labor ->
+                    siteOpsViewModel.createDailyReport(date, weather, summary, tomorrow, labor)
+                }
+                dialog.show(childFragmentManager, CreateDsrDialog.TAG)
+            } else {
+                val dialog = RecordProgressDialog { itemName, unit, planned, reported ->
+                    siteOpsViewModel.recordWorkProgress(
+                        taskId = null,
+                        reportId = null,
+                        itemName = itemName,
+                        unit = unit,
+                        plannedQuantity = planned,
+                        reportedQuantity = reported
+                    )
+                }
+                dialog.show(childFragmentManager, RecordProgressDialog.TAG)
             }
-            dialog.show(childFragmentManager, CreateDsrDialog.TAG)
         }
 
         binding.viewError.btnRetry.setOnClickListener {
-            siteOpsViewModel.loadDailyReports(projectId)
+            if (isDsrMode) {
+                siteOpsViewModel.loadDailyReports(projectId)
+            } else {
+                siteOpsViewModel.loadWorkProgress(projectId)
+            }
+        }
+    }
+
+    private fun updateModeUi() {
+        if (isDsrMode) {
+            binding.tvSectionTitle.text = "Daily Site Reports (DSR)"
+            binding.tvSectionSubtitle.text = "Weather, work log, labor roster & review approval"
+            binding.btnNewReport.text = "+ Log DSR"
+            binding.rvDailyReports.visibility = View.VISIBLE
+            binding.rvWorkProgress.visibility = View.GONE
+        } else {
+            binding.tvSectionTitle.text = "Work Progress (Reported vs Verified)"
+            binding.tvSectionSubtitle.text = "Physical quantities tracking with dual-control verification"
+            binding.btnNewReport.text = "+ Record Progress"
+            binding.rvDailyReports.visibility = View.GONE
+            binding.rvWorkProgress.visibility = View.VISIBLE
         }
     }
 
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                siteOpsViewModel.dsrState.collect { state ->
-                    binding.swipeRefreshDsr.isRefreshing = false
-                    when (state) {
-                        is DsrUiState.Loading -> {
-                            binding.viewLoading.root.visibility = View.VISIBLE
-                            binding.viewError.root.visibility = View.GONE
-                            binding.viewEmpty.root.visibility = View.GONE
-                        }
-                        is DsrUiState.Success -> {
-                            binding.viewLoading.root.visibility = View.GONE
-                            binding.viewError.root.visibility = View.GONE
-                            if (state.reports.isEmpty()) {
-                                binding.viewEmpty.root.visibility = View.VISIBLE
-                                binding.viewEmpty.tvEmptyTitle.text = "No Daily Site Reports logged"
-                                binding.viewEmpty.tvEmptySubtitle.text = "Log today's work execution, weather, and labor headcount"
-                            } else {
-                                binding.viewEmpty.root.visibility = View.GONE
-                                adapter.submitList(state.reports)
+                launch {
+                    siteOpsViewModel.dsrState.collect { state ->
+                        binding.swipeRefreshDsr.isRefreshing = false
+                        if (isDsrMode) {
+                            when (state) {
+                                is DsrUiState.Loading -> {
+                                    binding.viewLoading.root.visibility = View.VISIBLE
+                                    binding.viewError.root.visibility = View.GONE
+                                    binding.viewEmpty.root.visibility = View.GONE
+                                }
+                                is DsrUiState.Success -> {
+                                    binding.viewLoading.root.visibility = View.GONE
+                                    binding.viewError.root.visibility = View.GONE
+                                    if (state.reports.isEmpty()) {
+                                        binding.viewEmpty.root.visibility = View.VISIBLE
+                                        binding.viewEmpty.tvEmptyTitle.text = "No Daily Site Reports logged"
+                                        binding.viewEmpty.tvEmptySubtitle.text = "Log today's work execution, weather, and labor headcount"
+                                    } else {
+                                        binding.viewEmpty.root.visibility = View.GONE
+                                        dsrAdapter.submitList(state.reports)
+                                    }
+                                }
+                                is DsrUiState.Error -> {
+                                    binding.viewLoading.root.visibility = View.GONE
+                                    binding.viewEmpty.root.visibility = View.GONE
+                                    binding.viewError.root.visibility = View.VISIBLE
+                                    binding.viewError.tvErrorMessage.text = state.message
+                                }
                             }
+                        } else if (state is DsrUiState.Success) {
+                            dsrAdapter.submitList(state.reports)
                         }
-                        is DsrUiState.Error -> {
-                            binding.viewLoading.root.visibility = View.GONE
-                            binding.viewEmpty.root.visibility = View.GONE
-                            binding.viewError.root.visibility = View.VISIBLE
-                            binding.viewError.tvErrorMessage.text = state.message
+                    }
+                }
+
+                launch {
+                    siteOpsViewModel.workProgressState.collect { state ->
+                        binding.swipeRefreshDsr.isRefreshing = false
+                        if (!isDsrMode) {
+                            when (state) {
+                                is WorkProgressUiState.Loading -> {
+                                    binding.viewLoading.root.visibility = View.VISIBLE
+                                    binding.viewError.root.visibility = View.GONE
+                                    binding.viewEmpty.root.visibility = View.GONE
+                                }
+                                is WorkProgressUiState.Success -> {
+                                    binding.viewLoading.root.visibility = View.GONE
+                                    binding.viewError.root.visibility = View.GONE
+                                    if (state.list.isEmpty()) {
+                                        binding.viewEmpty.root.visibility = View.VISIBLE
+                                        binding.viewEmpty.tvEmptyTitle.text = "No Work Progress recorded"
+                                        binding.viewEmpty.tvEmptySubtitle.text = "Log executed physical quantities for engineering verification"
+                                    } else {
+                                        binding.viewEmpty.root.visibility = View.GONE
+                                        progressAdapter.submitList(state.list)
+                                    }
+                                }
+                                is WorkProgressUiState.Error -> {
+                                    binding.viewLoading.root.visibility = View.GONE
+                                    binding.viewEmpty.root.visibility = View.GONE
+                                    binding.viewError.root.visibility = View.VISIBLE
+                                    binding.viewError.tvErrorMessage.text = state.message
+                                }
+                            }
+                        } else if (state is WorkProgressUiState.Success) {
+                            progressAdapter.submitList(state.list)
                         }
                     }
                 }

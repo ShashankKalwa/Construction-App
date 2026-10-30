@@ -140,4 +140,25 @@ public class FinanceServiceTest {
         assertEquals(ExpenseStatus.PAID, paid.getStatus());
         assertEquals("usr_accountant", paid.getPaidBy());
     }
+
+    @Test
+    void testExpenseApproval_RejectsSelfApproval() {
+        Expense expense = Expense.builder()
+            .id("exp_self")
+            .project(mockProject)
+            .category(ExpenseCategory.MATERIALS)
+            .title("Self Submitted Expense")
+            .amount(BigDecimal.valueOf(5000.00))
+            .expenseDate(LocalDate.now())
+            .status(ExpenseStatus.SUBMITTED)
+            .submittedBy("usr_accountant") // Same as financePrincipal
+            .build();
+
+        when(expenseRepository.findById("exp_self")).thenReturn(Optional.of(expense));
+
+        assertThrows(
+            com.example.contruction_management_app.backend.exception.ForbiddenException.class,
+            () -> financeService.updateExpenseStatus("prj_green_valley_residency", "exp_self", ExpenseStatus.APPROVED, financePrincipal)
+        );
+    }
 }

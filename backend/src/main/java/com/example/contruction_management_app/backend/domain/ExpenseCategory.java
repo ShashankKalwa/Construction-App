@@ -6,5 +6,7 @@ public enum ExpenseCategory {
     UTILITIES,
     SUBCONTRACTOR,
     PETTY_CASH,
-    MATERIALS
+    MATERIALS,
+    SAFETY,
+    OTHER
 }

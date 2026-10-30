@@ -1,6 +1,7 @@
 package com.example.contruction_management_app.feature.sync
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -8,10 +9,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.contruction_management_app.R
 import com.example.contruction_management_app.databinding.ItemSyncQueueBinding
+import com.example.contruction_management_app.domain.model.ConflictResolution
 import com.example.contruction_management_app.domain.model.SyncQueueItem
 import com.example.contruction_management_app.domain.model.SyncStatus
 
-class SyncQueueAdapter : ListAdapter<SyncQueueItem, SyncQueueAdapter.SyncViewHolder>(DiffCallback) {
+class SyncQueueAdapter(
+    private val onResolveConflict: ((SyncQueueItem, ConflictResolution) -> Unit)? = null
+) : ListAdapter<SyncQueueItem, SyncQueueAdapter.SyncViewHolder>(DiffCallback) {
 
     inner class SyncViewHolder(private val binding: ItemSyncQueueBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -27,8 +31,26 @@ class SyncQueueAdapter : ListAdapter<SyncQueueItem, SyncQueueAdapter.SyncViewHol
                 SyncStatus.PENDING_SYNC -> ContextCompat.getColor(context, R.color.cms_warning)
                 SyncStatus.FAILED -> ContextCompat.getColor(context, R.color.cms_error)
                 SyncStatus.SYNCING -> ContextCompat.getColor(context, R.color.cms_accent)
+                SyncStatus.CONFLICT -> ContextCompat.getColor(context, R.color.cms_error)
             }
             binding.tvSyncStatusBadge.setTextColor(color)
+
+            if (item.status == SyncStatus.CONFLICT) {
+                binding.layoutConflictPanel.visibility = View.VISIBLE
+                binding.tvConflictDetails.text = item.errorMessage ?: "Collision detected: server has a newer revision"
+
+                binding.btnDiscardLocal.setOnClickListener {
+                    onResolveConflict?.invoke(item, ConflictResolution.DISCARD_LOCAL)
+                }
+                binding.btnMergeResolution.setOnClickListener {
+                    onResolveConflict?.invoke(item, ConflictResolution.MERGE)
+                }
+                binding.btnOverwriteServer.setOnClickListener {
+                    onResolveConflict?.invoke(item, ConflictResolution.OVERWRITE_SERVER)
+                }
+            } else {
+                binding.layoutConflictPanel.visibility = View.GONE
+            }
         }
     }
 

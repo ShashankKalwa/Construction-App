@@ -84,8 +84,21 @@
                 tools:text="₹18,500" />
         </LinearLayout>
 
-        <!-- Stepper Workflow Action Button -->
+        <!-- Audit / Payment Info -->
+        <TextView
+            android:id="@+id/tvExpenseAuditInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.CMS.Caption"
+            android:textColor="@color/cms_text_tertiary"
+            android:visibility="gone"
+            tools:text="Ref: PAY-827361"
+            tools:visibility="visible" />
+
+        <!-- Stepper Workflow Action Buttons -->
         <LinearLayout
+            android:id="@+id/layoutActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/cms_spacing_md"
@@ -93,10 +106,24 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRejectExpense"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="@dimen/cms_spacing_sm"
+                android:text="Reject"
+                android:textColor="@color/cms_error"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAdvanceStatus"
                 style="@style/Widget.CMS.Button.Outlined"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
+                android:layout_marginStart="@dimen/cms_spacing_xs"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:paddingHorizontal="@dimen/cms_spacing_md"

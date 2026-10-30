@@ -105,6 +105,12 @@ class MainShellFragment : Fragment() {
                 },
                 onToolsSelected = {
                     binding.viewPagerShell.setCurrentItem(3, false)
+                },
+                onDsrSelected = {
+                    binding.viewPagerShell.setCurrentItem(2, false)
+                },
+                onExpenseSelected = {
+                    binding.viewPagerShell.setCurrentItem(3, false)
                 }
             )
             quickSheet.show(parentFragmentManager, QuickCreateBottomSheetDialog.TAG)
@@ -135,11 +141,11 @@ class MainShellFragment : Fragment() {
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
-                0 -> HomeDashboardFragment()
+                0 -> com.example.contruction_management_app.feature.dashboard.roles.RoleHomeRouterFragment.newInstance()
                 1 -> ProjectListFragment()
                 2 -> TaskListFragment()
                 3 -> ToolsFragment()
-                else -> HomeDashboardFragment()
+                else -> com.example.contruction_management_app.feature.dashboard.roles.RoleHomeRouterFragment.newInstance()
             }
         }
     }

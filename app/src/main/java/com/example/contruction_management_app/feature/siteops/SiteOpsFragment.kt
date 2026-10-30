@@ -34,8 +34,9 @@ class SiteOpsFragment : Fragment() {
 
         TabLayoutMediator(binding.tabLayoutSiteOps, binding.viewPagerSiteOps) { tab, position ->
             tab.text = when (position) {
-                0 -> "Daily Reports"
-                1 -> "Issues & Snags"
+                0 -> "Daily Diary & Progress"
+                1 -> "Inspections"
+                2 -> "Snags & Defects"
                 else -> ""
             }
         }.attach()
@@ -51,12 +52,13 @@ class SiteOpsFragment : Fragment() {
         private val projectId: String
     ) : FragmentStateAdapter(fragment) {
 
-        override fun getItemCount(): Int = 2
+        override fun getItemCount(): Int = 3
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> DailySiteReportListFragment.newInstance(projectId)
-                1 -> SiteIssueListFragment.newInstance(projectId)
+                1 -> InspectionListFragment.newInstance(projectId)
+                2 -> DefectListFragment.newInstance(projectId)
                 else -> DailySiteReportListFragment.newInstance(projectId)
             }
         }

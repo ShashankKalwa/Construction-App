@@ -16,15 +16,17 @@ import java.util.List;
 public class CostDashboardSummaryDto {
     private String projectId;
     private String projectName;
-    private String period; // WEEK, MONTH, QUARTER, TOTAL
+    private String period;
     private BigDecimal totalBudget;
     private BigDecimal actualCost;
     private BigDecimal budgetUsedPct;
     private BigDecimal committedCost;
     private BigDecimal remainingBudget;
     private BigDecimal projectedFinalCost;
+
     @Builder.Default
     private List<CategoryCostDto> costBreakdown = new ArrayList<>();
+
     @Builder.Default
     private List<MaterialConsumptionDto> topMaterialConsumption = new ArrayList<>();
 }

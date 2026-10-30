@@ -11,7 +11,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.contruction_management_app.R
 import com.example.contruction_management_app.databinding.FragmentFinanceBinding
+import com.example.contruction_management_app.domain.model.ExpenseCategory
+import com.example.contruction_management_app.domain.model.Vendor
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
 
@@ -25,8 +28,10 @@ class FinanceFragment : Fragment() {
 
     private lateinit var expenseAdapter: ExpenseAdapter
     private lateinit var billAdapter: ContractorBillAdapter
+    private lateinit var poAdapter: PurchaseOrderAdapter
 
     private var selectedTabIndex = 0
+    private var cachedVendors: List<Vendor> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,16 +48,34 @@ class FinanceFragment : Fragment() {
 
         setupToolbar()
         setupTabs()
+        setupCategoryChips()
         setupRecyclerViews()
         setupFab()
         observeState()
 
-        viewModel.loadFinanceData(projectId)
+        viewModel.loadAll(projectId)
     }
 
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_cost_dashboard -> {
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, BudgetDashboardFragment.newInstance(projectId))
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+                R.id.action_add_vendor -> {
+                    showAddVendorDialog()
+                    true
+                }
+                else -> false
+            }
         }
     }
 
@@ -68,83 +91,259 @@ class FinanceFragment : Fragment() {
     }
 
     private fun updateTabVisibility() {
-        if (selectedTabIndex == 0) {
-            binding.rvExpenses.visibility = View.VISIBLE
-            binding.rvContractorBills.visibility = View.GONE
-            binding.fabAddFinanceItem.text = "Add Expense"
-        } else {
-            binding.rvExpenses.visibility = View.GONE
-            binding.rvContractorBills.visibility = View.VISIBLE
-            binding.fabAddFinanceItem.text = "New RA Bill"
+        when (selectedTabIndex) {
+            0 -> {
+                binding.layoutExpenses.visibility = View.VISIBLE
+                binding.rvContractorBills.visibility = View.GONE
+                binding.rvPurchaseOrders.visibility = View.GONE
+                binding.fabAddFinanceItem.text = "Add Expense"
+                updateEmptyStateForCurrentTab()
+            }
+            1 -> {
+                binding.layoutExpenses.visibility = View.GONE
+                binding.rvContractorBills.visibility = View.VISIBLE
+                binding.rvPurchaseOrders.visibility = View.GONE
+                binding.fabAddFinanceItem.text = "New RA Bill"
+                updateEmptyStateForCurrentTab()
+            }
+            2 -> {
+                binding.layoutExpenses.visibility = View.GONE
+                binding.rvContractorBills.visibility = View.GONE
+                binding.rvPurchaseOrders.visibility = View.VISIBLE
+                binding.fabAddFinanceItem.text = "Create PO"
+                updateEmptyStateForCurrentTab()
+            }
+        }
+    }
+
+    private fun setupCategoryChips() {
+        binding.chipCategoryAll.setOnClickListener {
+            viewModel.filterExpenseCategory(null)
+        }
+        binding.chipCategoryMaterials.setOnClickListener {
+            viewModel.filterExpenseCategory(ExpenseCategory.MATERIALS)
+        }
+        binding.chipCategoryLabor.setOnClickListener {
+            viewModel.filterExpenseCategory(ExpenseCategory.LABOR)
+        }
+        binding.chipCategoryEquipment.setOnClickListener {
+            viewModel.filterExpenseCategory(ExpenseCategory.EQUIPMENT)
+        }
+        binding.chipCategorySubcontractor.setOnClickListener {
+            viewModel.filterExpenseCategory(ExpenseCategory.SUBCONTRACTOR)
+        }
+        binding.chipCategoryPettyCash.setOnClickListener {
+            viewModel.filterExpenseCategory(ExpenseCategory.PETTY_CASH)
+        }
+        binding.chipCategoryUtilities.setOnClickListener {
+            viewModel.filterExpenseCategory(ExpenseCategory.UTILITIES)
+        }
+        binding.chipCategorySafety.setOnClickListener {
+            viewModel.filterExpenseCategory(ExpenseCategory.SAFETY)
+        }
+        binding.chipCategoryOther.setOnClickListener {
+            viewModel.filterExpenseCategory(ExpenseCategory.OTHER)
         }
     }
 
     private fun setupRecyclerViews() {
-        expenseAdapter = ExpenseAdapter { expense ->
-            viewModel.advanceExpenseStatus(expense)
-            Toast.makeText(requireContext(), "Updated status for ${expense.title}", Toast.LENGTH_SHORT).show()
-        }
+        expenseAdapter = ExpenseAdapter(
+            onAdvanceStatusClick = { expense ->
+                viewModel.advanceExpenseStatus(expense)
+            },
+            onRejectClick = { expense ->
+                val dialog = RejectExpenseDialog(expense) { reason ->
+                    viewModel.rejectExpense(expense.id, reason)
+                }
+                dialog.show(childFragmentManager, RejectExpenseDialog.TAG)
+            }
+        )
         binding.rvExpenses.layoutManager = LinearLayoutManager(requireContext())
         binding.rvExpenses.adapter = expenseAdapter
 
         billAdapter = ContractorBillAdapter { bill ->
             viewModel.advanceBillStatus(bill)
-            Toast.makeText(requireContext(), "Updated status for ${bill.billNumber}", Toast.LENGTH_SHORT).show()
         }
         binding.rvContractorBills.layoutManager = LinearLayoutManager(requireContext())
         binding.rvContractorBills.adapter = billAdapter
+
+        poAdapter = PurchaseOrderAdapter { po ->
+            val dialog = RecordGrnDialog(po) { poId, materialId, challanNo, receivedQty, receivedDate, remarks ->
+                viewModel.recordGrn(
+                    poId = poId,
+                    materialId = materialId,
+                    challanNumber = challanNo,
+                    receivedQuantity = receivedQty,
+                    receivedDate = receivedDate,
+                    qualityRemarks = remarks
+                )
+            }
+            dialog.show(childFragmentManager, RecordGrnDialog.TAG)
+        }
+        binding.rvPurchaseOrders.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvPurchaseOrders.adapter = poAdapter
     }
 
     private fun setupFab() {
         binding.fabAddFinanceItem.setOnClickListener {
-            if (selectedTabIndex == 0) {
-                val dialog = AddExpenseDialog { category, title, amount, date ->
-                    viewModel.createExpense(category, title, amount, date)
-                    Toast.makeText(requireContext(), "Logged expense: $title", Toast.LENGTH_SHORT).show()
+            when (selectedTabIndex) {
+                0 -> {
+                    val dialog = AddExpenseDialog { category, title, amount, date ->
+                        viewModel.createExpense(category, title, amount, date)
+                    }
+                    dialog.show(childFragmentManager, AddExpenseDialog.TAG)
                 }
-                dialog.show(childFragmentManager, AddExpenseDialog.TAG)
-            } else {
-                val dialog = CreateContractorBillDialog { contractor, billNo, gross, date, workDesc ->
-                    viewModel.createContractorBill(contractor, billNo, gross, date, workDesc)
-                    Toast.makeText(requireContext(), "Certified RA bill for $contractor", Toast.LENGTH_SHORT).show()
+                1 -> {
+                    val dialog = CreateContractorBillDialog { contractor, billNo, gross, date, workDesc ->
+                        viewModel.createContractorBill(contractor, billNo, gross, date, workDescription = workDesc)
+                    }
+                    dialog.show(childFragmentManager, CreateContractorBillDialog.TAG)
                 }
-                dialog.show(childFragmentManager, CreateContractorBillDialog.TAG)
+                2 -> {
+                    if (cachedVendors.isEmpty()) {
+                        Toast.makeText(requireContext(), "Register a vendor first to issue POs", Toast.LENGTH_SHORT).show()
+                        showAddVendorDialog()
+                    } else {
+                        val dialog = CreatePurchaseOrderDialog(cachedVendors) { vendorId, poNo, deliveryDate, terms, notes, items ->
+                            viewModel.createPurchaseOrder(
+                                vendorId = vendorId,
+                                poNumber = poNo,
+                                expectedDeliveryDate = deliveryDate,
+                                paymentTerms = terms,
+                                notes = notes,
+                                items = items
+                            )
+                        }
+                        dialog.show(childFragmentManager, CreatePurchaseOrderDialog.TAG)
+                    }
+                }
             }
         }
+    }
+
+    private fun showAddVendorDialog() {
+        val dialog = AddVendorDialog { name, category, contact, phone, email, gstin, terms ->
+            viewModel.createVendor(
+                name = name,
+                category = category,
+                contactPerson = contact,
+                phone = phone,
+                email = email,
+                gstin = gstin,
+                paymentTerms = terms
+            )
+        }
+        dialog.show(childFragmentManager, AddVendorDialog.TAG)
     }
 
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    when (state) {
-                        is FinanceUiState.Loading -> {
-                            binding.loadingState.root.visibility = View.VISIBLE
-                            binding.emptyState.root.visibility = View.GONE
-                        }
-                        is FinanceUiState.Success -> {
-                            binding.loadingState.root.visibility = View.GONE
-                            expenseAdapter.submitList(state.expenses)
-                            billAdapter.submitList(state.contractorBills)
-
-                            val isEmpty = if (selectedTabIndex == 0) state.expenses.isEmpty() else state.contractorBills.isEmpty()
-                            if (isEmpty) {
-                                binding.emptyState.root.visibility = View.VISIBLE
-                                binding.emptyState.tvEmptyTitle.text = if (selectedTabIndex == 0) "No expenses recorded" else "No contractor bills"
-                                binding.emptyState.tvEmptySubtitle.text = "Tap the button below to add an entry"
-                            } else {
-                                binding.emptyState.root.visibility = View.GONE
+                launch {
+                    viewModel.expensesState.collect { state ->
+                        when (state) {
+                            is ExpensesUiState.Loading -> {
+                                if (selectedTabIndex == 0) binding.loadingState.root.visibility = View.VISIBLE
                             }
-                        }
-                        is FinanceUiState.Error -> {
-                            binding.loadingState.root.visibility = View.GONE
-                            binding.emptyState.root.visibility = View.VISIBLE
-                            binding.emptyState.tvEmptyTitle.text = "Error loading finance records"
-                            binding.emptyState.tvEmptySubtitle.text = state.message
+                            is ExpensesUiState.Success -> {
+                                binding.loadingState.root.visibility = View.GONE
+                                expenseAdapter.submitList(state.filteredExpenses)
+                                updateEmptyStateForCurrentTab()
+                            }
+                            is ExpensesUiState.Error -> {
+                                binding.loadingState.root.visibility = View.GONE
+                                if (selectedTabIndex == 0) {
+                                    binding.emptyState.root.visibility = View.VISIBLE
+                                    binding.emptyState.tvEmptyTitle.text = "Error loading expenses"
+                                    binding.emptyState.tvEmptySubtitle.text = state.message
+                                }
+                            }
                         }
                     }
                 }
+
+                launch {
+                    viewModel.billsState.collect { state ->
+                        when (state) {
+                            is BillsUiState.Loading -> {
+                                if (selectedTabIndex == 1) binding.loadingState.root.visibility = View.VISIBLE
+                            }
+                            is BillsUiState.Success -> {
+                                binding.loadingState.root.visibility = View.GONE
+                                billAdapter.submitList(state.bills)
+                                updateEmptyStateForCurrentTab()
+                            }
+                            is BillsUiState.Error -> {
+                                binding.loadingState.root.visibility = View.GONE
+                                if (selectedTabIndex == 1) {
+                                    binding.emptyState.root.visibility = View.VISIBLE
+                                    binding.emptyState.tvEmptyTitle.text = "Error loading contractor bills"
+                                    binding.emptyState.tvEmptySubtitle.text = state.message
+                                }
+                            }
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.purchaseOrdersState.collect { state ->
+                        when (state) {
+                            is PurchaseOrdersUiState.Loading -> {
+                                if (selectedTabIndex == 2) binding.loadingState.root.visibility = View.VISIBLE
+                            }
+                            is PurchaseOrdersUiState.Success -> {
+                                binding.loadingState.root.visibility = View.GONE
+                                poAdapter.submitList(state.purchaseOrders)
+                                updateEmptyStateForCurrentTab()
+                            }
+                            is PurchaseOrdersUiState.Error -> {
+                                binding.loadingState.root.visibility = View.GONE
+                                if (selectedTabIndex == 2) {
+                                    binding.emptyState.root.visibility = View.VISIBLE
+                                    binding.emptyState.tvEmptyTitle.text = "Error loading purchase orders"
+                                    binding.emptyState.tvEmptySubtitle.text = state.message
+                                }
+                            }
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.vendorsState.collect { state ->
+                        if (state is VendorsUiState.Success) {
+                            cachedVendors = state.vendors
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.actionMessage.collect { message ->
+                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
+        }
+    }
+
+    private fun updateEmptyStateForCurrentTab() {
+        val isEmpty = when (selectedTabIndex) {
+            0 -> (viewModel.expensesState.value as? ExpensesUiState.Success)?.filteredExpenses?.isEmpty() ?: false
+            1 -> (viewModel.billsState.value as? BillsUiState.Success)?.bills?.isEmpty() ?: false
+            2 -> (viewModel.purchaseOrdersState.value as? PurchaseOrdersUiState.Success)?.purchaseOrders?.isEmpty() ?: false
+            else -> false
+        }
+
+        if (isEmpty) {
+            binding.emptyState.root.visibility = View.VISIBLE
+            binding.emptyState.tvEmptyTitle.text = when (selectedTabIndex) {
+                0 -> "No site expenses recorded"
+                1 -> "No contractor RA bills"
+                2 -> "No purchase orders issued"
+                else -> "No records found"
+            }
+            binding.emptyState.tvEmptySubtitle.text = "Tap the button below to add an entry"
+        } else {
+            binding.emptyState.root.visibility = View.GONE
         }
     }
 

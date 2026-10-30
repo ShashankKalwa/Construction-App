@@ -240,6 +240,14 @@ class UserRepositoryImpl(
                     token = loginBody.accessToken,
                     user = authenticatedUser
                 )
+                try {
+                    val meResponse = apiService.getMe()
+                    if (meResponse.isSuccessful && meResponse.body() != null) {
+                        sessionDataStore.saveUserMe(meResponse.body()!!)
+                    }
+                } catch (_: Exception) {
+                    // Ignore if /me call cannot be reached immediately
+                }
                 return Result.success(authenticatedUser)
             }
         } catch (_: Exception) {

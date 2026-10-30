@@ -17,6 +17,7 @@ enum class MaterialCategory {
 enum class MovementType {
     INWARD_GRN,
     OUTWARD_ISSUE,
+    RETURN,
     ADJUSTMENT
 }
 
@@ -24,6 +25,7 @@ enum class MaterialRequestStatus {
     PENDING,
     APPROVED,
     REJECTED,
+    ISSUED,
     FULFILLED
 }
 
@@ -51,7 +53,23 @@ data class MaterialRequest(
     val requiredByDate: String?,
     val requestedBy: String?,
     val approvedBy: String?,
+    val rejectionReason: String? = null,
+    val issuedBy: String? = null,
+    val issuedAt: String? = null,
     val status: MaterialRequestStatus,
     val phaseOrTaskDesc: String?,
+    val createdAt: String? = null
+)
+
+data class StockMovement(
+    val id: String,
+    val materialId: String,
+    val materialName: String,
+    val movementType: MovementType,
+    val quantity: BigDecimal,
+    val balanceAfter: BigDecimal,
+    val referenceId: String? = null,
+    val notes: String? = null,
+    val performedBy: String? = null,
     val createdAt: String? = null
 )

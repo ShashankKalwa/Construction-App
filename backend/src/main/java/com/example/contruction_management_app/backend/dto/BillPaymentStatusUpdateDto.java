@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class BillPaymentStatusUpdateDto {
     @NotNull
     private BillPaymentStatus status;
+    private String paymentReference;
 }

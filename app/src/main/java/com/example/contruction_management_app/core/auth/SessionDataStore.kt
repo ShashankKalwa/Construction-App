@@ -11,9 +11,18 @@ import com.example.contruction_management_app.domain.model.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.example.contruction_management_app.core.network.CompanyMembershipNetworkDto
+import com.example.contruction_management_app.core.network.ProjectMembershipNetworkDto
+import com.example.contruction_management_app.core.network.UserMeNetworkResponse
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "cms_session")
 
 class SessionDataStore(private val context: Context) {
+
+    private val gson = Gson()
 
     companion object {
         val KEY_AUTH_TOKEN = stringPreferencesKey("auth_token")
@@ -24,6 +33,9 @@ class SessionDataStore(private val context: Context) {
         val KEY_ORG_ID = stringPreferencesKey("org_id")
         val KEY_ORG_NAME = stringPreferencesKey("org_name")
         val KEY_ACTIVE_PROJECT_ID = stringPreferencesKey("active_project_id")
+        val KEY_PERMISSIONS = stringSetPreferencesKey("effective_permissions")
+        val KEY_PROJECT_MEMBERSHIPS = stringPreferencesKey("project_memberships_json")
+        val KEY_COMPANY_MEMBERSHIPS = stringPreferencesKey("company_memberships_json")
     }
 
     val authTokenFlow: Flow<String?> = context.dataStore.data.map { preferences ->
@@ -48,6 +60,30 @@ class SessionDataStore(private val context: Context) {
         )
     }
 
+    val effectivePermissionsFlow: Flow<Set<String>> = context.dataStore.data.map { preferences ->
+        preferences[KEY_PERMISSIONS] ?: emptySet()
+    }
+
+    val projectMembershipsFlow: Flow<List<ProjectMembershipNetworkDto>> = context.dataStore.data.map { preferences ->
+        val json = preferences[KEY_PROJECT_MEMBERSHIPS] ?: return@map emptyList()
+        try {
+            val type = object : TypeToken<List<ProjectMembershipNetworkDto>>() {}.type
+            gson.fromJson<List<ProjectMembershipNetworkDto>>(json, type) ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    val companyMembershipsFlow: Flow<List<CompanyMembershipNetworkDto>> = context.dataStore.data.map { preferences ->
+        val json = preferences[KEY_COMPANY_MEMBERSHIPS] ?: return@map emptyList()
+        try {
+            val type = object : TypeToken<List<CompanyMembershipNetworkDto>>() {}.type
+            gson.fromJson<List<CompanyMembershipNetworkDto>>(json, type) ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
     suspend fun saveSession(token: String, user: User) {
         context.dataStore.edit { preferences ->
             preferences[KEY_AUTH_TOKEN] = token
@@ -57,6 +93,25 @@ class SessionDataStore(private val context: Context) {
             preferences[KEY_USER_ROLE] = user.role.id
             preferences[KEY_ORG_ID] = user.organizationId
             preferences[KEY_ORG_NAME] = user.organizationName
+        }
+    }
+
+    suspend fun saveUserMe(userMe: UserMeNetworkResponse) {
+        context.dataStore.edit { preferences ->
+            preferences[KEY_USER_ID] = userMe.id
+            preferences[KEY_USER_EMAIL] = userMe.email
+            preferences[KEY_USER_NAME] = userMe.fullName
+            preferences[KEY_USER_ROLE] = userMe.primaryRole.id
+            preferences[KEY_ORG_ID] = userMe.activeCompanyId
+            preferences[KEY_ORG_NAME] = userMe.activeCompanyName
+            preferences[KEY_PERMISSIONS] = userMe.effectivePermissions.toSet()
+            preferences[KEY_PROJECT_MEMBERSHIPS] = gson.toJson(userMe.projectMemberships)
+            preferences[KEY_COMPANY_MEMBERSHIPS] = gson.toJson(userMe.companyMemberships)
+
+            // If active project is not set, select the first assigned project
+            if (preferences[KEY_ACTIVE_PROJECT_ID] == null && userMe.projectMemberships.isNotEmpty()) {
+                preferences[KEY_ACTIVE_PROJECT_ID] = userMe.projectMemberships.first().projectId
+            }
         }
     }
 

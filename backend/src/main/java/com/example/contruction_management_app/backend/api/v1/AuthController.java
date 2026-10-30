@@ -27,8 +27,8 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDto> getMe(@AuthenticationPrincipal UserPrincipal principal) {
-        UserDto user = authService.getCurrentUser(principal);
+    public ResponseEntity<com.example.contruction_management_app.backend.dto.UserMeDto> getMe(@AuthenticationPrincipal UserPrincipal principal) {
+        com.example.contruction_management_app.backend.dto.UserMeDto user = authService.getUserMe(principal);
         return ResponseEntity.ok(user);
     }
 }

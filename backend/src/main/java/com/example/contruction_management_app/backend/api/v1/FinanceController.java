@@ -7,6 +7,7 @@ import com.example.contruction_management_app.backend.service.FinanceService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class FinanceController {
     }
 
     @GetMapping("/projects/{projectId}/expenses")
+    @PreAuthorize("@projectAccess.can(#projectId, 'finance:view')")
     public ResponseEntity<List<ExpenseDto>> getExpenses(
         @PathVariable String projectId,
         @RequestParam(required = false) ExpenseCategory category,
@@ -32,6 +34,7 @@ public class FinanceController {
     }
 
     @GetMapping("/projects/{projectId}/expenses/{expenseId}")
+    @PreAuthorize("@projectAccess.can(#projectId, 'finance:view')")
     public ResponseEntity<ExpenseDto> getExpense(
         @PathVariable String projectId,
         @PathVariable String expenseId,
@@ -41,6 +44,7 @@ public class FinanceController {
     }
 
     @PostMapping("/projects/{projectId}/expenses")
+    @PreAuthorize("@projectAccess.can(#projectId, 'expenses:submit')")
     public ResponseEntity<ExpenseDto> createExpense(
         @PathVariable String projectId,
         @Valid @RequestBody ExpenseCreateDto dto,
@@ -51,13 +55,21 @@ public class FinanceController {
     }
 
     @PatchMapping("/projects/{projectId}/expenses/{expenseId}/status")
+    @PreAuthorize("@projectAccess.can(#projectId, 'expenses:approve')")
     public ResponseEntity<ExpenseDto> updateExpenseStatus(
         @PathVariable String projectId,
         @PathVariable String expenseId,
         @Valid @RequestBody ExpenseStatusUpdateDto dto,
         @AuthenticationPrincipal UserPrincipal principal
     ) {
-        return ResponseEntity.ok(financeService.updateExpenseStatus(projectId, expenseId, dto.getStatus(), principal));
+        return ResponseEntity.ok(financeService.updateExpenseStatus(
+            projectId,
+            expenseId,
+            dto.getStatus(),
+            dto.getRejectionReason(),
+            dto.getPaymentReference(),
+            principal
+        ));
     }
 
     @GetMapping("/projects/{projectId}/contractor-bills")
@@ -94,6 +106,12 @@ public class FinanceController {
         @Valid @RequestBody BillPaymentStatusUpdateDto dto,
         @AuthenticationPrincipal UserPrincipal principal
     ) {
-        return ResponseEntity.ok(financeService.updateBillStatus(projectId, billId, dto.getStatus(), principal));
+        return ResponseEntity.ok(financeService.updateBillStatus(
+            projectId,
+            billId,
+            dto.getStatus(),
+            dto.getPaymentReference(),
+            principal
+        ));
     }
 }

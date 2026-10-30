@@ -11,6 +11,9 @@ import com.example.contruction_management_app.backend.exception.UnauthorizedExce
 import com.example.contruction_management_app.backend.repository.UserRepository;
 import com.example.contruction_management_app.backend.security.JwtTokenProvider;
 import com.example.contruction_management_app.backend.security.UserPrincipal;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +27,37 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
+    private final Environment environment;
+    private final com.example.contruction_management_app.backend.repository.CompanyMembershipRepository companyMembershipRepository;
+    private final com.example.contruction_management_app.backend.repository.ProjectMemberRepository projectMemberRepository;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
+    @Value("${cms.auth.allow-demo-passwords:false}")
+    private boolean allowDemoPasswords;
+
+    public AuthService(
+        UserRepository userRepository,
+        PasswordEncoder passwordEncoder,
+        JwtTokenProvider tokenProvider,
+        Environment environment,
+        com.example.contruction_management_app.backend.repository.CompanyMembershipRepository companyMembershipRepository,
+        com.example.contruction_management_app.backend.repository.ProjectMemberRepository projectMemberRepository
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
+        this.environment = environment;
+        this.companyMembershipRepository = companyMembershipRepository;
+        this.projectMemberRepository = projectMemberRepository;
+    }
+
+    @PostConstruct
+    public void validateSecurityGuard() {
+        boolean isDevOrTest = environment.matchesProfiles("dev") || environment.matchesProfiles("test");
+        if (allowDemoPasswords && !isDevOrTest) {
+            throw new IllegalStateException(
+                "FATAL SECURITY VIOLATION: Universal demo passwords ('cms.auth.allow-demo-passwords') cannot be enabled outside dev/test profiles!"
+            );
+        }
     }
 
     @Transactional(readOnly = true)
@@ -40,10 +69,14 @@ public class AuthService {
             .or(() -> userRepository.findByEmail(rawInput))
             .orElseThrow(() -> new UnauthorizedException("Incorrect email or password"));
 
+        boolean isDevOrTest = (environment.matchesProfiles("dev") || environment.matchesProfiles("test")) && allowDemoPasswords;
+
         boolean matches = passwordEncoder.matches(request.password(), user.getHashedPassword())
-            || "Apex@123".equals(request.password())
-            || "password123".equals(request.password())
-            || isRolePassword(user.getRole().getId(), request.password());
+            || (isDevOrTest && (
+                "Apex@123".equals(request.password())
+                || "password123".equals(request.password())
+                || isRolePassword(user.getRole().getId(), request.password())
+            ));
 
         if (!matches) {
             throw new UnauthorizedException("Incorrect email or password");
@@ -103,6 +136,76 @@ public class AuthService {
             user.getOrganization().getId(),
             user.getOrganization().getName(),
             roleDto
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public com.example.contruction_management_app.backend.dto.UserMeDto getUserMe(UserPrincipal principal) {
+        User user = userRepository.findById(principal.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        List<String> rolePermissions = user.getRole().getPermissions() != null
+            ? user.getRole().getPermissions().stream().map(Permission::getId).collect(Collectors.toList())
+            : List.of();
+
+        RoleDto roleDto = new RoleDto(
+            user.getRole().getId(),
+            user.getRole().getName(),
+            user.getRole().getDescription(),
+            rolePermissions
+        );
+
+        List<com.example.contruction_management_app.backend.dto.CompanyMembershipDto> companyMemberships =
+            companyMembershipRepository.findByUserId(user.getId())
+                .stream()
+                .map(cm -> new com.example.contruction_management_app.backend.dto.CompanyMembershipDto(
+                    cm.getId(),
+                    cm.getOrganization().getId(),
+                    cm.getOrganization().getName(),
+                    cm.getRole().getId(),
+                    cm.getRole().getName(),
+                    cm.getStatus(),
+                    cm.getJoinedAt() != null ? cm.getJoinedAt().toString() : ""
+                ))
+                .collect(Collectors.toList());
+
+        if (companyMemberships.isEmpty()) {
+            companyMemberships.add(new com.example.contruction_management_app.backend.dto.CompanyMembershipDto(
+                "cm_" + user.getId(),
+                user.getOrganization().getId(),
+                user.getOrganization().getName(),
+                user.getRole().getId(),
+                user.getRole().getName(),
+                "ACTIVE",
+                user.getCreatedAt() != null ? user.getCreatedAt().toString() : ""
+            ));
+        }
+
+        List<com.example.contruction_management_app.backend.dto.ProjectMembershipDto> projectMemberships =
+            projectMemberRepository.findByUserId(user.getId())
+                .stream()
+                .map(pm -> new com.example.contruction_management_app.backend.dto.ProjectMembershipDto(
+                    pm.getId(),
+                    pm.getProject().getId(),
+                    pm.getProject().getName(),
+                    pm.getProject().getCode(),
+                    pm.getAssignedRole(),
+                    pm.getStatus() != null ? pm.getStatus() : "ACTIVE",
+                    pm.getJoinedAt() != null ? pm.getJoinedAt().toString() : ""
+                ))
+                .collect(Collectors.toList());
+
+        return new com.example.contruction_management_app.backend.dto.UserMeDto(
+            user.getId(),
+            user.getEmail(),
+            user.getFullName(),
+            user.getAvatarUrl(),
+            user.getOrganization().getId(),
+            user.getOrganization().getName(),
+            roleDto,
+            companyMemberships,
+            projectMemberships,
+            rolePermissions
         );
     }
 

@@ -31,4 +31,5 @@ public class ExpenseCreateDto {
     private LocalDate expenseDate;
 
     private String receiptUrl;
+    private String idempotencyKey;
 }

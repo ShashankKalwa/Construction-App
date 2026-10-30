@@ -113,4 +113,90 @@ class TaskViewModel @JvmOverloads constructor(
             }
         }
     }
+
+    fun submitTaskReview(
+        taskId: String,
+        progressPct: Double?,
+        notes: String?,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val currentState = _uiState.value
+            if (currentState is PhasesUiState.Success) {
+                _uiState.value = currentState.copy(isUpdating = true, updateError = null)
+            }
+
+            val result = repository.submitTaskReview(taskId, progressPct, notes)
+            result.onSuccess { updatedTask ->
+                allPhases = allPhases.map { phase ->
+                    if (phase.id == updatedTask.phaseId) {
+                        val updatedTasks = phase.tasks.map { if (it.id == taskId) updatedTask else it }
+                        val newPhaseProgress = if (updatedTasks.isNotEmpty()) {
+                            updatedTasks.map { it.progressPct }.average()
+                        } else phase.progressPct
+                        phase.copy(
+                            tasks = updatedTasks,
+                            progressPct = newPhaseProgress
+                        )
+                    } else {
+                        phase
+                    }
+                }
+                applyFilter()
+                onSuccess()
+            }.onFailure { error ->
+                if (currentState is PhasesUiState.Success) {
+                    _uiState.value = currentState.copy(
+                        isUpdating = false,
+                        updateError = error.message ?: "Failed to submit task for review"
+                    )
+                }
+                onError(error.message ?: "Failed to submit for review")
+            }
+        }
+    }
+
+    fun reviewTask(
+        taskId: String,
+        action: String,
+        notes: String?,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val currentState = _uiState.value
+            if (currentState is PhasesUiState.Success) {
+                _uiState.value = currentState.copy(isUpdating = true, updateError = null)
+            }
+
+            val result = repository.reviewTask(taskId, action, notes)
+            result.onSuccess { updatedTask ->
+                allPhases = allPhases.map { phase ->
+                    if (phase.id == updatedTask.phaseId) {
+                        val updatedTasks = phase.tasks.map { if (it.id == taskId) updatedTask else it }
+                        val newPhaseProgress = if (updatedTasks.isNotEmpty()) {
+                            updatedTasks.map { it.progressPct }.average()
+                        } else phase.progressPct
+                        phase.copy(
+                            tasks = updatedTasks,
+                            progressPct = newPhaseProgress
+                        )
+                    } else {
+                        phase
+                    }
+                }
+                applyFilter()
+                onSuccess()
+            }.onFailure { error ->
+                if (currentState is PhasesUiState.Success) {
+                    _uiState.value = currentState.copy(
+                        isUpdating = false,
+                        updateError = error.message ?: "Review submission failed"
+                    )
+                }
+                onError(error.message ?: "Review submission failed")
+            }
+        }
+    }
 }

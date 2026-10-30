@@ -7,5 +7,8 @@ public enum AuditEntityType {
     STOCK,
     TASK,
     DOCUMENT,
-    PROJECT
+    PROJECT,
+    MILESTONE,
+    PURCHASE_ORDER,
+    MATERIAL_REQUEST
 }

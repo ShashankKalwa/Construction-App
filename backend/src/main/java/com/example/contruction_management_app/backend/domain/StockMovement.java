@@ -37,6 +37,9 @@ public class StockMovement {
     @Column(name = "reference_id", length = 100)
     private String referenceId;
 
+    @Column(name = "idempotency_key", length = 100)
+    private String idempotencyKey;
+
     @Column(columnDefinition = "TEXT")
     private String notes;
 

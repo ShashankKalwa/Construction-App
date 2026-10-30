@@ -95,4 +95,17 @@ public class NotificationService {
 
         notificationRepository.save(notification);
     }
+
+    @Transactional
+    public void sendProjectNotification(
+        String organizationId,
+        String userId,
+        String projectId,
+        String title,
+        String message,
+        NotificationType type,
+        String entityId
+    ) {
+        sendNotification(organizationId, userId, projectId, title, message, type, entityId, null);
+    }
 }

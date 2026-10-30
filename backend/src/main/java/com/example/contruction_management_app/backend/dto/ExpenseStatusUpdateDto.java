@@ -14,4 +14,6 @@ import lombok.NoArgsConstructor;
 public class ExpenseStatusUpdateDto {
     @NotNull
     private ExpenseStatus status;
+    private String rejectionReason;
+    private String paymentReference;
 }

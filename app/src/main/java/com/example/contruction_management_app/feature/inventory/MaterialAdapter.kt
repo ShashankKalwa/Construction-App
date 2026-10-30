@@ -13,7 +13,8 @@ import java.util.Locale
 
 class MaterialAdapter(
     private val onIssueClick: (Material) -> Unit,
-    private val onAdjustClick: (Material) -> Unit
+    private val onAdjustClick: (Material) -> Unit,
+    private val onReturnClick: (Material) -> Unit = {}
 ) : ListAdapter<Material, MaterialAdapter.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,7 +27,7 @@ class MaterialAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), onIssueClick, onAdjustClick)
+        holder.bind(getItem(position), onIssueClick, onAdjustClick, onReturnClick)
     }
 
     class ViewHolder(private val binding: ItemMaterialCardBinding) :
@@ -39,7 +40,8 @@ class MaterialAdapter(
         fun bind(
             material: Material,
             onIssueClick: (Material) -> Unit,
-            onAdjustClick: (Material) -> Unit
+            onAdjustClick: (Material) -> Unit,
+            onReturnClick: (Material) -> Unit
         ) {
             binding.tvMaterialCode.text = material.code
             binding.tvMaterialCategory.text = material.category.name
@@ -58,6 +60,10 @@ class MaterialAdapter(
 
             binding.btnAdjustStock.setOnClickListener {
                 onAdjustClick(material)
+            }
+
+            binding.btnReturnStock.setOnClickListener {
+                onReturnClick(material)
             }
         }
     }

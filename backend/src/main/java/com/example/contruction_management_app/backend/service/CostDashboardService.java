@@ -124,7 +124,7 @@ public class CostDashboardService {
                     .divide(actualCost, 1, RoundingMode.HALF_UP);
             }
             costBreakdown.add(CategoryCostDto.builder()
-                .category(entry.getKey())
+                .category(entry.getKey().name())
                 .categoryName(entry.getKey().name())
                 .budgetAmount(totalBudget.multiply(BigDecimal.valueOf(0.20))) // approx 20% budget share per category
                 .actualAmount(catActual)

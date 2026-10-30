@@ -12,4 +12,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, St
     boolean existsByProjectIdAndUserId(String projectId, String userId);
     Optional<ProjectMember> findByProjectIdAndUserId(String projectId, String userId);
     List<ProjectMember> findByProjectId(String projectId);
+    List<ProjectMember> findByUserId(String userId);
+    List<ProjectMember> findByUserIdAndStatus(String userId, String status);
+    long countByProjectIdAndStatus(String projectId, String status);
 }
