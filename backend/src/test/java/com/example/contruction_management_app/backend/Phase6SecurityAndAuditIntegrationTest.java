@@ -3,7 +3,6 @@ package com.example.contruction_management_app.backend;
 import com.example.contruction_management_app.backend.domain.*;
 import com.example.contruction_management_app.backend.dto.AuditSummaryDto;
 import com.example.contruction_management_app.backend.dto.DashboardSummaryDto;
-import com.example.contruction_management_app.backend.dto.NotificationDto;
 import com.example.contruction_management_app.backend.exception.ForbiddenException;
 import com.example.contruction_management_app.backend.repository.*;
 import com.example.contruction_management_app.backend.security.UserPrincipal;
@@ -13,7 +12,6 @@ import com.example.contruction_management_app.backend.service.NotificationServic
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.math.BigDecimal;
@@ -22,8 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class Phase6SecurityAndAuditIntegrationTest {

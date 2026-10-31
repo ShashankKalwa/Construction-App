@@ -2,7 +2,7 @@ package com.example.contruction_management_app.backend.api.v1;
 
 import com.example.contruction_management_app.backend.dto.LoginRequest;
 import com.example.contruction_management_app.backend.dto.TokenResponse;
-import com.example.contruction_management_app.backend.dto.UserDto;
+import com.example.contruction_management_app.backend.dto.UserMeDto;
 import com.example.contruction_management_app.backend.security.UserPrincipal;
 import com.example.contruction_management_app.backend.service.AuthService;
 import jakarta.validation.Valid;
@@ -27,8 +27,8 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<com.example.contruction_management_app.backend.dto.UserMeDto> getMe(@AuthenticationPrincipal UserPrincipal principal) {
-        com.example.contruction_management_app.backend.dto.UserMeDto user = authService.getUserMe(principal);
+    public ResponseEntity<UserMeDto> getMe(@AuthenticationPrincipal UserPrincipal principal) {
+        UserMeDto user = authService.getUserMe(principal);
         return ResponseEntity.ok(user);
     }
 }
