@@ -91,16 +91,11 @@ CREATE TABLE IF NOT EXISTS site_photos (
 
 CREATE INDEX IF NOT EXISTS idx_photos_project ON site_photos(project_id);
 
--- 6. Backfill company_id on existing daily_site_reports and site_issues
+-- 6. Backfill company_id on existing daily_site_reports
 UPDATE daily_site_reports d
 SET company_id = p.organization_id
 FROM projects p
 WHERE d.project_id = p.id AND d.company_id IS NULL;
-
-UPDATE site_issues s
-SET company_id = p.organization_id
-FROM projects p
-WHERE s.project_id = p.id AND s.company_id IS NULL;
 
 -- 7. Seed Initial Field Inspections and Work Progress
 INSERT INTO site_inspections (id, project_id, company_id, title, inspection_type, status, checklist_data, inspector_id, inspection_date, location, notes)

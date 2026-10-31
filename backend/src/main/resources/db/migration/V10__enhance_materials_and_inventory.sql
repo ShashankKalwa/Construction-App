@@ -35,8 +35,8 @@ ON CONFLICT (id) DO NOTHING;
 -- 5. Seed Material Requests for prj_commercial_tower_b
 INSERT INTO material_requests (id, project_id, material_id, quantity, required_by_date, requested_by, approved_by, status, phase_or_task_desc, created_at, updated_at)
 VALUES
-    ('mr_pending_1', 'prj_commercial_tower_b', 'mat_steel_12_ctb', 5.00, CURRENT_DATE + INTERVAL '2 days', 'usr_supervisor_amit', NULL, 'PENDING', 'Level 1 Slab Top Mesh Rebar Fabrication', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('mr_approved_1', 'prj_commercial_tower_b', 'mat_cem_opc_ctb', 50.00, CURRENT_DATE + INTERVAL '1 day', 'usr_supervisor_amit', 'usr_pm_rahul', 'APPROVED', 'Ground Floor Column C1-C8 M35 RCC Pouring', CURRENT_TIMESTAMP - INTERVAL '1 day', CURRENT_TIMESTAMP),
-    ('mr_issued_1', 'prj_commercial_tower_b', 'mat_steel_16_ctb', 4.00, CURRENT_DATE, 'usr_supervisor_amit', 'usr_pm_rahul', 'FULFILLED', 'Ground Floor Columns Starter Cages', CURRENT_TIMESTAMP - INTERVAL '3 days', CURRENT_TIMESTAMP - INTERVAL '2 days')
+    ('mr_pending_1', 'prj_commercial_tower_b', 'mat_steel_12_ctb', 5.00, CURRENT_DATE + INTERVAL '2 days', 'usr_supervisor_05', NULL, 'PENDING', 'Level 1 Slab Top Mesh Rebar Fabrication', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('mr_approved_1', 'prj_commercial_tower_b', 'mat_cem_opc_ctb', 50.00, CURRENT_DATE + INTERVAL '1 day', 'usr_supervisor_05', 'usr_pm_rahul', 'APPROVED', 'Ground Floor Column C1-C8 M35 RCC Pouring', CURRENT_TIMESTAMP - INTERVAL '1 day', CURRENT_TIMESTAMP),
+    ('mr_issued_1', 'prj_commercial_tower_b', 'mat_steel_16_ctb', 4.00, CURRENT_DATE, 'usr_supervisor_05', 'usr_pm_rahul', 'FULFILLED', 'Ground Floor Columns Starter Cages', CURRENT_TIMESTAMP - INTERVAL '3 days', CURRENT_TIMESTAMP - INTERVAL '2 days')
 ON CONFLICT (id) DO NOTHING;
 
