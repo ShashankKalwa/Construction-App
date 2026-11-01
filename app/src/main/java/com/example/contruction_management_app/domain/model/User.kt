@@ -6,7 +6,7 @@ data class User(
     val fullName: String,
     val avatarUrl: String? = null,
     val organizationId: String,
-    val organizationName: String = "Apex Infra Ltd",
+    val organizationName: String = "Chaitanya InfraTech",
     val role: Role,
     val assignedProjectIds: List<String> = emptyList()
 )
@@ -24,13 +24,5 @@ data class ProjectSummary(
     val progress: Float,
     val status: String,
     val budgetInr: Double
-)
-
-data class RoleCredential(
-    val role: Role,
-    val username: String,
-    val email: String,
-    val password: String,
-    val description: String
 )
 

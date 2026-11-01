@@ -28,6 +28,3 @@ jwt:
   secret: ${JWT_SECRET:cms-development-secret-key-spring-boot-2026-minimum-256-bits-super-secure}
   expiration-ms: 604800000
 
-cms:
-  auth:
-    allow-demo-passwords: true

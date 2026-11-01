@@ -7,10 +7,6 @@ spring:
 server:
   port: ${PORT:8000}
 
-cms:
-  auth:
-    allow-demo-passwords: ${ALLOW_DEMO_PASSWORDS:false}
-
 management:
   endpoints:
     web:

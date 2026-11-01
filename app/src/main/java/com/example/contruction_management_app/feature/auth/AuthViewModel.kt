@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.contruction_management_app.data.repository.UserRepositoryImpl
-import com.example.contruction_management_app.domain.model.Role
 import com.example.contruction_management_app.domain.model.User
 import com.example.contruction_management_app.domain.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,10 +40,10 @@ class AuthViewModel @JvmOverloads constructor(
         }
     }
 
-    fun loginWithCredentials(username: String, password: String, role: Role) {
+    fun loginWithCredentials(username: String, password: String) {
         viewModelScope.launch {
             _uiState.value = AuthUiState.Loading
-            val result = userRepository.authenticateWithCredentials(username, password, role)
+            val result = userRepository.authenticateWithCredentials(username, password)
             result.onSuccess { user ->
                 _uiState.value = AuthUiState.Authenticated(user)
             }.onFailure { e ->
@@ -52,19 +51,6 @@ class AuthViewModel @JvmOverloads constructor(
             }
         }
     }
-
-    fun login(email: String, role: Role) {
-        val cred = userRepository.getCredentialsForRole(role)
-        loginWithCredentials(
-            username = email.ifBlank { cred.username },
-            password = cred.password,
-            role = role
-        )
-    }
-
-    fun getCredentialsForRole(role: Role) = userRepository.getCredentialsForRole(role)
-
-    fun getAllCredentials() = userRepository.getAllRoleCredentials()
 
     fun logout() {
         viewModelScope.launch {

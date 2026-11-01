@@ -11,9 +11,6 @@ import com.example.contruction_management_app.backend.exception.UnauthorizedExce
 import com.example.contruction_management_app.backend.repository.UserRepository;
 import com.example.contruction_management_app.backend.security.JwtTokenProvider;
 import com.example.contruction_management_app.backend.security.UserPrincipal;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,37 +24,21 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
-    private final Environment environment;
     private final com.example.contruction_management_app.backend.repository.CompanyMembershipRepository companyMembershipRepository;
     private final com.example.contruction_management_app.backend.repository.ProjectMemberRepository projectMemberRepository;
-
-    @Value("${cms.auth.allow-demo-passwords:false}")
-    private boolean allowDemoPasswords;
 
     public AuthService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         JwtTokenProvider tokenProvider,
-        Environment environment,
         com.example.contruction_management_app.backend.repository.CompanyMembershipRepository companyMembershipRepository,
         com.example.contruction_management_app.backend.repository.ProjectMemberRepository projectMemberRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
-        this.environment = environment;
         this.companyMembershipRepository = companyMembershipRepository;
         this.projectMemberRepository = projectMemberRepository;
-    }
-
-    @PostConstruct
-    public void validateSecurityGuard() {
-        boolean isDevOrTest = environment.matchesProfiles("dev") || environment.matchesProfiles("test");
-        if (allowDemoPasswords && !isDevOrTest) {
-            throw new IllegalStateException(
-                "FATAL SECURITY VIOLATION: Universal demo passwords ('cms.auth.allow-demo-passwords') cannot be enabled outside dev/test profiles!"
-            );
-        }
     }
 
     @Transactional(readOnly = true)
@@ -69,14 +50,7 @@ public class AuthService {
             .or(() -> userRepository.findByEmail(rawInput))
             .orElseThrow(() -> new UnauthorizedException("Incorrect email or password"));
 
-        boolean isDevOrTest = (environment.matchesProfiles("dev") || environment.matchesProfiles("test")) && allowDemoPasswords;
-
-        boolean matches = passwordEncoder.matches(request.password(), user.getHashedPassword())
-            || (isDevOrTest && (
-                "Apex@123".equals(request.password())
-                || "password123".equals(request.password())
-                || isRolePassword(user.getRole().getId(), request.password())
-            ));
+        boolean matches = passwordEncoder.matches(request.password(), user.getHashedPassword());
 
         if (!matches) {
             throw new UnauthorizedException("Incorrect email or password");
@@ -207,22 +181,6 @@ public class AuthService {
             projectMemberships,
             rolePermissions
         );
-    }
-
-    private boolean isRolePassword(String roleId, String password) {
-        if (password == null || roleId == null) return false;
-        return switch (roleId.toLowerCase()) {
-            case "super_admin" -> password.equals("Admin@123");
-            case "company_admin" -> password.equals("Company@123");
-            case "project_manager" -> password.equals("Manager@123");
-            case "civil_engineer" -> password.equals("Engineer@123");
-            case "site_supervisor" -> password.equals("Site@123");
-            case "storekeeper" -> password.equals("Store@123");
-            case "accountant" -> password.equals("Accounts@123");
-            case "contractor" -> password.equals("Contract@123");
-            case "client_owner" -> password.equals("Client@123");
-            default -> false;
-        };
     }
 }
 
