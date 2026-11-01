@@ -67,7 +67,7 @@ class ProcurementWorkflowServiceTest {
             organizationRepository
         );
 
-        mockOrg = new Organization("Apex Infra Ltd", "apex-infra");
+        mockOrg = new Organization("Chaitanya InfraTech", "apex-infra");
         mockOrg.setId("org_apex_1");
 
         mockProject = new Project("Commercial Tower B", "CTB-02", "Sector 62, Gurgaon", new BigDecimal("50000000.00"), mockOrg);

@@ -25,6 +25,6 @@ public record ProjectCreateDto(
     String endDate
 ) {
     public ProjectCreateDto(String name, String code, String location, BigDecimal budgetInr) {
-        this(name, code, location, budgetInr, "Commercial", "Apex Developments", null, null);
+        this(name, code, location, budgetInr, "Commercial", "Chaitanya Developments", null, null);
     }
 }

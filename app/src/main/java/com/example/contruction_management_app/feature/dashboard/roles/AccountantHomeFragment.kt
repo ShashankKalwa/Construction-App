@@ -50,7 +50,7 @@ class AccountantHomeFragment : Fragment() {
         lifecycleScope.launch {
             val user = session.currentUserFlow.firstOrNull()
             binding.tvAccountantName.text = user?.fullName ?: "Sunita Roy"
-            binding.tvAccountantOrgName.text = user?.organizationName ?: "Apex Infra Ltd"
+            binding.tvAccountantOrgName.text = user?.organizationName ?: "Chaitanya InfraTech"
         }
 
         binding.swipeRefreshAccountant.setOnRefreshListener {

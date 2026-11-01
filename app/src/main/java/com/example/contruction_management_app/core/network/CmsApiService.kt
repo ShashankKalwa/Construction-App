@@ -15,7 +15,7 @@ data class ProjectNetworkDto(
     val progressPct: Double,
     val organizationId: String,
     val projectType: String? = "Commercial",
-    val clientName: String? = "Apex Developments",
+    val clientName: String? = "Chaitanya Developments",
     val startDate: String? = null,
     val endDate: String? = null
 )
@@ -48,7 +48,7 @@ data class ProjectDetailNetworkDto(
     val phasesCount: Int,
     val tasksCount: Int,
     val projectType: String = "Commercial",
-    val clientName: String = "Apex Developments",
+    val clientName: String = "Chaitanya Developments",
     val startDate: String? = null,
     val endDate: String? = null
 )
@@ -90,7 +90,7 @@ data class CreateProjectRequest(
     val location: String,
     val budgetInr: BigDecimal,
     val projectType: String? = "Commercial",
-    val clientName: String? = "Apex Developments",
+    val clientName: String? = "Chaitanya Developments",
     val startDate: String? = null,
     val endDate: String? = null
 )

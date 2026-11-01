@@ -46,7 +46,7 @@ class CreateProjectBottomSheetDialog(
                 return@setOnClickListener
             }
 
-            val clientName = binding.etProjectClient.text?.toString()?.trim().takeIf { !it.isNullOrBlank() } ?: "Apex Developments"
+            val clientName = binding.etProjectClient.text?.toString()?.trim().takeIf { !it.isNullOrBlank() } ?: "Chaitanya Developments"
             val projectType = binding.etProjectType.text?.toString()?.trim().takeIf { !it.isNullOrBlank() } ?: "Commercial"
 
             binding.btnSubmitProject.isEnabled = false

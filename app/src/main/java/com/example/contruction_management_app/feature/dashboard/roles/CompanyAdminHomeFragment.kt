@@ -54,7 +54,7 @@ class CompanyAdminHomeFragment : Fragment() {
         lifecycleScope.launch {
             val user = session.currentUserFlow.firstOrNull()
             binding.tvAdminName.text = user?.fullName ?: "Rajesh Sharma"
-            binding.tvAdminOrgName.text = user?.organizationName ?: "Apex Infra Ltd"
+            binding.tvAdminOrgName.text = user?.organizationName ?: "Chaitanya InfraTech"
         }
 
         binding.swipeRefreshCompanyAdmin.setOnRefreshListener {

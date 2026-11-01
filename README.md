@@ -1,4 +1,4 @@
-# Construction Management System (CMS)
+# Chaitanya InfraTech — Construction Management System (CMS)
 
 A production-grade, role-based native Android application and Spring Boot backend designed for construction contractors, site engineers, project managers, and clients. It replaces fragmented paper notebooks, manual Excel sheets, and unstructured messaging groups with a unified, high-reliability system.
 
@@ -252,17 +252,22 @@ Run the comprehensive test suites across both modules:
 ## Cloud Deployment & Reliability
 
 ### Render Web Service Deployment
+- **Live Production URL**: `https://construction-app-eepz.onrender.com`
+- **Health Check Endpoint**: `https://construction-app-eepz.onrender.com/api/v1/health`
+- **Actuator Health Endpoint**: `https://construction-app-eepz.onrender.com/actuator/health`
+
+#### Deployment Configuration
 1. Connect the GitHub repository to [Render](https://render.com).
-2. Create a new **Web Service** with the following configuration:
-   - **Environment**: `Java`
-   - **Build Command**: `./gradlew :backend:bootJar`
-   - **Start Command**: `java -jar backend/build/libs/backend-0.0.1-SNAPSHOT.jar`
+2. Create a new **Web Service** using the root `Dockerfile`:
+   - **Environment**: `Docker` (Automatically detected via multi-stage [`Dockerfile`](file:///Dockerfile))
+   - **Base Image**: Eclipse Temurin 17 (JDK for build stage, minimal JRE 17 for runtime image)
    - **Health Check Path**: `/api/v1/health`
-3. Add the following **Environment Variables** in Render Dashboard:
-   - `DB_URL`: Supabase pooled connection string
-   - `DB_USERNAME`: Supabase database user
+   - **Exposed Port**: Auto-bound to Render's dynamic `$PORT`
+3. Set the following **Environment Variables** in the Render Dashboard:
+   - `DB_URL`: Supabase pooled connection string (`jdbc:postgresql://<host>:5432/postgres?sslmode=require`)
+   - `DB_USERNAME`: Supabase database username
    - `DB_PASSWORD`: Supabase database password
-   - `JWT_SECRET`: Minimum 256-bit secret key
+   - `JWT_SECRET`: Minimum 256-bit secret key for secure JWT signing
 
 ### Automated Keep-Alive
 Render free-tier instances sleep after 15 minutes of inactivity. To ensure high availability and prevent cold starts:

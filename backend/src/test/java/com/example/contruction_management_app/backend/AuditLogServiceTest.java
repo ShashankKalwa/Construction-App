@@ -48,7 +48,7 @@ public class AuditLogServiceTest {
             "org_apex_infra", "pm", List.of(), true
         );
 
-        mockOrg = new Organization("Apex Infrastructure", "apex-infra");
+        mockOrg = new Organization("Chaitanya InfraTech", "apex-infra");
         mockOrg.setId("org_apex_infra");
 
         mockProject = new Project("Commercial Tower B", "CTB-01", "Mumbai", new BigDecimal("100000000"), mockOrg);

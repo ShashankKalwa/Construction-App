@@ -103,7 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/cms_spacing_md"
-        android:hint="Client Name (e.g. Apex Developments)">
+        android:hint="Client Name (e.g. Chaitanya Developments)">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etProjectClient"

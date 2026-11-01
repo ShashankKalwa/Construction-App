@@ -73,7 +73,7 @@
                             android:layout_marginStart="@dimen/cms_spacing_sm"
                             android:textAppearance="@style/TextAppearance.CMS.Caption"
                             android:textColor="@color/cms_text_secondary"
-                            tools:text="Apex Infra Ltd" />
+                            tools:text="Chaitanya InfraTech" />
                     </LinearLayout>
                 </LinearLayout>
 

@@ -70,7 +70,7 @@ public class Phase6SecurityAndAuditIntegrationTest {
 
         dashboardService = new DashboardService(projectRepository, taskRepository);
 
-        orgApex = new Organization("Apex Infra Ltd", "apex-infra");
+        orgApex = new Organization("Chaitanya InfraTech", "apex-infra");
         orgApex.setId("org_apex_infra");
 
         orgCompetitor = new Organization("Competitor Builders", "comp-builders");

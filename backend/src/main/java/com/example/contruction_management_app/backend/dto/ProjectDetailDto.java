@@ -33,6 +33,6 @@ public record ProjectDetailDto(
         int phasesCount,
         int tasksCount
     ) {
-        this(id, name, code, location, budgetInr, status, progressPct, organizationId, members, phasesCount, tasksCount, "Commercial", "Apex Developments", null, null);
+        this(id, name, code, location, budgetInr, status, progressPct, organizationId, members, phasesCount, tasksCount, "Commercial", "Chaitanya Developments", null, null);
     }
 }

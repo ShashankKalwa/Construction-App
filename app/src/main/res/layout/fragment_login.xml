@@ -19,7 +19,7 @@
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:contentDescription="Apex Infra Logo"
+            android:contentDescription="@string/login_logo_description"
             android:src="@drawable/ic_building"
             app:tint="@color/cms_accent" />
 
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/cms_spacing_lg"
-            android:text="APEX INFRA"
+            android:text="@string/login_title"
             android:textAppearance="@style/TextAppearance.CMS.Display"
             android:textColor="@color/cms_text_primary" />
 
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:letterSpacing="0.15"
-            android:text="INDUSTRIAL CONSOLE OS • V1.0"
+            android:text="@string/login_subtitle"
             android:textAppearance="@style/TextAppearance.CMS.Caption"
             android:textColor="@color/cms_accent" />
 

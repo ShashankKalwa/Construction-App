@@ -72,7 +72,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.CMS.Body"
                             android:textStyle="bold"
-                            tools:text="Apex Developments" />
+                            tools:text="Chaitanya Developments" />
                     </LinearLayout>
 
                     <LinearLayout

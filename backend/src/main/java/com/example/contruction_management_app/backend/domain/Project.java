@@ -36,7 +36,7 @@ public class Project {
     private String projectType = "Commercial";
 
     @Column(name = "client_name")
-    private String clientName = "Apex Developments";
+    private String clientName = "Chaitanya Developments";
 
     @Column(name = "start_date")
     private LocalDate startDate;

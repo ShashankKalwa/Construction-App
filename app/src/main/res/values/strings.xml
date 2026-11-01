@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">Apex Infra Console</string>
+    <string name="app_name">Chaitanya InfraTech</string>
+    <string name="login_title">CHAITANYA INFRATECH</string>
+    <string name="login_subtitle">CONSTRUCTION MANAGEMENT</string>
+    <string name="login_logo_description">Chaitanya InfraTech logo</string>
 </resources>

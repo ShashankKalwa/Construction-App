@@ -65,7 +65,7 @@
                     android:textAppearance="@style/TextAppearance.CMS.Body"
                     android:textColor="@color/cms_text_primary"
                     android:textStyle="bold"
-                    tools:text="Apex Infra Ltd" />
+                    tools:text="Chaitanya InfraTech" />
 
                 <TextView
                     android:id="@+id/tvActiveCompanyRole"

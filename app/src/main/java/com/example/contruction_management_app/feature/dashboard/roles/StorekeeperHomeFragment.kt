@@ -50,7 +50,7 @@ class StorekeeperHomeFragment : Fragment() {
         lifecycleScope.launch {
             val user = session.currentUserFlow.firstOrNull()
             binding.tvStorekeeperName.text = user?.fullName ?: "Ramesh Yadav"
-            binding.tvStorekeeperOrgName.text = user?.organizationName ?: "Apex Infra Ltd"
+            binding.tvStorekeeperOrgName.text = user?.organizationName ?: "Chaitanya InfraTech"
         }
 
         binding.swipeRefreshStorekeeper.setOnRefreshListener {

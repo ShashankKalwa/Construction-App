@@ -52,7 +52,7 @@ class CivilEngineerHomeFragment : Fragment() {
         lifecycleScope.launch {
             val user = session.currentUserFlow.firstOrNull()
             binding.tvEngineerName.text = user?.fullName ?: "Priya Sharma"
-            binding.tvEngineerOrgName.text = user?.organizationName ?: "Apex Infra Ltd"
+            binding.tvEngineerOrgName.text = user?.organizationName ?: "Chaitanya InfraTech"
         }
 
         binding.swipeRefreshEngineer.setOnRefreshListener {

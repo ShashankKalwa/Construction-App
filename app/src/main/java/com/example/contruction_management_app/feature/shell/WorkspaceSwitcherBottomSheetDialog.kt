@@ -39,7 +39,7 @@ class WorkspaceSwitcherBottomSheetDialog(
             val user = session.currentUserFlow.firstOrNull()
             val activeProjectId = session.activeProjectIdFlow.firstOrNull()
 
-            binding.tvActiveCompanyName.text = user?.organizationName ?: "Apex Infra Ltd"
+            binding.tvActiveCompanyName.text = user?.organizationName ?: "Chaitanya InfraTech"
             binding.tvActiveCompanyRole.text = "Role: ${user?.role?.displayName ?: "Operator"}"
 
             if (projects.isEmpty()) {

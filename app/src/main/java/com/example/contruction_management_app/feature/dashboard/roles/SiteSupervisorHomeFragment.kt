@@ -51,7 +51,7 @@ class SiteSupervisorHomeFragment : Fragment() {
         lifecycleScope.launch {
             val user = session.currentUserFlow.firstOrNull()
             binding.tvSupervisorName.text = user?.fullName ?: "Shashank Kumar"
-            binding.tvSupervisorOrgName.text = user?.organizationName ?: "Apex Infra Ltd"
+            binding.tvSupervisorOrgName.text = user?.organizationName ?: "Chaitanya InfraTech"
         }
 
         binding.swipeRefreshSupervisor.setOnRefreshListener {

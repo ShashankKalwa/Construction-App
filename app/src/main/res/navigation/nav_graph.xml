@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/mainShellFragment"
         android:name="com.example.contruction_management_app.feature.shell.MainShellFragment"
-        android:label="Apex Infra Console"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_main_shell">
         <action
             android:id="@+id/action_mainShell_to_projectDetail"

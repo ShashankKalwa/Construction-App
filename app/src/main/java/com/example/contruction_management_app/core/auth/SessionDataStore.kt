@@ -48,7 +48,7 @@ class SessionDataStore(private val context: Context) {
         val name = preferences[KEY_USER_NAME] ?: ""
         val roleId = preferences[KEY_USER_ROLE] ?: Role.SITE_SUPERVISOR.id
         val orgId = preferences[KEY_ORG_ID] ?: ""
-        val orgName = preferences[KEY_ORG_NAME] ?: "Apex Infra Ltd"
+        val orgName = preferences[KEY_ORG_NAME] ?: "Chaitanya InfraTech"
 
         User(
             id = id,

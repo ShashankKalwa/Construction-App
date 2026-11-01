@@ -41,7 +41,7 @@ public class ProjectSecurityServiceTest {
         roleRepository = Mockito.mock(RoleRepository.class);
         securityService = new ProjectSecurityService(projectRepository, projectMemberRepository, roleRepository);
 
-        orgApex = new Organization("Apex Infra Ltd", "apex-infra");
+        orgApex = new Organization("Chaitanya InfraTech", "apex-infra");
         orgApex.setId("org_apex_infra");
 
         orgOther = new Organization("Other Builders", "other-builders");

@@ -26,6 +26,6 @@ public record ProjectResponseDto(
         Double progressPct,
         String organizationId
     ) {
-        this(id, name, code, location, budgetInr, status, progressPct, organizationId, "Commercial", "Apex Developments", null, null);
+        this(id, name, code, location, budgetInr, status, progressPct, organizationId, "Commercial", "Chaitanya Developments", null, null);
     }
 }

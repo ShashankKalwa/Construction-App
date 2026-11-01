@@ -63,7 +63,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public TokenResponse login(LoginRequest request) {
         String rawInput = request.email() != null ? request.email().trim() : "";
-        String lookupEmail = rawInput.contains("@") ? rawInput : rawInput + "@apexinfra.com";
+        String lookupEmail = rawInput.contains("@") ? rawInput : rawInput + "@chaitanyainfratech.com";
 
         User user = userRepository.findByEmail(lookupEmail)
             .or(() -> userRepository.findByEmail(rawInput))

@@ -122,7 +122,7 @@ class ProjectViewModel @JvmOverloads constructor(
         location: String,
         budgetInr: BigDecimal,
         projectType: String? = "Commercial",
-        clientName: String? = "Apex Developments",
+        clientName: String? = "Chaitanya Developments",
         startDate: String? = null,
         endDate: String? = null,
         onSuccess: (Project) -> Unit = {},

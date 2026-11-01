@@ -163,7 +163,7 @@ class ProjectRepositoryImpl(
                     progressPct = 0.0,
                     organizationId = "org_apex_infra",
                     projectType = projectType ?: "Commercial",
-                    clientName = clientName ?: "Apex Developments",
+                    clientName = clientName ?: "Chaitanya Developments",
                     startDate = startDate,
                     endDate = endDate
                 )
@@ -181,7 +181,7 @@ class ProjectRepositoryImpl(
                 progressPct = 0.0,
                 organizationId = "org_apex_infra",
                 projectType = projectType ?: "Commercial",
-                clientName = clientName ?: "Apex Developments",
+                clientName = clientName ?: "Chaitanya Developments",
                 startDate = startDate,
                 endDate = endDate
             )
@@ -555,7 +555,7 @@ class ProjectRepositoryImpl(
         progressPct = progressPct,
         organizationId = organizationId,
         projectType = projectType ?: "Commercial",
-        clientName = clientName ?: "Apex Developments",
+        clientName = clientName ?: "Chaitanya Developments",
         startDate = startDate,
         endDate = endDate
     )

@@ -48,7 +48,7 @@ public class NotificationServiceTest {
             "org_apex_infra", "pm", List.of(), true
         );
 
-        mockOrg = new Organization("Apex Infrastructure", "apex-infra");
+        mockOrg = new Organization("Chaitanya InfraTech", "apex-infra");
         mockOrg.setId("org_apex_infra");
 
         mockUser = new User();

@@ -63,7 +63,7 @@ class ProjectLifecycleServiceTest {
 
         org = new Organization();
         org.setId("org_apex");
-        org.setName("Apex Infra");
+        org.setName("Chaitanya InfraTech");
 
         project = new Project("Metro Station 4", "PRJ-METRO-04", "Hyderabad", BigDecimal.valueOf(50000000), org);
         project.setId("prj_metro");

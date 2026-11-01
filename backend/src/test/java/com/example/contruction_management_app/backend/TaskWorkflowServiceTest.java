@@ -63,7 +63,7 @@ class TaskWorkflowServiceTest {
 
         org = new Organization();
         org.setId("org_test");
-        org.setName("Apex Infra");
+        org.setName("Chaitanya InfraTech");
 
         project = new Project("Tower A", "PRJ-TWR-A", "Bangalore", BigDecimal.valueOf(1000000), org);
         project.setId("prj_001");

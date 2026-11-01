@@ -69,7 +69,7 @@ class SiteOperationsWorkflowTest {
             projectMemberRepository
         );
 
-        mockOrg = new Organization("Apex Infra", "apex-infra");
+        mockOrg = new Organization("Chaitanya InfraTech", "apex-infra");
         mockOrg.setId("org_apex");
 
         mockProject = new Project("Skyline Tower", "SK-01", "Whitefield", new BigDecimal("50000000"), mockOrg);
