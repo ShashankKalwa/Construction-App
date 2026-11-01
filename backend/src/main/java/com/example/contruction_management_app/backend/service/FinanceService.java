@@ -7,6 +7,7 @@ import com.example.contruction_management_app.backend.exception.ForbiddenExcepti
 import com.example.contruction_management_app.backend.exception.ResourceNotFoundException;
 import com.example.contruction_management_app.backend.repository.*;
 import com.example.contruction_management_app.backend.security.UserPrincipal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,7 @@ public class FinanceService {
         this(expenseRepository, contractorBillRepository, projectRepository, projectMemberRepository, null, null);
     }
 
+    @Autowired
     public FinanceService(
         ExpenseRepository expenseRepository,
         ContractorBillRepository contractorBillRepository,
