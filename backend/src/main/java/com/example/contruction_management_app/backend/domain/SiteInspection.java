@@ -3,6 +3,8 @@ package com.example.contruction_management_app.backend.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -39,7 +41,8 @@ public class SiteInspection {
     @Builder.Default
     private InspectionStatus status = InspectionStatus.PASSED;
 
-    @Column(name = "checklist_data", nullable = false, columnDefinition = "TEXT")
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "checklist_data", nullable = false)
     private String checklistData;
 
     @Column(name = "inspector_id", nullable = false, length = 50)
