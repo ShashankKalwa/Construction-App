@@ -15,9 +15,6 @@
             app:destination="@id/mainShellFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_login_to_gallery"
-            app:destination="@id/componentGalleryFragment" />
     </fragment>
 
     <fragment
@@ -66,12 +63,6 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
-
-    <fragment
-        android:id="@+id/componentGalleryFragment"
-        android:name="com.example.contruction_management_app.feature.gallery.ComponentGalleryFragment"
-        android:label="Component Gallery"
-        tools:layout="@layout/fragment_component_gallery" />
 
     <fragment
         android:id="@+id/boqDetailFragment"

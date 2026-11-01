@@ -51,10 +51,6 @@ class LoginFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-
-        binding.btnOpenGallery.setOnClickListener {
-            findNavController().navigate(R.id.action_login_to_gallery)
-        }
     }
 
     private fun observeUiState() {

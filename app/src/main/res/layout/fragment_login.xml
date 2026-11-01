@@ -115,15 +115,6 @@
                     android:layout_marginTop="@dimen/cms_spacing_xl"
                     android:text="SIGN IN" />
 
-                <!-- Component Gallery Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnOpenGallery"
-                    style="@style/Widget.CMS.Button.Text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/cms_spacing_sm"
-                    android:text="Debug: Component Gallery" />
-
                 <ProgressBar
                     android:id="@+id/progressBarLogin"
                     android:layout_width="wrap_content"
