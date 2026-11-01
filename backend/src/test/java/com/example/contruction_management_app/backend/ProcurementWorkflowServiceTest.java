@@ -75,7 +75,7 @@ class ProcurementWorkflowServiceTest {
 
         pmUser = new UserPrincipal(
             "usr_pm_rahul",
-            "rahul@apexinfra.com",
+            "rahul@chaitanyainfratech.com",
             "hash",
             "org_apex_1",
             "project_manager",
@@ -84,7 +84,7 @@ class ProcurementWorkflowServiceTest {
 
         storekeeperUser = new UserPrincipal(
             "usr_store_ramesh",
-            "ramesh@apexinfra.com",
+            "ramesh@chaitanyainfratech.com",
             "hash",
             "org_apex_1",
             "storekeeper",

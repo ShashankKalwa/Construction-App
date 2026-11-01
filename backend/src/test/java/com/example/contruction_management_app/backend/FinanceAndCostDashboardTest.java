@@ -67,7 +67,7 @@ class FinanceAndCostDashboardTest {
 
         supervisorUser = new UserPrincipal(
             "usr_supervisor_amit",
-            "amit@apexinfra.com",
+            "amit@chaitanyainfratech.com",
             "hash",
             "org_apex_1",
             "site_supervisor",
@@ -76,7 +76,7 @@ class FinanceAndCostDashboardTest {
 
         pmUser = new UserPrincipal(
             "usr_pm_rahul",
-            "rahul@apexinfra.com",
+            "rahul@chaitanyainfratech.com",
             "hash",
             "org_apex_1",
             "project_manager",
@@ -85,7 +85,7 @@ class FinanceAndCostDashboardTest {
 
         accountantUser = new UserPrincipal(
             "usr_acc_neha",
-            "neha@apexinfra.com",
+            "neha@chaitanyainfratech.com",
             "hash",
             "org_apex_1",
             "accountant",

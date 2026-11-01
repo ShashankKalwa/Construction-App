@@ -512,9 +512,9 @@ class ProjectRepositoryImpl(
                 progressPct = project.progressPct,
                 organizationId = project.organizationId,
                 members = listOf(
-                    ProjectMember("pm_1", UserSummary("usr_pm_rahul", "Rahul Verma", "rahul.verma@apexinfra.com"), "PROJECT_MANAGER", "2026-01-10", "ACTIVE"),
-                    ProjectMember("pm_2", UserSummary("usr_eng_priya", "Priya Sharma", "priya.sharma@apexinfra.com"), "CIVIL_ENGINEER", "2026-01-12", "ACTIVE"),
-                    ProjectMember("pm_3", UserSummary("usr_supervisor_05", "Amit Patel", "supervisor@apexinfra.com"), "SITE_SUPERVISOR", "2026-01-15", "ACTIVE")
+                    ProjectMember("pm_1", UserSummary("usr_pm_rahul", "Rahul Verma", "rahul.verma@chaitanyainfratech.com"), "PROJECT_MANAGER", "2026-01-10", "ACTIVE"),
+                    ProjectMember("pm_2", UserSummary("usr_eng_priya", "Priya Sharma", "priya.sharma@chaitanyainfratech.com"), "CIVIL_ENGINEER", "2026-01-12", "ACTIVE"),
+                    ProjectMember("pm_3", UserSummary("usr_supervisor_05", "Amit Patel", "supervisor@chaitanyainfratech.com"), "SITE_SUPERVISOR", "2026-01-15", "ACTIVE")
                 ),
                 phasesCount = cachedPhases.size,
                 tasksCount = cachedPhases.sumOf { it.tasks.size },

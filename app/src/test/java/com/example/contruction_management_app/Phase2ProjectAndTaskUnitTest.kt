@@ -22,8 +22,8 @@ class Phase2ProjectAndTaskUnitTest {
 
     @Test
     fun testTaskSelfApprovalCheck() {
-        val assignee = UserSummary(id = "usr_01", fullName = "Rajesh Kumar", email = "rajesh@apexinfra.com")
-        val manager = UserSummary(id = "usr_02", fullName = "Vikram Singh", email = "vikram@apexinfra.com")
+        val assignee = UserSummary(id = "usr_01", fullName = "Rajesh Kumar", email = "rajesh@chaitanyainfratech.com")
+        val manager = UserSummary(id = "usr_02", fullName = "Vikram Singh", email = "vikram@chaitanyainfratech.com")
 
         val task = Task(
             id = "tsk_01",
