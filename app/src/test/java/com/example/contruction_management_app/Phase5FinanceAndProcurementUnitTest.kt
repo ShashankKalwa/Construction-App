@@ -115,7 +115,7 @@ class Phase5FinanceAndProcurementUnitTest {
 
         val createBillResult = repository.createContractorBill(
             projectId = testProjectId,
-            contractorName = "Apex Structural Steel Works Pvt Ltd",
+            contractorName = "Chaitanya Structural Steel Works Pvt Ltd",
             billNumber = "RA-BILL-03",
             billDate = "2026-03-24",
             grossAmount = gross,
