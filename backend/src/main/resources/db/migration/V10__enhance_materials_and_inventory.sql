@@ -24,12 +24,12 @@ CREATE INDEX IF NOT EXISTS idx_materials_stock_threshold ON materials(project_id
 -- 4. Seed Real-world Demo Materials for prj_commercial_tower_b if not present
 INSERT INTO materials (id, project_id, code, name, category, unit, current_stock, min_stock_threshold, unit_cost, created_at, updated_at)
 VALUES
-    ('mat_cem_opc_ctb', 'prj_commercial_tower_b', 'MAT-CEM-01', 'UltraTech OPC 53 Grade Cement', 'CEMENT', 'Bags', 450.00, 100.00, 385.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('mat_cem_opc_ctb', 'prj_commercial_tower_b', 'MAT-CEM-OPC', 'UltraTech OPC 53 Grade Cement', 'CEMENT', 'Bags', 450.00, 100.00, 385.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('mat_steel_16_ctb', 'prj_commercial_tower_b', 'MAT-STL-16', '16mm Fe550D TMT Reinforcement Steel', 'STEEL', 'MT', 14.50, 5.00, 65000.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('mat_steel_12_ctb', 'prj_commercial_tower_b', 'MAT-STL-12', '12mm Fe550D TMT Reinforcement Steel', 'STEEL', 'MT', 3.20, 6.00, 66000.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- Triggers LOW STOCK ALERT
-    ('mat_sand_m_ctb', 'prj_commercial_tower_b', 'MAT-SND-01', 'Manufactured Concrete M-Sand', 'AGGREGATE', 'Ton', 240.00, 50.00, 1250.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('mat_sand_m_ctb', 'prj_commercial_tower_b', 'MAT-SAND-M', 'Manufactured Concrete M-Sand', 'AGGREGATE', 'Ton', 240.00, 50.00, 1250.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('mat_agg_20_ctb', 'prj_commercial_tower_b', 'MAT-AGG-20', '20mm Blue Metal Coarse Aggregate', 'AGGREGATE', 'Ton', 310.00, 80.00, 1100.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('mat_brk_red_ctb', 'prj_commercial_tower_b', 'MAT-BRK-01', 'Class-1 Wire Cut Clay Bricks', 'MASONRY', 'Pcs', 15000.00, 3000.00, 9.50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    ('mat_brk_red_ctb', 'prj_commercial_tower_b', 'MAT-BRK-RED', 'Class-1 Wire Cut Clay Bricks', 'MASONRY', 'Pcs', 15000.00, 3000.00, 9.50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT (id) DO NOTHING;
 
 -- 5. Seed Material Requests for prj_commercial_tower_b
