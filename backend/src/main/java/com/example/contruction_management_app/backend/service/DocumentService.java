@@ -58,9 +58,7 @@ public class DocumentService {
 
     @Transactional
     public DocumentDto createDocument(String projectId, DocumentCreateDto dto, UserPrincipal principal) {
-        validateProjectAccess(projectId, principal);
-        Project project = projectRepository.findById(projectId)
-            .orElseThrow(() -> new ResourceNotFoundException("Project not found with ID: " + projectId));
+        Project project = validateProjectAccess(projectId, principal);
 
         String versionNumber = (dto.versionNumber() != null && !dto.versionNumber().isBlank())
             ? dto.versionNumber()
@@ -158,12 +156,22 @@ public class DocumentService {
             .toList();
     }
 
-    private void validateProjectAccess(String projectId, UserPrincipal principal) {
-        if (principal == null) return;
+    private Project validateProjectAccess(String projectId, UserPrincipal principal) {
+        if (principal == null) {
+            throw new ForbiddenException("Authentication required");
+        }
+        Project project = projectRepository.findById(projectId)
+            .orElseThrow(() -> new ResourceNotFoundException("Project not found with ID: " + projectId));
+
+        if (!project.getOrganization().getId().equals(principal.getOrganizationId())) {
+            throw new ForbiddenException("Access denied to project from another organization");
+        }
+
         boolean isSuperAdmin = principal.getAuthorities().stream()
             .anyMatch(a -> a.getAuthority().equals("ROLE_SUPER_ADMIN") || a.getAuthority().equals("ROLE_COMPANY_ADMIN"));
         if (!isSuperAdmin && !projectMemberRepository.existsByProjectIdAndUserId(projectId, principal.getId())) {
             throw new ForbiddenException("You do not have access to project: " + projectId);
         }
+        return project;
     }
 }
